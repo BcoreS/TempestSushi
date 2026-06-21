@@ -1,0 +1,86 @@
+2026-06-20 18:35:02.214 -06:00 [INF] User profile is available. Using 'C:\Users\bcore\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2026-06-20 18:35:02.245 -06:00 [INF] Creating key {1168a9b4-b7ec-490c-9a71-673f4c073749} with creation date 2026-06-21 00:35:02Z, activation date 2026-06-21 00:35:02Z, and expiration date 2026-09-19 00:35:02Z.
+2026-06-20 18:35:02.259 -06:00 [INF] Writing data to file 'C:\Users\bcore\AppData\Local\ASP.NET\DataProtection-Keys\key-1168a9b4-b7ec-490c-9a71-673f4c073749.xml'.
+2026-06-20 18:35:02.422 -06:00 [INF] Now listening on: https://localhost:7074
+2026-06-20 18:35:02.425 -06:00 [INF] Now listening on: http://localhost:5107
+2026-06-20 18:35:02.467 -06:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-06-20 18:35:02.468 -06:00 [INF] Hosting environment: Development
+2026-06-20 18:35:02.469 -06:00 [INF] Content root path: C:\Users\bcore\OneDrive\Documentos\Cuatrimestre Actual\2026\2026 - II\Ambiente Web II\Proyecto\TempestSushi\TempestSushi
+2026-06-20 18:35:04.765 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/ - null null
+2026-06-20 18:35:04.916 -06:00 [INF] Executing endpoint 'TempestSushi.Controllers.HomeController.Index (TempestSushi.Web)'
+2026-06-20 18:35:04.949 -06:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller TempestSushi.Controllers.HomeController (TempestSushi.Web).
+2026-06-20 18:35:04.965 -06:00 [INF] Executing ViewResult, running view Index.
+2026-06-20 18:35:05.096 -06:00 [INF] Executed ViewResult - view Index executed in 135.4278ms.
+2026-06-20 18:35:05.099 -06:00 [INF] Executed action TempestSushi.Controllers.HomeController.Index (TempestSushi.Web) in 147.2158ms
+2026-06-20 18:35:05.101 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/TempestSushi.styles.css - null null
+2026-06-20 18:35:05.101 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/lib/jquery/dist/jquery.min.js - null null
+2026-06-20 18:35:05.101 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/lib/bootstrap/dist/css/bootstrap.min.css - null null
+2026-06-20 18:35:05.101 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/css/site.css?v=pAGv4ietcJNk_EwsQZ5BN9-K4MuNYS2a9wl4Jw-q9D0 - null null
+2026-06-20 18:35:05.102 -06:00 [INF] Executed endpoint 'TempestSushi.Controllers.HomeController.Index (TempestSushi.Web)'
+2026-06-20 18:35:05.101 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/lib/bootstrap/dist/js/bootstrap.bundle.min.js - null null
+2026-06-20 18:35:05.105 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/js/site.js?v=hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo - null null
+2026-06-20 18:35:05.107 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/_framework/aspnetcore-browser-refresh.js - null null
+2026-06-20 18:35:05.113 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/_vs/browserLink - null null
+2026-06-20 18:35:05.122 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/TempestSushi.styles.css - 404 0 null 19.7876ms
+2026-06-20 18:35:05.130 -06:00 [INF] Sending file. Request path: '/css/site.css'. Physical path: 'C:\Users\bcore\OneDrive\Documentos\Cuatrimestre Actual\2026\2026 - II\Ambiente Web II\Proyecto\TempestSushi\TempestSushi\wwwroot\css\site.css'
+2026-06-20 18:35:05.129 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/ - 200 null text/html; charset=utf-8 372.748ms
+2026-06-20 18:35:05.148 -06:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7074/TempestSushi.styles.css, Response status code: 404
+2026-06-20 18:35:05.150 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/css/site.css?v=pAGv4ietcJNk_EwsQZ5BN9-K4MuNYS2a9wl4Jw-q9D0 - 200 362 text/css 49.2849ms
+2026-06-20 18:35:05.134 -06:00 [INF] Sending file. Request path: '/js/site.js'. Physical path: 'C:\Users\bcore\OneDrive\Documentos\Cuatrimestre Actual\2026\2026 - II\Ambiente Web II\Proyecto\TempestSushi\TempestSushi\wwwroot\js\site.js'
+2026-06-20 18:35:05.150 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/_framework/aspnetcore-browser-refresh.js - 200 16517 application/javascript; charset=utf-8 42.4682ms
+2026-06-20 18:35:05.167 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/js/site.js?v=hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo - 200 231 text/javascript 62.5562ms
+2026-06-20 18:35:05.158 -06:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/css/bootstrap.min.css'. Physical path: 'C:\Users\bcore\OneDrive\Documentos\Cuatrimestre Actual\2026\2026 - II\Ambiente Web II\Proyecto\TempestSushi\TempestSushi\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css'
+2026-06-20 18:35:05.178 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/lib/bootstrap/dist/css/bootstrap.min.css - 200 162720 text/css 77.1911ms
+2026-06-20 18:35:05.184 -06:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/js/bootstrap.bundle.min.js'. Physical path: 'C:\Users\bcore\OneDrive\Documentos\Cuatrimestre Actual\2026\2026 - II\Ambiente Web II\Proyecto\TempestSushi\TempestSushi\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js'
+2026-06-20 18:35:05.187 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/lib/bootstrap/dist/js/bootstrap.bundle.min.js - 200 78468 text/javascript 85.5884ms
+2026-06-20 18:35:05.205 -06:00 [INF] Sending file. Request path: '/lib/jquery/dist/jquery.min.js'. Physical path: 'C:\Users\bcore\OneDrive\Documentos\Cuatrimestre Actual\2026\2026 - II\Ambiente Web II\Proyecto\TempestSushi\TempestSushi\wwwroot\lib\jquery\dist\jquery.min.js'
+2026-06-20 18:35:05.207 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/lib/jquery/dist/jquery.min.js - 200 89501 text/javascript 105.253ms
+2026-06-20 18:35:05.349 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/_vs/browserLink - 200 null text/javascript; charset=UTF-8 236.0072ms
+2026-06-20 18:35:05.361 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/favicon.ico - null null
+2026-06-20 18:35:05.377 -06:00 [INF] Sending file. Request path: '/favicon.ico'. Physical path: 'C:\Users\bcore\OneDrive\Documentos\Cuatrimestre Actual\2026\2026 - II\Ambiente Web II\Proyecto\TempestSushi\TempestSushi\wwwroot\favicon.ico'
+2026-06-20 18:35:05.379 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/favicon.ico - 200 5430 image/x-icon 18.2385ms
+2026-06-20 18:35:07.557 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/ - null null
+2026-06-20 18:35:07.566 -06:00 [INF] Executing endpoint 'TempestSushi.Controllers.HomeController.Index (TempestSushi.Web)'
+2026-06-20 18:35:07.568 -06:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller TempestSushi.Controllers.HomeController (TempestSushi.Web).
+2026-06-20 18:35:07.570 -06:00 [INF] Executing ViewResult, running view Index.
+2026-06-20 18:35:07.575 -06:00 [INF] Executed ViewResult - view Index executed in 4.342ms.
+2026-06-20 18:35:07.576 -06:00 [INF] Executed action TempestSushi.Controllers.HomeController.Index (TempestSushi.Web) in 6.385ms
+2026-06-20 18:35:07.578 -06:00 [INF] Executed endpoint 'TempestSushi.Controllers.HomeController.Index (TempestSushi.Web)'
+2026-06-20 18:35:07.580 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/ - 200 null text/html; charset=utf-8 23.126ms
+2026-06-20 18:35:07.582 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/_framework/aspnetcore-browser-refresh.js - null null
+2026-06-20 18:35:07.582 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/TempestSushi.styles.css - null null
+2026-06-20 18:35:07.582 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/_vs/browserLink - null null
+2026-06-20 18:35:07.588 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/_framework/aspnetcore-browser-refresh.js - 200 16517 application/javascript; charset=utf-8 6.209ms
+2026-06-20 18:35:07.591 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/TempestSushi.styles.css - 404 0 null 8.8317ms
+2026-06-20 18:35:07.606 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/_vs/browserLink - 200 null text/javascript; charset=UTF-8 23.9583ms
+2026-06-20 18:35:07.607 -06:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7074/TempestSushi.styles.css, Response status code: 404
+2026-06-20 18:35:08.181 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/Home/Privacy - null null
+2026-06-20 18:35:08.190 -06:00 [INF] Executing endpoint 'TempestSushi.Controllers.HomeController.Privacy (TempestSushi.Web)'
+2026-06-20 18:35:08.193 -06:00 [INF] Route matched with {action = "Privacy", controller = "Home"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Privacy() on controller TempestSushi.Controllers.HomeController (TempestSushi.Web).
+2026-06-20 18:35:08.196 -06:00 [INF] Executing ViewResult, running view Privacy.
+2026-06-20 18:35:08.200 -06:00 [INF] Executed ViewResult - view Privacy executed in 4.1849ms.
+2026-06-20 18:35:08.201 -06:00 [INF] Executed action TempestSushi.Controllers.HomeController.Privacy (TempestSushi.Web) in 6.0902ms
+2026-06-20 18:35:08.203 -06:00 [INF] Executed endpoint 'TempestSushi.Controllers.HomeController.Privacy (TempestSushi.Web)'
+2026-06-20 18:35:08.204 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/Home/Privacy - 200 null text/html; charset=utf-8 23.8212ms
+2026-06-20 18:35:08.205 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/TempestSushi.styles.css - null null
+2026-06-20 18:35:08.205 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/_framework/aspnetcore-browser-refresh.js - null null
+2026-06-20 18:35:08.206 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/_vs/browserLink - null null
+2026-06-20 18:35:08.212 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/TempestSushi.styles.css - 404 0 null 6.8432ms
+2026-06-20 18:35:08.214 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/_framework/aspnetcore-browser-refresh.js - 200 16517 application/javascript; charset=utf-8 8.9762ms
+2026-06-20 18:35:08.224 -06:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7074/TempestSushi.styles.css, Response status code: 404
+2026-06-20 18:35:08.227 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/_vs/browserLink - 200 null text/javascript; charset=UTF-8 21.8991ms
+2026-06-20 18:35:09.573 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/ - null null
+2026-06-20 18:35:09.579 -06:00 [INF] Executing endpoint 'TempestSushi.Controllers.HomeController.Index (TempestSushi.Web)'
+2026-06-20 18:35:09.580 -06:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller TempestSushi.Controllers.HomeController (TempestSushi.Web).
+2026-06-20 18:35:09.583 -06:00 [INF] Executing ViewResult, running view Index.
+2026-06-20 18:35:09.585 -06:00 [INF] Executed ViewResult - view Index executed in 2.3259ms.
+2026-06-20 18:35:09.586 -06:00 [INF] Executed action TempestSushi.Controllers.HomeController.Index (TempestSushi.Web) in 3.9872ms
+2026-06-20 18:35:09.588 -06:00 [INF] Executed endpoint 'TempestSushi.Controllers.HomeController.Index (TempestSushi.Web)'
+2026-06-20 18:35:09.589 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/ - 200 null text/html; charset=utf-8 16.4545ms
+2026-06-20 18:35:09.591 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/TempestSushi.styles.css - null null
+2026-06-20 18:35:09.591 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/_vs/browserLink - null null
+2026-06-20 18:35:09.591 -06:00 [INF] Request starting HTTP/2 GET https://localhost:7074/_framework/aspnetcore-browser-refresh.js - null null
+2026-06-20 18:35:09.596 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/TempestSushi.styles.css - 404 0 null 5.9769ms
+2026-06-20 18:35:09.606 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/_framework/aspnetcore-browser-refresh.js - 200 16517 application/javascript; charset=utf-8 15.2037ms
+2026-06-20 18:35:09.610 -06:00 [INF] Request finished HTTP/2 GET https://localhost:7074/_vs/browserLink - 200 null text/javascript; charset=UTF-8 19.5383ms
+2026-06-20 18:35:09.611 -06:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:7074/TempestSushi.styles.css, Response status code: 404
