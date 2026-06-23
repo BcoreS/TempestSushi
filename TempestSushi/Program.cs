@@ -1,8 +1,15 @@
-using Serilog;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using TempestSushi.Infraestructure.Data;
+using TempestSushi.Infraestructure.Repository.Implementations;
+using TempestSushi.Infraestructure.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+//Aquí se implementan los repositorios
+
+builder.Services.AddScoped<IRepositoryProcesoPreparacion, RepositoryProcesoPreparacion>();
 
 var logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
