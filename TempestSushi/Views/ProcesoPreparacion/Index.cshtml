@@ -1,5 +1,37 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model ICollection<TempestSushi.Application.DTOs.ProcesoPreparacionDTO>
+
+<h1>Procesos de Preparación</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Estación</th>
+            <th>Número de paso</th>
+            <th>Tiempo estimado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.NombreProducto</td>
+                <td>@item.NombreEstacionCocina</td>
+                <td>@item.NumeroPaso</td>
+                <td>
+                    @(item.TiempoEstimadoMinutos.HasValue
+                                    ? $"{item.TiempoEstimadoMinutos} min"
+                                    : "No definido")
+            </td>
+            <td>
+                <a asp-action="Details"
+                   asp-route-id="@item.IdProcesoPreparacion"
+                   class="btn btn-sm btn-primary">
+                    Detalle
+                </a>
+            </td>
+        </tr>
+                }
+    </tbody>
+</table>
