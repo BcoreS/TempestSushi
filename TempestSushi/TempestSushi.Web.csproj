@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TempestSushi.Application\TempestSushi.Application.csproj" />
     <ProjectReference Include="..\TempestSushi.Infraestructure\TempestSushi.Infraestructure.csproj" />
   </ItemGroup>
 

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TempestSushi.Application.DTOs;
 
 namespace TempestSushi.Application.Services.Interfaces
 {
     public interface IServiceCombo
     {
+        Task<ICollection<ComboDTO>> ListAsync();
+        Task<ComboDTO> FindByIdAsync(int id);
     }
 }

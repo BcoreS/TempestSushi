@@ -5,28 +5,30 @@ using TempestSushi.Infraestructure.Repository.Interfaces;
 
 namespace TempestSushi.Application.Services.Implementations
 {
-    public class ServiceCombo : IServiceCombo
+    public class ServiceProcesoPreparacion : IServiceProcesoPreparacion
     {
-        private readonly IRepositoryCombo _repository;
+        private readonly IRepositoryProcesoPreparacion _repository;
         private readonly IMapper _mapper;
 
-        public ServiceCombo(IRepositoryCombo repository, IMapper mapper)
+        public ServiceProcesoPreparacion(
+            IRepositoryProcesoPreparacion repository,
+            IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task<ComboDTO> FindByIdAsync(int id)
+        public async Task<ProcesoPreparacionDTO> FindByIdAsync(int id)
         {
             var entity = await _repository.FindByIdAsync(id);
-            var objectMapped = _mapper.Map<ComboDTO>(entity);
+            var objectMapped = _mapper.Map<ProcesoPreparacionDTO>(entity);
             return objectMapped;
         }
 
-        public async Task<ICollection<ComboDTO>> ListAsync()
+        public async Task<ICollection<ProcesoPreparacionDTO>> ListAsync()
         {
             var list = await _repository.ListAsync();
-            var collection = _mapper.Map<ICollection<ComboDTO>>(list);
+            var collection = _mapper.Map<ICollection<ProcesoPreparacionDTO>>(list);
             return collection;
         }
     }

@@ -1,15 +1,28 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using TempestSushi.Application.Profiles;
+using TempestSushi.Application.Services.Implementations;
+using TempestSushi.Application.Services.Interfaces;
 using TempestSushi.Infraestructure.Data;
 using TempestSushi.Infraestructure.Repository.Implementations;
 using TempestSushi.Infraestructure.Repository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 //Aquí se implementan los repositorios
 
 builder.Services.AddScoped<IRepositoryProcesoPreparacion, RepositoryProcesoPreparacion>();
+builder.Services.AddScoped<IRepositoryCombo, RepositoryCombo>();
+
+builder.Services.AddScoped<IServiceProcesoPreparacion, ServiceProcesoPreparacion>();
+builder.Services.AddScoped<IServiceCombo, ServiceCombo>();
+
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<ComboProfile>();
+    cfg.AddProfile<ProcesoPreparacionProfile>();
+});
 
 var logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
