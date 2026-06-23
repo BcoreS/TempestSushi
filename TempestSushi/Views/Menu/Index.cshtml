@@ -1,0 +1,31 @@
+﻿@model List<TempestSushi.Application.DTOs.MenuDto>
+
+@{
+    ViewData["Title"] = "Menús";
+}
+
+<h1 class="text-center text-light mb-4">Menús Registrados</h1>
+
+<div class="text-center mb-4">
+    <a asp-controller="Menu" asp-action="Disponible" class="btn btn-success">
+        Ver menú disponible ahora
+    </a>
+</div>
+
+<div class="container">
+    <div class="row g-4">
+        @foreach (var menu in Model)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card h-100 bg-dark text-light border-success shadow">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">@menu.Nombre</h5>
+                        <p class="card-text mb-1"><strong>Días:</strong> @menu.Dias</p>
+                        <p class="card-text mb-1"><strong>Horario:</strong> @menu.Horario</p>
+                        <p class="card-text mb-1"><strong>Vigencia:</strong> @menu.Vigencia</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
