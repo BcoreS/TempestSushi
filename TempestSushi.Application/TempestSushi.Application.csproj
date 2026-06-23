@@ -7,10 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <PackageReference Include="AutoMapper" Version="16.1.1" />
   </ItemGroup>
 
   <ItemGroup>
+=======
+>>>>>>> c51045ed646df3cada177b109453b86e6cea8b3c
     <ProjectReference Include="..\TempestSushi.Infraestructure\TempestSushi.Infraestructure.csproj" />
   </ItemGroup>
 
