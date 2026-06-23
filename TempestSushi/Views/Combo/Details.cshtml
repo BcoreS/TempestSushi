@@ -1,27 +1,179 @@
 ﻿@model TempestSushi.Application.DTOs.ComboDTO
 
-<h1>Detalle del Combo</h1>
+@{
+    ViewData["Title"] = "Detalle del Combo";
+}
 
-<div>
-    <strong>Nombre:</strong> @Model.Nombre
+<style>
+    .det-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #d0e8f8;
+    }
+
+    .det-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        margin: 0 0 4px 0;
+    }
+
+    .det-sub {
+        color: #4fa8e8;
+        font-size: .85rem;
+        letter-spacing: 2px;
+    }
+
+    .det-card {
+        background: #fff;
+        border: 1.5px solid #d0e8f8;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 2px 16px rgba(26,58,110,0.07);
+        margin-bottom: 1.5rem;
+    }
+
+    .det-icon-banner {
+        width: 100%;
+        height: 220px;
+        background: linear-gradient(135deg, #e8f4fd 60%, #d0e8f8 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+    }
+
+    .det-body {
+        padding: 1.75rem 2rem;
+    }
+
+    .det-nombre {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        margin-bottom: 6px;
+    }
+
+    .det-desc {
+        color: #5a7fa0;
+        font-size: .95rem;
+        margin-bottom: 1.25rem;
+        line-height: 1.6;
+    }
+
+    .det-divider {
+        border: none;
+        border-top: 1px solid #d0e8f8;
+        margin: 1.25rem 0;
+    }
+
+    .det-row {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .det-label {
+        font-size: .78rem;
+        color: #4fa8e8;
+        letter-spacing: 2px;
+        font-weight: 600;
+        min-width: 100px;
+    }
+
+    .det-value {
+        color: #1a3a6e;
+        font-size: .95rem;
+        font-weight: 500;
+    }
+
+    .det-precio {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #c0392b;
+    }
+
+    .estado-badge {
+        display: inline-block;
+        padding: 3px 14px;
+        border-radius: 20px;
+        font-size: .8rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+
+    .estado-activo {
+        background: #e8f8f0;
+        color: #1f8a4c;
+    }
+
+    .estado-inactivo {
+        background: #fdecea;
+        color: #c0392b;
+    }
+
+    .btn-volver {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: transparent;
+        color: #1a3a6e;
+        border: 1.5px solid #1a3a6e;
+        border-radius: 8px;
+        padding: 7px 20px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all .2s;
+    }
+
+        .btn-volver:hover {
+            background: #1a3a6e;
+            color: #fff !important;
+        }
+</style>
+
+<div class="det-header" id="detHeader">
+    <h1 class="det-title">@Model.Nombre</h1>
+    <span class="det-sub">DETALLE DEL COMBO</span>
 </div>
 
-<div>
-    <strong>Descripción:</strong> @Model.Descripcion
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="det-card" id="detCard">
+            <div class="det-icon-banner">🍱</div>
+            <div class="det-body">
+                <div class="det-nombre">@Model.Nombre</div>
+                <div class="det-desc">@Model.Descripcion</div>
+                <hr class="det-divider" />
+                <div class="det-row">
+                    <span class="det-label">CATEGORÍA</span>
+                    <span class="det-value">@Model.NombreCategoria</span>
+                </div>
+                <div class="det-row">
+                    <span class="det-label">PRECIO</span>
+                    <span class="det-precio">₡@Model.Precio.ToString("N2")</span>
+                </div>
+                <div class="det-row">
+                    <span class="det-label">ESTADO</span>
+                    <span class="estado-badge @(Model.Activo ? "estado-activo" : "estado-inactivo")">
+                        @(Model.Activo ? "Activo" : "Inactivo")
+                    </span>
+                </div>
+            </div>
+        </div>
+        <a asp-action="Index" class="btn-volver">← Volver al listado</a>
+    </div>
 </div>
 
-<div>
-    <strong>Categoría:</strong> @Model.NombreCategoria
-</div>
-
-<div>
-    <strong>Precio:</strong> ₡@Model.Precio
-</div>
-
-<div>
-    <strong>Activo:</strong> @(Model.Activo ? "Sí" : "No")
-</div>
-
-<br />
-
-<a asp-action="Index">Volver</a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script>
+    anime({ targets: '#detHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
+    anime({ targets: '#detCard', translateY: [20, 0], opacity: [0, 1], duration: 600, delay: 150, easing: 'easeOutExpo' });
+</script>

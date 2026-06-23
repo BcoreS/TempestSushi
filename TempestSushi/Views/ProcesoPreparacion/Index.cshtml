@@ -1,14 +1,133 @@
-﻿@model ICollection<TempestSushi.Application.DTOs.ProcesoPreparacionDTO>
+﻿@model ICollection<TempestSushi.Application.DTOs.ProcesoPreparacionListDTO>
 
-<h1>Procesos de Preparación</h1>
+<style>
+    .pp-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #d0e8f8;
+    }
 
-<table class="table table-striped">
+    .pp-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .pp-badge {
+        background: #1a3a6e;
+        color: #4fa8e8;
+        font-size: .7rem;
+        letter-spacing: 2px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .pp-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 16px rgba(26,58,110,0.08);
+    }
+
+        .pp-table thead tr {
+            background: #1a3a6e;
+            color: #fff;
+        }
+
+        .pp-table thead th {
+            padding: 14px 20px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border: none;
+        }
+
+        .pp-table tbody tr {
+            background: #fff;
+            transition: background .2s;
+        }
+
+            .pp-table tbody tr:nth-child(even) {
+                background: #f0f6fc;
+            }
+
+            .pp-table tbody tr:hover {
+                background: #daeef9;
+            }
+
+        .pp-table td {
+            padding: 13px 20px;
+            color: #1a3a6e;
+            border-bottom: 1px solid #d0e8f8;
+            font-size: .95rem;
+            vertical-align: middle;
+        }
+
+    .pp-pasos {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #e8f4fd;
+        color: #1a3a6e;
+        border-radius: 20px;
+        padding: 3px 14px;
+        font-weight: 600;
+        font-size: .9rem;
+    }
+
+        .pp-pasos span {
+            background: #1a3a6e;
+            color: #fff;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+        }
+
+    .btn-detalle {
+        background: #1a3a6e;
+        color: #fff !important;
+        border: none;
+        border-radius: 8px;
+        padding: 6px 18px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background .2s, transform .15s;
+        display: inline-block;
+    }
+
+        .btn-detalle:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+</style>
+
+<div class="pp-header" id="ppHeader">
+    <h1 class="pp-title">Procesos de Preparación</h1>
+    <span class="pp-badge">COCINA</span>
+</div>
+
+<table class="pp-table" id="ppTable">
     <thead>
         <tr>
             <th>Producto</th>
-            <th>Estación</th>
-            <th>Número de paso</th>
-            <th>Tiempo estimado</th>
+            <th>Cantidad de pasos</th>
             <th></th>
         </tr>
     </thead>
@@ -17,21 +136,26 @@
         {
             <tr>
                 <td>@item.NombreProducto</td>
-                <td>@item.NombreEstacionCocina</td>
-                <td>@item.NumeroPaso</td>
                 <td>
-                    @(item.TiempoEstimadoMinutos.HasValue
-                                    ? $"{item.TiempoEstimadoMinutos} min"
-                                    : "No definido")
-            </td>
-            <td>
-                <a asp-action="Details"
-                   asp-route-id="@item.IdProcesoPreparacion"
-                   class="btn btn-sm btn-primary">
-                    Detalle
-                </a>
-            </td>
-        </tr>
-                }
+                    <span class="pp-pasos">
+                        <span>@item.CantidadPasos</span>
+                        @(item.CantidadPasos == 1 ? "paso" : "pasos")
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="Details"
+                       asp-route-id="@item.IdProducto"
+                       class="btn-detalle">
+                        Ver detalle
+                    </a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script>
+    anime({ targets: '#ppHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
+    anime({ targets: '#ppTable tbody tr', translateX: [-30, 0], opacity: [0, 1], duration: 500, delay: anime.stagger(80, { start: 200 }), easing: 'easeOutExpo' });
+</script>

@@ -1,8 +1,349 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --ink: #0a1128;
+        --abyss: #0d1b3e;
+        --foam: #e8edf5;
+        --vermillion: #c41e3a;
+        --gold: #d4af37;
+        --mist: rgba(255, 255, 255, 0.06);
+    }
+
+    /* Trampa para que el hero ocupe todo el ancho aunque el layout tenga un .container que lo limite */
+    .ts-hero, .ts-cards-section {
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
+        width: 100vw;
+        box-sizing: border-box;
+    }
+
+    .ts-hero {
+        min-height: 86vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 8vh 24px 8vh;
+        background: radial-gradient(ellipse at 50% -10%, rgba(196, 30, 58, 0.20), transparent 55%), linear-gradient(180deg, var(--ink) 0%, var(--abyss) 60%, #142454 100%);
+        color: var(--foam);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .ts-kicker {
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--vermillion);
+        margin-bottom: 1.2rem;
+        opacity: 0;
+    }
+
+    .ts-headline {
+        font-family: 'Bodoni Moda', serif;
+        font-weight: 700;
+        font-size: clamp(3rem, 9vw, 7.5rem);
+        line-height: 0.95;
+        letter-spacing: 0.01em;
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25em 0.45em;
+        justify-content: center;
+    }
+
+        .ts-headline .word {
+            opacity: 0;
+        }
+
+            .ts-headline .word:first-child {
+                color: var(--foam);
+            }
+
+            .ts-headline .word:last-child {
+                color: var(--gold);
+                font-style: italic;
+            }
+
+    .ts-line-wrap {
+        width: min(560px, 80vw);
+        margin: 1.4rem auto 0;
+    }
+
+        .ts-line-wrap svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+    #tsPath {
+        fill: none;
+        stroke: var(--vermillion);
+        stroke-width: 3;
+        stroke-linecap: round;
+    }
+
+    .ts-sub {
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        color: rgba(232, 237, 245, 0.78);
+        max-width: 540px;
+        margin: 1.6rem auto 0;
+        line-height: 1.6;
+        opacity: 0;
+    }
+
+    .ts-ctas {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2.4rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+        .ts-ctas .ts-cta {
+            opacity: 0;
+        }
+
+    .ts-cta {
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.04em;
+        padding: 0.85rem 1.8rem;
+        border-radius: 999px;
+        text-decoration: none;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+        display: inline-block;
+    }
+
+    .ts-cta-primary {
+        background: var(--vermillion);
+        color: var(--foam);
+        box-shadow: 0 10px 24px rgba(196, 30, 58, 0.35);
+    }
+
+        .ts-cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(196, 30, 58, 0.45);
+        }
+
+    .ts-cta-secondary {
+        background: transparent;
+        color: var(--gold);
+        border: 1px solid rgba(212, 175, 55, 0.5);
+    }
+
+        .ts-cta-secondary:hover {
+            transform: translateY(-3px);
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.08);
+        }
+
+    .ts-cards-section {
+        background: var(--abyss);
+        padding: 5rem 24px 6rem;
+    }
+
+    .ts-cards {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 1.4rem;
+    }
+
+        .ts-cards .ts-card {
+            opacity: 0;
+        }
+
+    .ts-card {
+        background: var(--mist);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 1.8rem 1.6rem;
+        color: var(--foam);
+        text-decoration: none;
+        display: block;
+        transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    }
+
+        .ts-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--vermillion);
+            background: rgba(196, 30, 58, 0.07);
+        }
+
+    .ts-card-eyebrow {
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--gold);
+    }
+
+    .ts-card h3 {
+        font-family: 'Bodoni Moda', serif;
+        font-size: 1.5rem;
+        margin: 0.5rem 0 0.6rem;
+        color: var(--foam);
+    }
+
+    .ts-card p {
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: 0.9rem;
+        color: rgba(232, 237, 245, 0.7);
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* Si el navegador pide menos movimiento, o si anime.js no carga, todo queda visible sin animar */
+    body.ts-static .ts-kicker,
+    body.ts-static .ts-headline .word,
+    body.ts-static .ts-sub,
+    body.ts-static .ts-ctas .ts-cta,
+    body.ts-static .ts-cards .ts-card {
+        opacity: 1;
+    }
+
+    body.ts-static #tsPath {
+        stroke-dashoffset: 0 !important;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .ts-kicker, .ts-headline .word, .ts-sub, .ts-ctas .ts-cta, .ts-cards .ts-card {
+            opacity: 1 !important;
+        }
+    }
+</style>
+
+<section class="ts-hero">
+    <div class="ts-kicker">Cocina de tormenta, precisión de mar</div>
+    <h1 class="ts-headline" id="tsHeadline">
+        <span class="word">TEMPEST</span><span class="word">SUSHI</span>
+    </h1>
+    <div class="ts-line-wrap">
+        <svg viewBox="0 0 1000 80" xmlns="http://www.w3.org/2000/svg">
+            <path id="tsPath" d="M0,40 L120,10 L180,58 L260,14 Q340,72 420,32 T580,42 L650,8 L720,56 L800,20 Q880,62 1000,36" />
+        </svg>
+    </div>
+    <p class="ts-sub" id="tsSub">Donde la furia del océano se convierte en precisión de cuchillo.</p>
+    <div class="ts-ctas" id="tsCtas">
+        <a class="ts-cta ts-cta-primary" asp-controller="Producto" asp-action="Index">Ver productos</a>
+        <a class="ts-cta ts-cta-secondary" asp-controller="Combo" asp-action="Index">Ver combos</a>
+    </div>
+</section>
+
+<section class="ts-cards-section">
+    <div class="ts-cards" id="tsCards">
+        <a class="ts-card" asp-controller="Producto" asp-action="Index">
+            <span class="ts-card-eyebrow">Carta</span>
+            <h3>Productos</h3>
+            <p>Más de 20 platillos: rolls, nigiris, entradas y postres preparados al momento.</p>
+        </a>
+        <a class="ts-card" asp-controller="Combo" asp-action="Index">
+            <span class="ts-card-eyebrow">Para compartir</span>
+            <h3>Combos</h3>
+            <p>Combinaciones armadas, desde dúos hasta menús familiares.</p>
+        </a>
+        <a class="ts-card" asp-controller="Menu" asp-action="Index">
+            <span class="ts-card-eyebrow">Disponible ahora</span>
+            <h3>Menús</h3>
+            <p>Lo que se sirve según el día y la hora: almuerzo, cena o fin de semana.</p>
+        </a>
+        <a class="ts-card" asp-controller="ProcesoPreparacion" asp-action="Index">
+            <span class="ts-card-eyebrow">En cocina</span>
+            <h3>Preparación</h3>
+            <p>Cada plato pasa por estaciones reales, paso a paso, hasta llegar a tu mesa.</p>
+        </a>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script>
+    (function () {
+        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (prefersReducedMotion || typeof anime === 'undefined') {
+            document.body.classList.add('ts-static');
+            return;
+        }
+
+        anime({
+            targets: '.ts-kicker',
+            opacity: [0, 1],
+            translateY: [12, 0],
+            duration: 600,
+            easing: 'easeOutQuad'
+        });
+
+        anime({
+            targets: '#tsHeadline .word',
+            opacity: [0, 1],
+            translateY: [30, 0],
+            delay: anime.stagger(150, { start: 250 }),
+            duration: 800,
+            easing: 'easeOutExpo'
+        });
+
+        var path = document.getElementById('tsPath');
+        if (path) {
+            var pathLength = path.getTotalLength();
+            path.style.strokeDasharray = pathLength;
+            path.style.strokeDashoffset = pathLength;
+            anime({
+                targets: '#tsPath',
+                strokeDashoffset: [pathLength, 0],
+                duration: 1100,
+                delay: 700,
+                easing: 'easeInOutSine'
+            });
+        }
+
+        anime({
+            targets: '#tsSub',
+            opacity: [0, 1],
+            translateY: [10, 0],
+            delay: 1500,
+            duration: 600,
+            easing: 'easeOutQuad'
+        });
+
+        anime({
+            targets: '#tsCtas .ts-cta',
+            opacity: [0, 1],
+            scale: [0.92, 1],
+            delay: anime.stagger(120, { start: 1750 }),
+            duration: 500,
+            easing: 'easeOutBack'
+        });
+
+        var cards = document.querySelectorAll('#tsCards .ts-card');
+        if ('IntersectionObserver' in window && cards.length) {
+            var animated = false;
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting && !animated) {
+                        animated = true;
+                        anime({
+                            targets: cards,
+                            opacity: [0, 1],
+                            translateY: [24, 0],
+                            delay: anime.stagger(100),
+                            duration: 600,
+                            easing: 'easeOutQuad'
+                        });
+                    }
+                });
+            }, { threshold: 0.2 });
+            observer.observe(document.getElementById('tsCards'));
+        }
+    })();
+</script>

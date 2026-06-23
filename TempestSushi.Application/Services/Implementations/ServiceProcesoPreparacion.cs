@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using TempestSushi.Application.DTOs;
+﻿using TempestSushi.Application.DTOs;
 using TempestSushi.Application.Services.Interfaces;
 using TempestSushi.Infraestructure.Repository.Interfaces;
 
@@ -8,28 +7,45 @@ namespace TempestSushi.Application.Services.Implementations
     public class ServiceProcesoPreparacion : IServiceProcesoPreparacion
     {
         private readonly IRepositoryProcesoPreparacion _repository;
-        private readonly IMapper _mapper;
 
-        public ServiceProcesoPreparacion(
-            IRepositoryProcesoPreparacion repository,
-            IMapper mapper)
+        public ServiceProcesoPreparacion(IRepositoryProcesoPreparacion repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
-        public async Task<ProcesoPreparacionDTO> FindByIdAsync(int id)
-        {
-            var entity = await _repository.FindByIdAsync(id);
-            var objectMapped = _mapper.Map<ProcesoPreparacionDTO>(entity);
-            return objectMapped;
-        }
-
-        public async Task<ICollection<ProcesoPreparacionDTO>> ListAsync()
+        public async Task<ICollection<ProcesoPreparacionListDTO>> ListAsync()
         {
             var list = await _repository.ListAsync();
-            var collection = _mapper.Map<ICollection<ProcesoPreparacionDTO>>(list);
-            return collection;
+
+            var agrupado = list
+                .GroupBy(p => new { p.IdProducto, p.IdProductoNavigation.Nombre })
+                .Select(g => new ProcesoPreparacionListDTO
+                {
+                    IdProducto = g.Key.IdProducto,
+                    NombreProducto = g.Key.Nombre,
+                    CantidadPasos = g.Count()
+                })
+                .ToList();
+
+            return agrupado;
+        }
+
+        public async Task<ProcesoPreparacionDetalleDTO> FindByProductoIdAsync(int idProducto)
+        {
+            var pasos = await _repository.FindByProductoIdAsync(idProducto);
+
+            if (!pasos.Any()) return null!;
+
+            return new ProcesoPreparacionDetalleDTO
+            {
+                IdProducto = idProducto,
+                NombreProducto = pasos.First().IdProductoNavigation.Nombre,
+                Estaciones = pasos.Select(p => new EstacionDTO
+                {
+                    NumeroPaso = p.NumeroPaso,
+                    NombreEstacion = p.IdEstacionCocinaNavigation.Nombre
+                }).ToList()
+            };
         }
     }
 }

@@ -1,37 +1,179 @@
 ﻿@model TempestSushi.Application.DTOs.ProductoDetalleDto
-
 @{
     ViewData["Title"] = "Detalle del Producto";
 }
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-8">
-            <div class="card bg-dark text-light border-success shadow">
-                @if (!string.IsNullOrEmpty(Model.ImagenUrl))
-                {
-                    <img src="@Model.ImagenUrl" class="card-img-top" alt="@Model.Nombre" style="max-height:350px;object-fit:cover;">
-                }
-                <div class="card-body">
-                    <h2 class="text-success">@Model.Nombre</h2>
-                    <p class="text-light">@Model.Descripcion</p>
+<style>
+    .det-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #d0e8f8;
+    }
 
-                    <hr class="border-success">
+    .det-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        margin: 0 0 4px 0;
+    }
 
-                    <p><strong>Categoría:</strong> @Model.Categoria</p>
-                    <p><strong>Precio:</strong> ₡@Model.Precio.ToString("N2")</p>
+    .det-sub {
+        color: #4fa8e8;
+        font-size: .85rem;
+        letter-spacing: 2px;
+    }
 
-                    <p><strong>Ingredientes:</strong></p>
-                    <ul>
-                        @foreach (var ingrediente in Model.Ingredientes)
-                        {
-                            <li>@ingrediente</li>
-                        }
-                    </ul>
+    .det-card {
+        background: #fff;
+        border: 1.5px solid #d0e8f8;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 2px 16px rgba(26,58,110,0.07);
+        margin-bottom: 1.5rem;
+    }
 
-                    <a asp-controller="Producto" asp-action="Index" class="btn btn-outline-light mt-3">⬅ Volver al listado</a>
+    .det-img {
+        width: 100%;
+        max-height: 320px;
+        object-fit: cover;
+    }
+
+    .det-body {
+        padding: 1.75rem 2rem;
+    }
+
+    .det-nombre {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        margin-bottom: 6px;
+    }
+
+    .det-desc {
+        color: #5a7fa0;
+        font-size: .95rem;
+        margin-bottom: 1.25rem;
+        line-height: 1.6;
+    }
+
+    .det-divider {
+        border: none;
+        border-top: 1px solid #d0e8f8;
+        margin: 1.25rem 0;
+    }
+
+    .det-row {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .det-label {
+        font-size: .78rem;
+        color: #4fa8e8;
+        letter-spacing: 2px;
+        font-weight: 600;
+        min-width: 100px;
+    }
+
+    .det-value {
+        color: #1a3a6e;
+        font-size: .95rem;
+        font-weight: 500;
+    }
+
+    .det-precio {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #c0392b;
+    }
+
+    .ing-list {
+        list-style: none;
+        padding: 0;
+        margin: 8px 0 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+        .ing-list li {
+            background: #e8f4fd;
+            color: #1a3a6e;
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: .85rem;
+            font-weight: 500;
+        }
+
+    .btn-volver {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: transparent;
+        color: #1a3a6e;
+        border: 1.5px solid #1a3a6e;
+        border-radius: 8px;
+        padding: 7px 20px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all .2s;
+    }
+
+        .btn-volver:hover {
+            background: #1a3a6e;
+            color: #fff !important;
+        }
+</style>
+
+<div class="det-header" id="detHeader">
+    <h1 class="det-title">@Model.Nombre</h1>
+    <span class="det-sub">DETALLE DEL PRODUCTO</span>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+        <div class="det-card" id="detCard">
+            @if (!string.IsNullOrEmpty(Model.ImagenUrl))
+            {
+                <img src="@Model.ImagenUrl" class="det-img" alt="@Model.Nombre" />
+            }
+            <div class="det-body">
+                <div class="det-nombre">@Model.Nombre</div>
+                <div class="det-desc">@Model.Descripcion</div>
+                <hr class="det-divider" />
+                <div class="det-row">
+                    <span class="det-label">CATEGORÍA</span>
+                    <span class="det-value">@Model.Categoria</span>
                 </div>
+                <div class="det-row">
+                    <span class="det-label">PRECIO</span>
+                    <span class="det-precio">₡@Model.Precio.ToString("N2")</span>
+                </div>
+                <hr class="det-divider" />
+                <div class="det-label" style="margin-bottom:8px">INGREDIENTES</div>
+                <ul class="ing-list">
+                    @foreach (var ingrediente in Model.Ingredientes)
+                    {
+                        <li>@ingrediente</li>
+                    }
+                </ul>
             </div>
         </div>
+        <a asp-controller="Producto" asp-action="Index" class="btn-volver">← Volver al listado</a>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script>
+    anime({ targets: '#detHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
+    anime({ targets: '#detCard', translateY: [20, 0], opacity: [0, 1], duration: 600, delay: 150, easing: 'easeOutExpo' });
+    anime({ targets: '.ing-list li', scale: [0.8, 1], opacity: [0, 1], duration: 400, delay: anime.stagger(60, { start: 500 }), easing: 'easeOutBack' });
+</script>

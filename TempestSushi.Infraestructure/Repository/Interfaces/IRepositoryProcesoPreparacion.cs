@@ -9,7 +9,7 @@ namespace TempestSushi.Infraestructure.Repository.Interfaces
 {
     public interface IRepositoryProcesoPreparacion
     {
-        Task<ProcesoPreparacion> FindByIdAsync(int id);
+        Task<ICollection<ProcesoPreparacion>> FindByProductoIdAsync(int idProducto);
         Task<ICollection<ProcesoPreparacion>> ListAsync();
     }
 }

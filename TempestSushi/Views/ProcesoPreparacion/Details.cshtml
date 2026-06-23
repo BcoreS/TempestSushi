@@ -1,37 +1,178 @@
-﻿@model TempestSushi.Application.DTOs.ProcesoPreparacionDTO
+﻿@model TempestSushi.Application.DTOs.ProcesoPreparacionDetalleDTO
 
-<h1>Detalle del Proceso de Preparación</h1>
+<style>
+    .det-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #d0e8f8;
+    }
 
-<div class="card">
-    <div class="card-body">
-        <div class="mb-2">
-            <strong>Producto:</strong> @Model.NombreProducto
+    .det-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        letter-spacing: 1px;
+        margin: 0 0 4px 0;
+    }
+
+    .det-sub {
+        color: #4fa8e8;
+        font-size: .85rem;
+        letter-spacing: 2px;
+    }
+
+    .det-card {
+        background: #fff;
+        border: 1.5px solid #d0e8f8;
+        border-radius: 14px;
+        padding: 1.75rem 2rem;
+        box-shadow: 0 2px 16px rgba(26,58,110,0.07);
+        margin-bottom: 1.5rem;
+    }
+
+    .det-producto {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #d0e8f8;
+    }
+
+    .det-producto-icon {
+        width: 48px;
+        height: 48px;
+        background: #1a3a6e;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #4fa8e8;
+        font-size: 1.4rem;
+        flex-shrink: 0;
+    }
+
+    .det-producto-nombre {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #1a3a6e;
+    }
+
+    .det-producto-label {
+        font-size: .75rem;
+        color: #4fa8e8;
+        letter-spacing: 2px;
+    }
+
+    .det-estaciones-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1a3a6e;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+    }
+
+    .estacion-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 0;
+        border-bottom: 1px solid #f0f6fc;
+        opacity: 0;
+    }
+
+        .estacion-row:last-child {
+            border-bottom: none;
+        }
+
+    .estacion-num {
+        width: 34px;
+        height: 34px;
+        background: #4fa8e8;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .estacion-nombre {
+        color: #1a3a6e;
+        font-size: .95rem;
+        font-weight: 500;
+    }
+
+    .estacion-linea {
+        flex: 1;
+        height: 1px;
+        background: #d0e8f8;
+    }
+
+    .btn-volver {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: transparent;
+        color: #1a3a6e;
+        border: 1.5px solid #1a3a6e;
+        border-radius: 8px;
+        padding: 7px 20px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all .2s;
+    }
+
+        .btn-volver:hover {
+            background: #1a3a6e;
+            color: #fff !important;
+        }
+</style>
+
+<div class="det-header" id="detHeader">
+    <h1 class="det-title">Detalle del Proceso</h1>
+    <span class="det-sub">PROCESO DE PREPARACIÓN</span>
+</div>
+
+<div class="det-card" id="detCard">
+    <div class="det-producto">
+        <div class="det-producto-icon">🍱</div>
+        <div>
+            <div class="det-producto-label">PRODUCTO</div>
+            <div class="det-producto-nombre">@Model.NombreProducto</div>
         </div>
+    </div>
 
-        <div class="mb-2">
-            <strong>Estación de cocina:</strong> @Model.NombreEstacionCocina
-        </div>
+    <div class="det-estaciones-title">
+        Estaciones del proceso — @Model.Estaciones.Count @(Model.Estaciones.Count == 1 ? "paso" : "pasos") en total
+    </div>
 
-        <div class="mb-2">
-            <strong>Número de paso:</strong> @Model.NumeroPaso
-        </div>
-
-        <div class="mb-2">
-            <strong>Descripción del paso:</strong>
-            @(string.IsNullOrWhiteSpace(Model.DescripcionPaso)
-                        ? "Sin descripción"
-                        : Model.DescripcionPaso)
-        </div>
-
-        <div class="mb-2">
-            <strong>Tiempo estimado:</strong>
-            @(Model.TiempoEstimadoMinutos.HasValue
-                        ? $"{Model.TiempoEstimadoMinutos} minutos"
-                        : "No definido")
-        </div>
+    <div id="estacionesList">
+        @foreach (var estacion in Model.Estaciones)
+        {
+            <div class="estacion-row">
+                <div class="estacion-num">@estacion.NumeroPaso</div>
+                <div class="estacion-nombre">@estacion.NombreEstacion</div>
+                <div class="estacion-linea"></div>
+            </div>
+        }
     </div>
 </div>
 
-<br />
+<a asp-action="Index" class="btn-volver">← Volver</a>
 
-<a asp-action="Index" class="btn btn-secondary">Volver</a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script>
+    anime({ targets: '#detHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
+    anime({ targets: '#detCard', translateY: [20, 0], opacity: [0, 1], duration: 600, delay: 150, easing: 'easeOutExpo' });
+    anime({ targets: '.estacion-row', translateX: [-20, 0], opacity: [0, 1], duration: 400, delay: anime.stagger(100, { start: 400 }), easing: 'easeOutExpo' });
+</script>

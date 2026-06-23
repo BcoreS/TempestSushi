@@ -10,7 +10,7 @@ namespace TempestSushi.Application.Services.Interfaces
 {
     public interface IServiceProcesoPreparacion
     {
-        Task<ICollection<ProcesoPreparacionDTO>> ListAsync();
-        Task<ProcesoPreparacionDTO> FindByIdAsync(int id);
+        Task<ICollection<ProcesoPreparacionListDTO>> ListAsync();
+        Task<ProcesoPreparacionDetalleDTO> FindByProductoIdAsync(int idProducto);
     }
 }

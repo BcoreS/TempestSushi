@@ -4,52 +4,198 @@
     ViewData["Title"] = "Menú Disponible";
 }
 
-<div class="container">
-    @if (Model == null)
-    {
-        <div class="alert alert-warning text-center mt-4">
-            @ViewBag.Mensaje
-        </div>
-        <div class="text-center">
-            <a asp-controller="Menu" asp-action="Index" class="btn btn-outline-light">⬅ Volver al listado</a>
-        </div>
+<style>
+    .disp-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #d0e8f8;
     }
-    else
-    {
-        <div class="text-center mb-4">
-            <h1 class="text-success">@Model.Nombre</h1>
-            <p class="text-light">
-                <strong>Días:</strong> @Model.Dias &nbsp;|&nbsp;
-                <strong>Horario:</strong> @Model.Horario &nbsp;|&nbsp;
-                <strong>Vigencia:</strong> @Model.Vigencia
-            </p>
-        </div>
 
-        @foreach (var categoria in Model.Categorias)
-        {
-            <div class="mb-5">
-                <h3 class="text-success border-bottom border-success pb-2 mb-3">@categoria.NombreCategoria</h3>
-                <div class="row g-3">
-                    @foreach (var item in categoria.Items)
-                    {
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="card bg-dark text-light border-secondary h-100">
-                                <div class="card-body d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-1">@item.Nombre</h6>
-                                        <small class="text-muted">@item.Tipo</small>
-                                    </div>
-                                    <span class="badge bg-success">₡@item.Precio.ToString("N2")</span>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
+    .disp-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.9rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        margin: 0 0 4px 0;
+    }
+
+    .disp-sub {
+        color: #4fa8e8;
+        font-size: .85rem;
+        letter-spacing: 2px;
+    }
+
+    .disp-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .disp-meta-chip {
+        background: #e8f4fd;
+        color: #1a3a6e;
+        border-radius: 20px;
+        padding: 5px 16px;
+        font-size: .82rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+
+        .disp-meta-chip span {
+            color: #4fa8e8;
+            margin-right: 4px;
+            font-size: .72rem;
+            letter-spacing: 2px;
         }
 
-        <div class="text-center mt-4">
-            <a asp-controller="Menu" asp-action="Index" class="btn btn-outline-light">⬅ Volver al listado</a>
+    .cat-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #d0e8f8;
+        margin-bottom: 1rem;
+        letter-spacing: 1px;
+    }
+
+    .item-card {
+        background: #fff;
+        border: 1.5px solid #d0e8f8;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(26,58,110,0.06);
+        transition: transform .2s, box-shadow .2s;
+        height: 100%;
+        opacity: 0;
+    }
+
+        .item-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(26,58,110,0.12);
+        }
+
+    .item-body {
+        padding: 1rem 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .item-nombre {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        margin-bottom: 2px;
+    }
+
+    .item-tipo {
+        font-size: .75rem;
+        color: #4fa8e8;
+        letter-spacing: 1px;
+        font-weight: 500;
+    }
+
+    .item-precio {
+        background: #1a3a6e;
+        color: #fff;
+        border-radius: 20px;
+        padding: 4px 14px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .9rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .btn-volver {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: transparent;
+        color: #1a3a6e;
+        border: 1.5px solid #1a3a6e;
+        border-radius: 8px;
+        padding: 7px 20px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all .2s;
+    }
+
+        .btn-volver:hover {
+            background: #1a3a6e;
+            color: #fff !important;
+        }
+
+    .alert-custom {
+        background: #fff8e1;
+        border: 1.5px solid #f0c040;
+        border-radius: 12px;
+        color: #7a5c00;
+        padding: 1.25rem 1.75rem;
+        font-weight: 500;
+        text-align: center;
+        margin-top: 2rem;
+    }
+</style>
+
+@if (Model == null)
+{
+    <div class="alert-custom" id="alertMsg">
+        📭 @ViewBag.Mensaje
+    </div>
+    <div class="text-center mt-4">
+        <a asp-controller="Menu" asp-action="Index" class="btn-volver">← Volver al listado</a>
+    </div>
+}
+else
+{
+    <div class="disp-header" id="dispHeader">
+        <h1 class="disp-title">@Model.Nombre</h1>
+        <span class="disp-sub">MENÚ DISPONIBLE HOY</span>
+    </div>
+
+    <div class="disp-meta">
+        <div class="disp-meta-chip"><span>DÍAS</span>@Model.Dias</div>
+        <div class="disp-meta-chip"><span>HORARIO</span>@Model.Horario</div>
+        <div class="disp-meta-chip"><span>VIGENCIA</span>@Model.Vigencia</div>
+    </div>
+
+    @foreach (var categoria in Model.Categorias)
+    {
+        <div class="mb-5">
+            <div class="cat-title">@categoria.NombreCategoria</div>
+            <div class="row g-3">
+                @foreach (var item in categoria.Items)
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="item-card">
+                            <div class="item-body">
+                                <div>
+                                    <div class="item-nombre">@item.Nombre</div>
+                                    <div class="item-tipo">@item.Tipo</div>
+                                </div>
+                                <div class="item-precio">₡@item.Precio.ToString("N2")</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     }
-</div>
+
+    <div class="text-center mt-4">
+        <a asp-controller="Menu" asp-action="Index" class="btn-volver">← Volver al listado</a>
+    </div>
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script>
+    anime({ targets: '#dispHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
+    anime({ targets: '.disp-meta-chip', scale: [0.85, 1], opacity: [0, 1], duration: 400, delay: anime.stagger(80, { start: 300 }), easing: 'easeOutBack' });
+    anime({ targets: '.item-card', translateY: [20, 0], opacity: [0, 1], duration: 450, delay: anime.stagger(70, { start: 500 }), easing: 'easeOutExpo' });
+</script>

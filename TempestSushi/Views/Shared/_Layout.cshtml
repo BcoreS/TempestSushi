@@ -1,62 +1,301 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TempestSushi</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <!--link rel="stylesheet" href="~/TempestSushi.styles.css" asp-append-version="true" /-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <style>
+        /* ── Colores del logo ──────────────────────────────────────
+                   Azul marino : #1a3a6e   (TEMPEST text, bordes fuertes)
+                   Azul cielo  : #4fa8e8   (SUSHI text, acentos, olas)
+                   Rojo        : #c0392b   (sello 嵐, hover activo)
+                ────────────────────────────────────────────────────────── */
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #f0f6fc;
+            margin: 0;
+        }
+
+        /* ── NAVBAR ───────────────────────────────────────────── */
+        .ts-navbar {
+            background: #ffffff;
+            border-bottom: 2px solid #1a3a6e;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+            position: relative;
+            box-shadow: 0 2px 12px rgba(26, 58, 110, 0.10);
+            opacity: 0; /* Anime.js lo revela */
+        }
+
+        /* Línea animada debajo del borde */
+        .ts-gradient-bar {
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 60px; /* Anime.js la expande */
+            height: 3px;
+            background: linear-gradient(90deg, #1a3a6e, #4fa8e8, #c0392b);
+            border-radius: 2px;
+        }
+
+        /* ── BRAND ────────────────────────────────────────────── */
+        .ts-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+            .ts-brand img {
+                height: 52px;
+                width: auto;
+                filter: drop-shadow(0 2px 6px rgba(26, 58, 110, 0.18));
+            }
+
+        .ts-brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1;
+        }
+
+        .ts-brand-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a3a6e;
+            letter-spacing: 2px;
+        }
+
+        .ts-brand-sub {
+            font-size: 0.62rem;
+            color: #4fa8e8;
+            letter-spacing: 3px;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        /* ── NAV LINKS ────────────────────────────────────────── */
+        .ts-nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+            .ts-nav li a {
+                font-family: 'Rajdhani', sans-serif;
+                font-size: 1rem;
+                font-weight: 600;
+                color: #1a3a6e;
+                text-decoration: none;
+                padding: 6px 14px;
+                border-radius: 6px;
+                letter-spacing: 1px;
+                position: relative;
+                transition: color .2s, background .2s;
+            }
+
+                .ts-nav li a::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 2px;
+                    left: 50%;
+                    right: 50%;
+                    height: 2px;
+                    background: #c0392b;
+                    transition: left .25s, right .25s;
+                    border-radius: 2px;
+                }
+
+                .ts-nav li a:hover,
+                .ts-nav li a.active {
+                    color: #c0392b;
+                    background: rgba(192, 57, 43, 0.07);
+                }
+
+                    .ts-nav li a:hover::after,
+                    .ts-nav li a.active::after {
+                        left: 12%;
+                        right: 12%;
+                    }
+
+        /* ── FOOTER ───────────────────────────────────────────── */
+        footer.ts-footer {
+            border-top: 2px solid #d0e8f8;
+            background: #fff;
+            padding: 1.25rem 2rem;
+            text-align: center;
+            color: #8ab2cc;
+            font-size: .85rem;
+            letter-spacing: 1px;
+            opacity: 0; /* Anime.js lo revela */
+        }
+
+            footer.ts-footer a {
+                color: #1a3a6e;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+        /* ── CONTENIDO PRINCIPAL ──────────────────────────────── */
+        .ts-main {
+            opacity: 0; /* Anime.js lo revela */
+        }
+
+        /* ── RESPONSIVE: ocultar sub-brand en móvil ───────────── */
+        @@media (max-width: 576px) {
+            .ts-brand-sub {
+                display: none;
+            }
+
+            .ts-brand-title {
+                font-size: 1.1rem;
+            }
+
+            .ts-navbar {
+                padding: 0 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- ══ NAVBAR ══════════════════════════════════════════════ -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TempestSushi</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Producto" asp-action="Index">Productos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Combo" asp-action="Index">Combos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Menu" asp-action="Index">Menús</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="ProcesoPreparacion" asp-action="Index">Preparación</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>
-                        </ul>
-                    </div>
-            </div>
+        <nav class="ts-navbar" id="tsNavbar">
+            <div class="ts-gradient-bar" id="tsGradientBar"></div>
+
+            <a class="ts-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <!-- Logo: coloca tu imagen en wwwroot/images/tempest-logo.png -->
+                <img src="~/images/logo.png" alt="Tempest Sushi Logo" />
+                <div class="ts-brand-text">
+                    <span class="ts-brand-title">TEMPEST SUSHI</span>
+                    <span class="ts-brand-sub">テンペスト 寿司 &nbsp;·&nbsp; REINO DE TEMPEST</span>
+                </div>
+            </a>
+
+            <button class="navbar-toggler d-sm-none"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#tsNavCollapse"
+                    aria-controls="tsNavCollapse"
+                    aria-expanded="false"
+                    aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <ul class="ts-nav collapse d-sm-flex" id="tsNavCollapse">
+                <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li><a class="nav-link" asp-area="" asp-controller="Producto" asp-action="Index">Productos</a></li>
+                <li><a class="nav-link" asp-area="" asp-controller="Combo" asp-action="Index">Combos</a></li>
+                <li><a class="nav-link" asp-area="" asp-controller="Menu" asp-action="Index">Menús</a></li>
+                <li><a class="nav-link" asp-area="" asp-controller="ProcesoPreparacion" asp-action="Index">Preparación</a></li>
+            </ul>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <!-- ══ CONTENIDO ═══════════════════════════════════════════ -->
+    <div class="container ts-main" id="tsMain">
+        <main role="main" class="pb-4 pt-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - TempestSushi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+    <!-- ══ FOOTER ══════════════════════════════════════════════ -->
+    <footer class="ts-footer" id="tsFooter">
+        &copy; 2026 — <strong>TempestSushi</strong> &nbsp;·&nbsp;
+        <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </footer>
+
+    <!-- ══ SCRIPTS ═════════════════════════════════════════════ -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        // ── Entrada de página ─────────────────────────────────
+        anime({
+            targets: '#tsNavbar',
+            translateY: [-64, 0],
+            opacity: [0, 1],
+            duration: 700,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '#tsMain',
+            translateY: [24, 0],
+            opacity: [0, 1],
+            duration: 700,
+            delay: 250,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '#tsFooter',
+            opacity: [0, 1],
+            duration: 600,
+            delay: 450,
+            easing: 'easeOutSine'
+        });
+
+        // ── Barra de degradado animada ────────────────────────
+        anime({
+            targets: '#tsGradientBar',
+            width: ['60px', '100%'],
+            duration: 900,
+            delay: 200,
+            easing: 'easeOutExpo'
+        });
+
+        // ── Logo flotando suavemente ──────────────────────────
+        anime({
+            targets: '.ts-brand img',
+            translateY: [{ value: -5, duration: 1200 }, { value: 0, duration: 1200 }],
+            loop: true,
+            easing: 'easeInOutSine'
+        });
+
+        // ── Marca el nav-link activo según la URL ─────────────
+        (function markActiveNav() {
+            const path = window.location.pathname.toLowerCase();
+            document.querySelectorAll('.ts-nav .nav-link').forEach(function (a) {
+                const href = a.getAttribute('href') || '';
+                if (href === '/' ? path === '/' : path.startsWith(href.toLowerCase())) {
+                    a.classList.add('active');
+                }
+            });
+        })();
+
+        // ── Ripple suave al hacer clic en nav-link ────────────
+        document.querySelectorAll('.ts-nav .nav-link').forEach(function (a) {
+            a.addEventListener('click', function () {
+                anime({
+                    targets: a,
+                    scale: [1, 1.08, 1],
+                    duration: 320,
+                    easing: 'easeOutQuad'
+                });
+            });
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

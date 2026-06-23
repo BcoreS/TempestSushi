@@ -4,28 +4,147 @@
     ViewData["Title"] = "Menús";
 }
 
-<h1 class="text-center text-light mb-4">Menús Registrados</h1>
+<style>
+    .menu-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #d0e8f8;
+    }
 
-<div class="text-center mb-4">
-    <a asp-controller="Menu" asp-action="Disponible" class="btn btn-success">
-        Ver menú disponible ahora
+    .menu-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .menu-badge {
+        background: #1a3a6e;
+        color: #4fa8e8;
+        font-size: .7rem;
+        letter-spacing: 2px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .menu-card {
+        background: #fff;
+        border: 1.5px solid #d0e8f8;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(26,58,110,0.07);
+        transition: transform .2s, box-shadow .2s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+    }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(26,58,110,0.13);
+        }
+
+    .menu-icon {
+        width: 100%;
+        height: 130px;
+        background: linear-gradient(135deg, #e8f4fd 60%, #d0e8f8 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3.2rem;
+    }
+
+    .menu-body {
+        padding: 1.25rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .menu-nombre {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        margin-bottom: 8px;
+    }
+
+    .menu-info-label {
+        font-size: .72rem;
+        color: #4fa8e8;
+        letter-spacing: 2px;
+        font-weight: 600;
+    }
+
+    .menu-info-value {
+        color: #1a3a6e;
+        font-size: .9rem;
+        font-weight: 500;
+        margin-bottom: 6px;
+    }
+
+    .btn-disponible {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #1a3a6e;
+        color: #fff !important;
+        border-radius: 8px;
+        padding: 9px 22px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background .2s;
+    }
+
+        .btn-disponible:hover {
+            background: #c0392b;
+        }
+</style>
+
+<div class="menu-header" id="menuHeader">
+    <h1 class="menu-title">Menús Registrados</h1>
+    <span class="menu-badge">MENÚ</span>
+</div>
+
+<div class="mb-4">
+    <a asp-controller="Menu" asp-action="Disponible" class="btn-disponible">
+        📅 Ver menú disponible ahora
     </a>
 </div>
 
-<div class="container">
-    <div class="row g-4">
-        @foreach (var menu in Model)
-        {
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card h-100 bg-dark text-light border-success shadow">
-                    <div class="card-body">
-                        <h5 class="card-title text-success">@menu.Nombre</h5>
-                        <p class="card-text mb-1"><strong>Días:</strong> @menu.Dias</p>
-                        <p class="card-text mb-1"><strong>Horario:</strong> @menu.Horario</p>
-                        <p class="card-text mb-1"><strong>Vigencia:</strong> @menu.Vigencia</p>
-                    </div>
+<div class="row g-4" id="menuGrid">
+    @foreach (var menu in Model)
+    {
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="menu-card">
+                <div class="menu-icon">🗓️</div>
+                <div class="menu-body">
+                    <div class="menu-nombre">@menu.Nombre</div>
+                    <div class="menu-info-label">DÍAS</div>
+                    <div class="menu-info-value">@menu.Dias</div>
+                    <div class="menu-info-label">HORARIO</div>
+                    <div class="menu-info-value">@menu.Horario</div>
+                    <div class="menu-info-label">VIGENCIA</div>
+                    <div class="menu-info-value">@menu.Vigencia</div>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script>
+    anime({ targets: '#menuHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
+    anime({ targets: '.menu-card', translateY: [30, 0], opacity: [0, 1], duration: 500, delay: anime.stagger(100, { start: 200 }), easing: 'easeOutExpo' });
+</script>

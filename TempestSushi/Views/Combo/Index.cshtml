@@ -1,30 +1,141 @@
 ﻿@model ICollection<TempestSushi.Application.DTOs.ComboDTO>
 
-<h1>Listado de Combos</h1>
+@{
+    ViewData["Title"] = "Combos";
+}
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Categoría</th>
-            <th>Precio</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Nombre</td>
-                <td>@item.NombreCategoria</td>
-                <td>@item.Precio</td>
-                <td>
-                    <a asp-action="Details"
-                       asp-route-id="@item.IdCombo">
-                        Detalle
-                    </a>
-                </td>
-            </tr>
+<style>
+    .combo-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #d0e8f8;
+    }
+
+    .combo-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .combo-badge {
+        background: #1a3a6e;
+        color: #4fa8e8;
+        font-size: .7rem;
+        letter-spacing: 2px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .combo-card {
+        background: #fff;
+        border: 1.5px solid #d0e8f8;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(26,58,110,0.07);
+        transition: transform .2s, box-shadow .2s;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+    }
+
+        .combo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(26,58,110,0.13);
         }
-    </tbody>
-</table>
+
+    .combo-icon {
+        width: 100%;
+        height: 160px;
+        background: linear-gradient(135deg, #e8f4fd 60%, #d0e8f8 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3.5rem;
+    }
+
+    .combo-body {
+        padding: 1.25rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .combo-nombre {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        margin-bottom: 6px;
+    }
+
+    .combo-cat {
+        font-size: .8rem;
+        color: #4fa8e8;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+
+    .combo-precio {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        margin-bottom: 1rem;
+    }
+
+    .btn-ver {
+        display: block;
+        text-align: center;
+        background: #1a3a6e;
+        color: #fff !important;
+        border-radius: 8px;
+        padding: 8px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background .2s;
+        margin-top: auto;
+    }
+
+        .btn-ver:hover {
+            background: #c0392b;
+        }
+</style>
+
+<div class="combo-header" id="comboHeader">
+    <h1 class="combo-title">Nuestros Combos</h1>
+    <span class="combo-badge">COMBOS</span>
+</div>
+
+<div class="row g-4" id="comboGrid">
+    @foreach (var item in Model)
+    {
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="combo-card">
+                <div class="combo-icon">🍱</div>
+                <div class="combo-body">
+                    <div class="combo-nombre">@item.Nombre</div>
+                    <div class="combo-cat">@item.NombreCategoria</div>
+                    <div class="combo-precio">₡@item.Precio.ToString("N2")</div>
+                    <a asp-action="Details" asp-route-id="@item.IdCombo" class="btn-ver">Ver detalle</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+<script>
+    anime({ targets: '#comboHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
+    anime({ targets: '.combo-card', translateY: [30, 0], opacity: [0, 1], duration: 500, delay: anime.stagger(100, { start: 200 }), easing: 'easeOutExpo' });
+</script>

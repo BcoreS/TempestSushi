@@ -20,25 +20,23 @@ namespace TempestSushi.Infraestructure.Repository.Implementations
             _context = context;
         }
 
-        public async Task<ProcesoPreparacion> FindByIdAsync(int id)
+        public async Task<ICollection<ProcesoPreparacion>> FindByProductoIdAsync(int idProducto)
         {
-            var entity = await _context.Set<ProcesoPreparacion>()
+            return await _context.Set<ProcesoPreparacion>()
                 .Include(p => p.IdProductoNavigation)
                 .Include(p => p.IdEstacionCocinaNavigation)
-                .FirstOrDefaultAsync(p => p.IdProcesoPreparacion == id);
-            return entity;
-
-            //Revisar si es null en la logica
+                .Where(p => p.IdProducto == idProducto)
+                .OrderBy(p => p.NumeroPaso)
+                .ToListAsync();
         }
 
         public async Task<ICollection<ProcesoPreparacion>> ListAsync()
         {
-            var collection = await _context.Set<ProcesoPreparacion>()
+            return await _context.Set<ProcesoPreparacion>()
                 .Include(p => p.IdProductoNavigation)
                 .Include(p => p.IdEstacionCocinaNavigation)
                 .ToListAsync();
-
-            return collection;
         }
+    
     }
 }
