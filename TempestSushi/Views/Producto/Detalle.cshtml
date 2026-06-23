@@ -1,0 +1,37 @@
+﻿@model TempestSushi.Application.DTOs.ProductoDetalleDto
+
+@{
+    ViewData["Title"] = "Detalle del Producto";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="card bg-dark text-light border-success shadow">
+                @if (!string.IsNullOrEmpty(Model.ImagenUrl))
+                {
+                    <img src="@Model.ImagenUrl" class="card-img-top" alt="@Model.Nombre" style="max-height:350px;object-fit:cover;">
+                }
+                <div class="card-body">
+                    <h2 class="text-success">@Model.Nombre</h2>
+                    <p class="text-light">@Model.Descripcion</p>
+
+                    <hr class="border-success">
+
+                    <p><strong>Categoría:</strong> @Model.Categoria</p>
+                    <p><strong>Precio:</strong> ₡@Model.Precio.ToString("N2")</p>
+
+                    <p><strong>Ingredientes:</strong></p>
+                    <ul>
+                        @foreach (var ingrediente in Model.Ingredientes)
+                        {
+                            <li>@ingrediente</li>
+                        }
+                    </ul>
+
+                    <a asp-controller="Producto" asp-action="Index" class="btn btn-outline-light mt-3">⬅ Volver al listado</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

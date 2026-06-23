@@ -14,14 +14,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IRepositoryProcesoPreparacion, RepositoryProcesoPreparacion>();
 builder.Services.AddScoped<IRepositoryCombo, RepositoryCombo>();
+builder.Services.AddScoped<IRepositoryProducto, RepositoryProducto>();
 
 builder.Services.AddScoped<IServiceProcesoPreparacion, ServiceProcesoPreparacion>();
 builder.Services.AddScoped<IServiceCombo, ServiceCombo>();
+builder.Services.AddScoped<IProductoService, ProductoService>();
 
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile<ComboProfile>();
     cfg.AddProfile<ProcesoPreparacionProfile>();
+    cfg.AddProfile<ProductoProfile>();
 });
 
 var logger = new LoggerConfiguration()
