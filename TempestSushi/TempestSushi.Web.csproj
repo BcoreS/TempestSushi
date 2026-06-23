@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TempestSushi.Application\TempestSushi.Application.csproj" />
     <ProjectReference Include="..\TempestSushi.Infraestructure\TempestSushi.Infraestructure.csproj" />
   </ItemGroup>
 

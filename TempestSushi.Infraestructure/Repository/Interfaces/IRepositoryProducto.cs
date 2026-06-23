@@ -7,9 +7,9 @@ using TempestSushi.Infraestructure.Models;
 
 namespace TempestSushi.Infraestructure.Repository.Interfaces
 {
-    public class IRepositoryCombo
+    public interface IRepositoryProducto
     {
-        Task<Combo> FindByIdAsync(int id);
-        Task<ICollection<Combo>> ListAsync();
+        Task<Producto?> FindByIdAsync(int id);
+        Task<ICollection<Producto>> ListAsync();
     }
 }
