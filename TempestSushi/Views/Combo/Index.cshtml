@@ -1,0 +1,30 @@
+﻿@model ICollection<TempestSushi.Application.DTOs.ComboDTO>
+
+<h1>Listado de Combos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.NombreCategoria</td>
+                <td>@item.Precio</td>
+                <td>
+                    <a asp-action="Details"
+                       asp-route-id="@item.IdCombo">
+                        Detalle
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

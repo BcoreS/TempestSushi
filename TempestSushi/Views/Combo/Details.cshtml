@@ -1,0 +1,27 @@
+﻿@model TempestSushi.Application.DTOs.ComboDTO
+
+<h1>Detalle del Combo</h1>
+
+<div>
+    <strong>Nombre:</strong> @Model.Nombre
+</div>
+
+<div>
+    <strong>Descripción:</strong> @Model.Descripcion
+</div>
+
+<div>
+    <strong>Categoría:</strong> @Model.NombreCategoria
+</div>
+
+<div>
+    <strong>Precio:</strong> ₡@Model.Precio
+</div>
+
+<div>
+    <strong>Activo:</strong> @(Model.Activo ? "Sí" : "No")
+</div>
+
+<br />
+
+<a asp-action="Index">Volver</a>

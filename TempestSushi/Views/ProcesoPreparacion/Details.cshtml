@@ -1,0 +1,37 @@
+﻿@model TempestSushi.Application.DTOs.ProcesoPreparacionDTO
+
+<h1>Detalle del Proceso de Preparación</h1>
+
+<div class="card">
+    <div class="card-body">
+        <div class="mb-2">
+            <strong>Producto:</strong> @Model.NombreProducto
+        </div>
+
+        <div class="mb-2">
+            <strong>Estación de cocina:</strong> @Model.NombreEstacionCocina
+        </div>
+
+        <div class="mb-2">
+            <strong>Número de paso:</strong> @Model.NumeroPaso
+        </div>
+
+        <div class="mb-2">
+            <strong>Descripción del paso:</strong>
+            @(string.IsNullOrWhiteSpace(Model.DescripcionPaso)
+                        ? "Sin descripción"
+                        : Model.DescripcionPaso)
+        </div>
+
+        <div class="mb-2">
+            <strong>Tiempo estimado:</strong>
+            @(Model.TiempoEstimadoMinutos.HasValue
+                        ? $"{Model.TiempoEstimadoMinutos} minutos"
+                        : "No definido")
+        </div>
+    </div>
+</div>
+
+<br />
+
+<a asp-action="Index" class="btn btn-secondary">Volver</a>
