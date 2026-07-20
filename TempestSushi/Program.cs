@@ -16,7 +16,6 @@ builder.Services.AddScoped<IRepositoryProcesoPreparacion, RepositoryProcesoPrepa
 builder.Services.AddScoped<IRepositoryCombo, RepositoryCombo>();
 builder.Services.AddScoped<IRepositoryProducto, RepositoryProducto>();
 builder.Services.AddScoped<IRepositoryMenu, RepositoryMenu>();
-builder.Services.AddScoped<IRepositoryProcesoPreparacion, RepositoryProcesoPreparacion>();
 
 
 
@@ -24,7 +23,6 @@ builder.Services.AddScoped<IServiceProcesoPreparacion, ServiceProcesoPreparacion
 builder.Services.AddScoped<IServiceCombo, ServiceCombo>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IMenuService, MenuService>();
-builder.Services.AddScoped<IServiceProcesoPreparacion, ServiceProcesoPreparacion>();
 
 builder.Services.AddAutoMapper(cfg =>
 {
