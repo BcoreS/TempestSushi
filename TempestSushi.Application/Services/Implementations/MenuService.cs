@@ -13,22 +13,29 @@ namespace TempestSushi.Application.Services.Implementations
 {
     public class MenuService : IMenuService
     {
-        private readonly IRepositoryMenu _repo;
+        private readonly IRepositoryMenu _repoMenu;
+        private readonly IRepositoryProducto _repoProducto;
+        private readonly IRepositoryCombo _repoCombo;
         private readonly IMapper _mapper;
 
         private static readonly string[] DiasOrdenados =
             { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo" };
 
-        public MenuService(IRepositoryMenu repo, IMapper mapper)
+        public MenuService(
+    IRepositoryMenu repoMenu,
+    IRepositoryProducto repoProducto,
+    IRepositoryCombo repoCombo,
+    IMapper mapper)
         {
-            _repo = repo;
+            _repoMenu = repoMenu;
+            _repoProducto = repoProducto;
+            _repoCombo = repoCombo;
             _mapper = mapper;
         }
 
         public async Task<List<MenuDto>> ObtenerListadoAsync()
         {
-            var menus = await _repo.ListConDetalleAsync();
-
+            var menus = await _repoMenu.ListConDetalleAsync();
             return menus
                 .OrderByDescending(m => m.FechaInicio)
                 .Select(m => new MenuDto
@@ -44,13 +51,15 @@ namespace TempestSushi.Application.Services.Implementations
 
         public async Task<MenuDisponibleDto?> ObtenerMenuDisponibleAsync()
         {
-            var menus = await _repo.ListConDetalleAsync();
-            var ahora = DateTime.Now;
+            var menus = await _repoMenu.ListConDetalleAsync(); var ahora = DateTime.Now;
             var fechaActual = DateOnly.FromDateTime(ahora);
             var horaActual = TimeOnly.FromDateTime(ahora);
 
-            var menuVigente = menus.FirstOrDefault(m => EsVigente(m, fechaActual, horaActual, ahora.DayOfWeek));
-            if (menuVigente == null) return null;
+            var menuVigente = menus
+                .Where(m => EsVigente(m, fechaActual, horaActual, ahora.DayOfWeek))
+                .OrderByDescending(m => m.FechaInicio)
+                .ThenByDescending(m => m.IdMenu)
+                .FirstOrDefault(); if (menuVigente == null) return null;
 
             var itemsConCategoria = new List<(string Categoria, MenuItemDto Item)>();
 
@@ -153,6 +162,142 @@ namespace TempestSushi.Application.Services.Implementations
             return fin.HasValue
                 ? $"{inicio:dd/MM/yyyy} - {fin:dd/MM/yyyy}"
                 : $"Desde {inicio:dd/MM/yyyy}";
+        }
+
+        public async Task<MenuFormDto> PrepararCrearAsync()
+        {
+            var hoy = DateOnly.FromDateTime(DateTime.Now);
+
+            var dto = new MenuFormDto
+            {
+                FechaInicio = hoy,
+                FechaFin = hoy.AddDays(30),
+
+                HoraInicio = new TimeOnly(11, 0),
+                HoraFin = new TimeOnly(22, 0),
+
+                DiasDisponibles = "Lunes a Domingo",
+
+                Activo = true
+            };
+
+            await CargarOpcionesFormularioAsync(dto);
+
+            return dto;
+        }
+        public async Task CrearAsync(MenuFormDto dto)
+        {
+            var menu = _mapper.Map<Menu>(dto);
+
+            foreach (var idProducto in dto.ProductosSeleccionados.Distinct())
+            {
+                menu.MenuProductos.Add(new MenuProducto
+                {
+                    IdProducto = idProducto,
+                    Activo = true
+                });
+            }
+
+            foreach (var idCombo in dto.CombosSeleccionados.Distinct())
+            {
+                menu.MenuCombos.Add(new MenuCombo
+                {
+                    IdCombo = idCombo,
+                    Activo = true
+                });
+            }
+
+            await _repoMenu.CreateAsync(menu);
+        }
+
+        public async Task<MenuFormDto?> ObtenerParaEditarAsync(int id)
+        {
+            var menu = await _repoMenu.FindByIdAsync(id);
+
+            if (menu == null)
+            {
+                return null;
+            }
+
+            var dto = new MenuFormDto
+            {
+                IdMenu = menu.IdMenu,
+                Nombre = menu.Nombre,
+                FechaInicio = menu.FechaInicio,
+                FechaFin = menu.FechaFin,
+                HoraInicio = menu.HoraInicio,
+                HoraFin = menu.HoraFin,
+                DiasDisponibles = menu.DiasDisponibles,
+                Activo = menu.Activo,
+
+                ProductosSeleccionados = menu.MenuProductos
+                    .Where(mp => mp.Activo)
+                    .Select(mp => mp.IdProducto)
+                    .ToList(),
+
+                CombosSeleccionados = menu.MenuCombos
+                    .Where(mc => mc.Activo)
+                    .Select(mc => mc.IdCombo)
+                    .ToList()
+            };
+
+            await CargarOpcionesFormularioAsync(dto);
+
+            return dto;
+        }
+
+        public async Task ActualizarAsync(MenuFormDto dto)
+        {
+            var menu = _mapper.Map<Menu>(dto);
+
+            await _repoMenu.UpdateWithRelationsAsync(
+                menu,
+                dto.ProductosSeleccionados,
+                dto.CombosSeleccionados);
+        }
+        public async Task EliminarAsync(int id)
+        {
+            await _repoMenu.DeleteAsync(id);
+        }
+
+        //Método privado para cargar cosas del formulario
+
+        private async Task CargarOpcionesFormularioAsync(MenuFormDto dto)
+        {
+            var productos = await _repoProducto.ListAsync();
+            var combos = await _repoCombo.ListAsync();
+
+            dto.ProductosDisponibles = productos
+                .Select(p => new SeleccionMenuDto
+                {
+                    Id = p.IdProducto,
+                    Nombre = p.Nombre
+                })
+                .OrderBy(p => p.Nombre)
+                .ToList();
+
+            dto.CombosDisponibles = combos
+                .Select(c => new SeleccionMenuDto
+                {
+                    Id = c.IdCombo,
+                    Nombre = c.Nombre
+                })
+                .OrderBy(c => c.Nombre)
+                .ToList();
+
+            dto.OpcionesDiasDisponibles = new List<string>
+    {
+        "Lunes a Viernes",
+        "Lunes a Sábado",
+        "Lunes a Domingo",
+        "Sábado, Domingo",
+        "Lunes, Miércoles, Viernes",
+        "Martes, Jueves"
+    };
+        }
+        public async Task PrepararFormularioAsync(MenuFormDto dto)
+        {
+            await CargarOpcionesFormularioAsync(dto);
         }
     }
 }

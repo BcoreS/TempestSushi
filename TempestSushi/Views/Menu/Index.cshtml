@@ -110,6 +110,106 @@
         .btn-disponible:hover {
             background: #c0392b;
         }
+
+    .btn-eliminar,
+    .btn-editar {
+        width: 100%;
+        border-radius: 8px;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+
+    .modal-eliminar-content {
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 18px 50px rgba(26, 58, 110, .22);
+    }
+
+    .modal-eliminar-header {
+        background: #f8fcff;
+        border-bottom: 1px solid #d0e8f8;
+        padding: 1.25rem 1.5rem;
+    }
+
+        .modal-eliminar-header > div {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+    .modal-eliminar-icono {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #fdecea;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+    }
+
+    .modal-eliminar-header .modal-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        color: #1a3a6e;
+        letter-spacing: .5px;
+        margin: 0;
+    }
+
+    .modal-eliminar-body {
+        padding: 1.5rem;
+        color: #1a3a6e;
+    }
+
+    .modal-eliminar-advertencia {
+        color: #8a3b34;
+        font-size: .9rem;
+        background: #fff5f4;
+        border-left: 4px solid #c0392b;
+        border-radius: 6px;
+        padding: .8rem 1rem;
+    }
+
+    .modal-eliminar-footer {
+        border-top: 1px solid #d0e8f8;
+        padding: 1rem 1.5rem;
+        gap: 10px;
+    }
+
+    .btn-modal-cancelar,
+    .btn-modal-eliminar {
+        border-radius: 8px;
+        padding: 9px 20px;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        letter-spacing: 1px;
+        transition: transform .2s, background .2s;
+    }
+
+    .btn-modal-cancelar {
+        background: #fff;
+        color: #1a3a6e;
+        border: 1.5px solid #1a3a6e;
+    }
+
+        .btn-modal-cancelar:hover {
+            background: #e8f4fd;
+        }
+
+    .btn-modal-eliminar {
+        background: #c0392b;
+        color: #fff;
+        border: 1.5px solid #c0392b;
+    }
+
+        .btn-modal-eliminar:hover {
+            background: #a93226;
+            border-color: #a93226;
+            transform: translateY(-1px);
+        }
+
 </style>
 
 <div class="menu-header" id="menuHeader">
@@ -117,11 +217,28 @@
     <span class="menu-badge">MENÚ</span>
 </div>
 
-<div class="mb-4">
-    <a asp-controller="Menu" asp-action="Disponible" class="btn-disponible">
+
+
+<div class="mb-4 d-flex gap-2">
+    <a asp-controller="Menu"
+       asp-action="Create"
+       class="btn-disponible">
+        ➕ Crear menú
+    </a>
+
+    <a asp-controller="Menu"
+       asp-action="Disponible"
+       class="btn-disponible">
         📅 Ver menú disponible ahora
     </a>
 </div>
+
+@if (TempData["MensajeExito"] is string mensaje)
+{
+    <div class="alert alert-success" role="alert">
+        @mensaje
+    </div>
+}
 
 <div class="row g-4" id="menuGrid">
     @foreach (var menu in Model)
@@ -137,14 +254,127 @@
                     <div class="menu-info-value">@menu.Horario</div>
                     <div class="menu-info-label">VIGENCIA</div>
                     <div class="menu-info-value">@menu.Vigencia</div>
+                    <div class="d-grid gap-2 mt-auto pt-3">
+                        <a asp-controller="Menu"
+                           asp-action="Edit"
+                           asp-route-id="@menu.IdMenu"
+                           class="btn btn-outline-primary btn-editar">
+                            ✏️ Editar
+                        </a>
+
+                        <button type="button"
+                                class="btn btn-outline-danger btn-eliminar"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalEliminar"
+                                data-id="@menu.IdMenu"
+                                data-nombre="@menu.Nombre">
+                            🗑️ Eliminar
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     }
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-<script>
-    anime({ targets: '#menuHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
-    anime({ targets: '.menu-card', translateY: [30, 0], opacity: [0, 1], duration: 500, delay: anime.stagger(100, { start: 200 }), easing: 'easeOutExpo' });
-</script>
+@section Modals {
+    <div class="modal fade"
+         id="modalEliminar"
+         tabindex="-1"
+         aria-labelledby="modalEliminarLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-eliminar-content">
+
+                <div class="modal-header modal-eliminar-header">
+                    <div>
+                        <span class="modal-eliminar-icono">⚠️</span>
+
+                        <h2 class="modal-title fs-5"
+                            id="modalEliminarLabel">
+                            Confirmar eliminación
+                        </h2>
+                    </div>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Cerrar">
+                    </button>
+                </div>
+
+                <div class="modal-body modal-eliminar-body">
+                    <p class="mb-2">
+                        ¿Está seguro de que desea eliminar el menú
+                        <strong id="nombreMenuEliminar"></strong>?
+                    </p>
+
+                    <p class="modal-eliminar-advertencia mb-0">
+                        Esta acción eliminará también sus relaciones con
+                        productos y combos, y no se puede deshacer.
+                    </p>
+                </div>
+
+                <div class="modal-footer modal-eliminar-footer">
+                    <button type="button"
+                            class="btn-modal-cancelar"
+                            data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <form id="formEliminarMenu"
+                          asp-controller="Menu"
+                          asp-action="Delete"
+                          method="post">
+
+                        <input type="hidden"
+                               id="idMenuEliminar"
+                               name="id" />
+
+                        <button type="submit"
+                                class="btn-modal-eliminar">
+                            🗑️ Eliminar menú
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        anime({
+            targets: '#menuHeader',
+            translateY: [-20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '.menu-card',
+            translateY: [30, 0],
+            opacity: [0, 1],
+            duration: 500,
+            delay: anime.stagger(100, { start: 200 }),
+            easing: 'easeOutExpo'
+        });
+
+        const modalEliminar = document.getElementById('modalEliminar');
+
+        modalEliminar.addEventListener('show.bs.modal', function (event) {
+            const boton = event.relatedTarget;
+
+            const idMenu = boton.dataset.id;
+            const nombreMenu = boton.dataset.nombre;
+
+            document.getElementById('idMenuEliminar').value = idMenu;
+
+            document.getElementById('nombreMenuEliminar').textContent =
+                `"${nombreMenu}"`;
+        });
+    </script>
+}

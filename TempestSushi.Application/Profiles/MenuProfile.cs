@@ -1,9 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TempestSushi.Application.DTOs;
 using TempestSushi.Infraestructure.Models;
 
@@ -14,10 +9,42 @@ namespace TempestSushi.Application.Profiles
         public MenuProfile()
         {
             CreateMap<Producto, MenuItemDto>()
-                .ForMember(d => d.Tipo, opt => opt.MapFrom(src => "Producto"));
+                .ForMember(
+                    destination => destination.Tipo,
+                    options => options.MapFrom(source => "Producto"));
 
             CreateMap<Combo, MenuItemDto>()
-                .ForMember(d => d.Tipo, opt => opt.MapFrom(src => "Combo"));
+                .ForMember(
+                    destination => destination.Tipo,
+                    options => options.MapFrom(source => "Combo"));
+
+            CreateMap<MenuFormDto, Menu>()
+                .ForMember(
+                    destination => destination.MenuProductos,
+                    options => options.Ignore())
+                .ForMember(
+                    destination => destination.MenuCombos,
+                    options => options.Ignore());
+
+            CreateMap<Menu, MenuFormDto>()
+                .ForMember(
+                    destination => destination.ProductosSeleccionados,
+                    options => options.MapFrom(source =>
+                        source.MenuProductos
+                            .Where(mp => mp.Activo)
+                            .Select(mp => mp.IdProducto)))
+                .ForMember(
+                    destination => destination.CombosSeleccionados,
+                    options => options.MapFrom(source =>
+                        source.MenuCombos
+                            .Where(mc => mc.Activo)
+                            .Select(mc => mc.IdCombo)))
+                .ForMember(
+                    destination => destination.ProductosDisponibles,
+                    options => options.Ignore())
+                .ForMember(
+                    destination => destination.CombosDisponibles,
+                    options => options.Ignore());
         }
     }
 }

@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TempestSushi.Infraestructure.Models;
+﻿using TempestSushi.Infraestructure.Models;
 
-namespace TempestSushi.Infraestructure.Repository.Interfaces
+public interface IRepositoryMenu
 {
-    public interface IRepositoryMenu
-    {
-        Task<ICollection<Menu>> ListConDetalleAsync();
-    }
+    Task<ICollection<Menu>> ListConDetalleAsync();
+
+    Task<Menu?> FindByIdAsync(int id);
+
+    Task<Menu> CreateAsync(Menu menu);
+
+    Task DeleteAsync(int id);
+
+    Task UpdateWithRelationsAsync(
+        Menu menu,
+        IEnumerable<int> productosSeleccionados,
+        IEnumerable<int> combosSeleccionados);
 }
