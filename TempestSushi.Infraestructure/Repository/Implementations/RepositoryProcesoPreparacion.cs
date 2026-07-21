@@ -61,36 +61,43 @@ namespace TempestSushi.Infraestructure.Repository.Implementations
     int idProducto,
     IEnumerable<ProcesoPreparacion> pasos)
         {
+            var nuevosPasos = pasos.ToList();
+
+            if (!nuevosPasos.Any())
+            {
+                throw new InvalidOperationException(
+                    "El proceso debe contener al menos un paso.");
+            }
+
             await using var transaction =
                 await _context.Database.BeginTransactionAsync();
 
             try
             {
-                var pasosExistentes = await _context
-                    .Set<ProcesoPreparacion>()
-                    .Where(p => p.IdProducto == idProducto)
-                    .ToListAsync();
+                var pasosExistentes =
+                    await _context
+                        .Set<ProcesoPreparacion>()
+                        .Where(p => p.IdProducto == idProducto)
+                        .ToListAsync();
 
-                _context.Set<ProcesoPreparacion>()
+                _context
+                    .Set<ProcesoPreparacion>()
                     .RemoveRange(pasosExistentes);
 
                 await _context.SaveChangesAsync();
 
-                var nuevosPasos = pasos
-                    .Select(p => new ProcesoPreparacion
-                    {
-                        IdProducto = idProducto,
-                        IdEstacionCocina = p.IdEstacionCocina,
-                        NumeroPaso = p.NumeroPaso,
-                        DescripcionPaso = p.DescripcionPaso,
-                        TiempoEstimadoMinutos = p.TiempoEstimadoMinutos
-                    })
-                    .ToList();
+                foreach (var paso in nuevosPasos)
+                {
+                    paso.IdProcesoPreparacion = 0;
+                    paso.IdProducto = idProducto;
+                }
 
-                await _context.Set<ProcesoPreparacion>()
+                await _context
+                    .Set<ProcesoPreparacion>()
                     .AddRangeAsync(nuevosPasos);
 
                 await _context.SaveChangesAsync();
+
                 await transaction.CommitAsync();
             }
             catch
@@ -100,27 +107,34 @@ namespace TempestSushi.Infraestructure.Repository.Implementations
             }
         }
 
-        public async Task DeleteByProductoIdAsync(int idProducto)
+        public async Task DeleteByProductoIdAsync(
+            int idProducto)
         {
-            var pasos = await _context
-                .Set<ProcesoPreparacion>()
-                .Where(p => p.IdProducto == idProducto)
-                .ToListAsync();
+            var pasos =
+                await _context
+                    .Set<ProcesoPreparacion>()
+                    .Where(p => p.IdProducto == idProducto)
+                    .ToListAsync();
 
-            if (pasos.Count == 0)
+            if (!pasos.Any())
             {
                 return;
             }
 
-            _context.Set<ProcesoPreparacion>().RemoveRange(pasos);
+            _context
+                .Set<ProcesoPreparacion>()
+                .RemoveRange(pasos);
+
             await _context.SaveChangesAsync();
         }
-
         public async Task<bool> ExistsForProductoAsync(int idProducto)
         {
             return await _context
                 .Set<ProcesoPreparacion>()
                 .AnyAsync(p => p.IdProducto == idProducto);
         }
+
+
+
     }
 }

@@ -114,8 +114,17 @@ namespace TempestSushi.Application.Services.Implementations
         }
 
         public async Task PrepararFormularioAsync(
-            ProcesoPreparacionFormDTO dto)
+    ProcesoPreparacionFormDTO dto)
         {
+            var producto =
+                await _repositoryProducto.FindByIdAsync(
+                    dto.IdProducto);
+
+            if (producto != null)
+            {
+                dto.NombreProducto = producto.Nombre;
+            }
+
             await CargarOpcionesFormularioAsync(dto);
         }
 
@@ -140,13 +149,21 @@ namespace TempestSushi.Application.Services.Implementations
         }
 
         public async Task<ProcesoPreparacionFormDTO?>
-            ObtenerParaEditarAsync(int idProducto)
+    ObtenerParaEditarAsync(int idProducto)
         {
             var pasos =
-                await _repositoryProceso.FindByProductoIdAsync(
-                    idProducto);
+                await _repositoryProceso
+                    .FindByProductoIdAsync(idProducto);
 
-            if (!pasos.Any())
+            if (pasos == null || !pasos.Any())
+            {
+                return null;
+            }
+
+            var producto =
+                await _repositoryProducto.FindByIdAsync(idProducto);
+
+            if (producto == null)
             {
                 return null;
             }
@@ -154,8 +171,7 @@ namespace TempestSushi.Application.Services.Implementations
             var dto = new ProcesoPreparacionFormDTO
             {
                 IdProducto = idProducto,
-                NombreProducto =
-                    pasos.First().IdProductoNavigation.Nombre,
+                NombreProducto = producto.Nombre,
 
                 Pasos = pasos
                     .OrderBy(p => p.NumeroPaso)
@@ -179,25 +195,56 @@ namespace TempestSushi.Application.Services.Implementations
                     .ToList()
             };
 
-            await CargarOpcionesFormularioAsync(dto);
+            await CargarOpcionesFormularioAsync(
+                dto);
 
             return dto;
         }
-
         public async Task ActualizarAsync(
-            ProcesoPreparacionFormDTO dto)
+    ProcesoPreparacionFormDTO dto)
         {
-            var procesoExistente =
-                await _repositoryProceso.FindByProductoIdAsync(
-                    dto.IdProducto);
-
-            if (!procesoExistente.Any())
+            if (dto.Pasos == null || dto.Pasos.Count == 0)
             {
-                throw new KeyNotFoundException(
-                    "No se encontró el proceso de preparación.");
+                throw new InvalidOperationException(
+                    "Debe agregar al menos una estación al proceso.");
             }
 
-            var pasos = ConvertirPasos(dto);
+            var existe =
+                await _repositoryProceso
+                    .ExistsForProductoAsync(dto.IdProducto);
+
+            if (!existe)
+            {
+                throw new InvalidOperationException(
+                    "El proceso de preparación ya no existe.");
+            }
+
+            var pasos = dto.Pasos
+                .Select((paso, indice) =>
+                    new ProcesoPreparacion
+                    {
+                        IdProcesoPreparacion =
+                            paso.IdProcesoPreparacion ?? 0,
+
+                        IdProducto =
+                            dto.IdProducto,
+
+                        IdEstacionCocina =
+                            paso.IdEstacionCocina,
+
+                        NumeroPaso =
+                            indice + 1,
+
+                        DescripcionPaso =
+                            string.IsNullOrWhiteSpace(
+                                paso.DescripcionPaso)
+                                ? null
+                                : paso.DescripcionPaso.Trim(),
+
+                        TiempoEstimadoMinutos =
+                            paso.TiempoEstimadoMinutos
+                    })
+                .ToList();
 
             await _repositoryProceso.UpdateForProductoAsync(
                 dto.IdProducto,
@@ -206,8 +253,18 @@ namespace TempestSushi.Application.Services.Implementations
 
         public async Task EliminarAsync(int idProducto)
         {
-            await _repositoryProceso.DeleteByProductoIdAsync(
-                idProducto);
+            var existe =
+                await _repositoryProceso
+                    .ExistsForProductoAsync(idProducto);
+
+            if (!existe)
+            {
+                throw new InvalidOperationException(
+                    "El proceso de preparación ya no existe.");
+            }
+
+            await _repositoryProceso
+                .DeleteByProductoIdAsync(idProducto);
         }
 
         private async Task CargarOpcionesFormularioAsync(
@@ -274,5 +331,7 @@ namespace TempestSushi.Application.Services.Implementations
                 })
                 .ToList();
         }
+
+
     }
 }

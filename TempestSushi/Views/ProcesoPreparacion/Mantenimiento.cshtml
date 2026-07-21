@@ -1,5 +1,502 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ICollection<TempestSushi.Application.DTOs.ProcesoPreparacionMantenimientoDTO>
+
 @{
+    ViewData["Title"] = "Mantenimiento de procesos";
+}
+
+<style>
+    .mant-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #d0e8f8;
+    }
+
+    .mant-header-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .mant-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .mant-badge {
+        background: #1a3a6e;
+        color: #4fa8e8;
+        font-size: .7rem;
+        letter-spacing: 2px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .btn-crear-proceso {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #1a3a6e;
+        color: #fff !important;
+        border: none;
+        border-radius: 8px;
+        padding: 9px 20px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background .2s, transform .15s;
+    }
+
+        .btn-crear-proceso:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
+
+    .mant-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 16px rgba(26, 58, 110, .08);
+    }
+
+        .mant-table thead tr {
+            background: #1a3a6e;
+            color: #fff;
+        }
+
+        .mant-table thead th {
+            padding: 14px 18px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+            border: none;
+            white-space: nowrap;
+        }
+
+        .mant-table tbody tr {
+            background: #fff;
+            transition: background .2s;
+            opacity: 0;
+        }
+
+            .mant-table tbody tr:nth-child(even) {
+                background: #f0f6fc;
+            }
+
+            .mant-table tbody tr:hover {
+                background: #daeef9;
+            }
+
+        .mant-table td {
+            padding: 13px 18px;
+            color: #1a3a6e;
+            border-bottom: 1px solid #d0e8f8;
+            font-size: .92rem;
+            vertical-align: middle;
+        }
+
+    .producto-nombre {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1a3a6e;
+    }
+
+    .cantidad-pasos {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: #e8f4fd;
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-weight: 600;
+    }
+
+    .cantidad-pasos-numero {
+        width: 24px;
+        height: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #1a3a6e;
+        color: #fff;
+        border-radius: 50%;
+        font-size: .8rem;
+    }
+
+    .tiempo-total {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #1a3a6e;
+        font-weight: 600;
+    }
+
+    .acciones {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .btn-editar-proceso,
+    .btn-eliminar-proceso {
+        border-radius: 7px;
+        padding: 6px 14px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .9rem;
+        font-weight: 600;
+        letter-spacing: .5px;
+        text-decoration: none;
+        transition: background .2s, transform .15s;
+    }
+
+    .btn-editar-proceso {
+        background: transparent;
+        color: #1a3a6e;
+        border: 1.5px solid #1a3a6e;
+    }
+
+        .btn-editar-proceso:hover {
+            background: #1a3a6e;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    .btn-eliminar-proceso {
+        background: transparent;
+        color: #c0392b;
+        border: 1.5px solid #c0392b;
+    }
+
+        .btn-eliminar-proceso:hover {
+            background: #c0392b;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+    .mant-vacio {
+        background: #fff;
+        border: 1.5px dashed #8ab2cc;
+        border-radius: 14px;
+        padding: 3rem 1.5rem;
+        text-align: center;
+        color: #1a3a6e;
+    }
+
+    .mant-vacio-icono {
+        font-size: 3rem;
+        margin-bottom: .75rem;
+    }
+
+    .mant-vacio-titulo {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.35rem;
+        font-weight: 700;
+        margin-bottom: .4rem;
+    }
+
+    .mant-vacio-texto {
+        color: #6489a3;
+        margin-bottom: 1.25rem;
+    }
+
+    .btn-volver {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 1.5rem;
+        background: transparent;
+        color: #1a3a6e;
+        border: 1.5px solid #1a3a6e;
+        border-radius: 8px;
+        padding: 7px 18px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-decoration: none;
+        transition: background .2s;
+    }
+
+        .btn-volver:hover {
+            background: #1a3a6e;
+            color: #fff;
+        }
+
+    @@media (max-width: 768px) {
+        .mant-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .mant-table-wrapper {
+            overflow-x: auto;
+        }
+
+        .mant-table {
+            min-width: 720px;
+        }
+    }
+</style>
+
+<div class="mant-header" id="mantHeader">
+    <div class="mant-header-info">
+        <h1 class="mant-title">Mantenimiento de Procesos</h1>
+        <span class="mant-badge">ADMINISTRACIÓN</span>
+    </div>
+
+    <a asp-controller="ProcesoPreparacion"
+       asp-action="Create"
+       class="btn-crear-proceso">
+        ➕ Crear proceso
+    </a>
+</div>
+@if (TempData["MensajeExito"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["MensajeExito"]
+    </div>
+}
+
+@if (TempData["MensajeError"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["MensajeError"]
+    </div>
+}
+
+@if (Model.Any())
+{
+    <div class="mant-table-wrapper">
+        <table class="mant-table" id="mantTable">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad de pasos</th>
+                    <th>Tiempo estimado total</th>
+                    <th class="text-end">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var proceso in Model)
+                {
+                    <tr>
+                        <td>
+                            <span class="producto-nombre">
+                                @proceso.NombreProducto
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="cantidad-pasos">
+                                <span class="cantidad-pasos-numero">
+                                    @proceso.CantidadPasos
+                                </span>
+
+                                @(proceso.CantidadPasos == 1
+                                                        ? "paso"
+                                                        : "pasos")
+                    </span>
+                </td>
+
+                        <td>
+                            <span class="tiempo-total">
+                                ⏱️
+
+                        @if (proceso.TiempoEstimadoTotal > 0)
+                                {
+                                    <span>
+                                        @proceso.TiempoEstimadoTotal minutos
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>Sin estimación</span>
+                                }
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="acciones">
+                                <a asp-controller="ProcesoPreparacion"
+                                   asp-action="Edit"
+                                   asp-route-id="@proceso.IdProducto"
+                                   class="btn-editar-proceso">
+                                    ✏️ Editar
+                                </a>
+
+                                <button type="button"
+                                        class="btn-eliminar-proceso"
+                                        data-id="@proceso.IdProducto"
+                                        data-nombre="@proceso.NombreProducto"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEliminarProceso">
+
+                                    🗑️ Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="mant-vacio" id="mantVacio">
+        <div class="mant-vacio-icono">🍳</div>
+
+        <div class="mant-vacio-titulo">
+            No hay procesos configurados
+        </div>
+
+        <div class="mant-vacio-texto">
+            Agrega un proceso de preparación para un producto existente.
+        </div>
+
+        <a asp-controller="ProcesoPreparacion"
+           asp-action="Create"
+           class="btn-crear-proceso">
+            ➕ Crear primer proceso
+        </a>
+    </div>
+}
+<div class="modal fade"
+     id="modalEliminarProceso"
+     tabindex="-1"
+     aria-labelledby="modalEliminarProcesoLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title"
+                    id="modalEliminarProcesoLabel">
+                    Confirmar eliminación
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>
+                    ¿Deseas eliminar el proceso de preparación de
+                    <strong id="nombreProductoEliminar"></strong>?
+                </p>
+
+                <div class="alert alert-warning mb-0">
+                    Se eliminarán todos los pasos y estaciones asociados
+                    con este producto.
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <form asp-controller="ProcesoPreparacion"
+                      asp-action="DeleteConfirmed"
+                      method="post"
+                      id="formEliminarProceso">
+
+                    <input type="hidden"
+                           name="id"
+                           id="idProductoEliminar" />
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Eliminar proceso
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<a asp-controller="ProcesoPreparacion"
+   asp-action="Index"
+   class="btn-volver">
+    ← Volver al listado operativo
+</a>
+
+@section Scripts {
+    <script>
+        anime({
+            targets: '#mantHeader',
+            translateY: [-20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '#mantTable tbody tr',
+            translateX: [-25, 0],
+            opacity: [0, 1],
+            duration: 450,
+            delay: anime.stagger(75, { start: 180 }),
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '#mantVacio',
+            translateY: [20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            delay: 150,
+            easing: 'easeOutExpo'
+        });
+
+        // Evita que el modal quede detrás del backdrop.
+        const modalEliminar =
+            document.getElementById('modalEliminarProceso');
+
+        if (modalEliminar) {
+            document.body.appendChild(modalEliminar);
+        }
+
+        document.querySelectorAll('.btn-eliminar-proceso')
+            .forEach(function (boton) {
+                boton.addEventListener('click', function () {
+                    const idProducto =
+                        this.getAttribute('data-id');
+
+                    const nombreProducto =
+                        this.getAttribute('data-nombre');
+
+                    document.getElementById(
+                        'idProductoEliminar'
+                    ).value = idProducto;
+
+                    document.getElementById(
+                        'nombreProductoEliminar'
+                    ).textContent = nombreProducto;
+                });
+            });
+    </script>
 }
