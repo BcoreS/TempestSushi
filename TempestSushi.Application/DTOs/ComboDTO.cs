@@ -1,4 +1,6 @@
-﻿namespace TempestSushi.Application.DTOs
+﻿using System.Collections.Generic;
+
+namespace TempestSushi.Application.DTOs
 {
     public record ComboDTO
     {
@@ -9,5 +11,13 @@
         public int IdCategoria { get; set; }
         public string NombreCategoria { get; set; } = null!;
         public bool Activo { get; set; }
+        public List<ComboProductoItemDTO> Productos { get; set; } = new();
+    }
+
+    public record ComboProductoItemDTO
+    {
+        public int IdProducto { get; set; }
+        public string NombreProducto { get; set; } = null!;
+        public int Cantidad { get; set; }
     }
 }

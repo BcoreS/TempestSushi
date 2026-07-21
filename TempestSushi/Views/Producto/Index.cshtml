@@ -118,8 +118,14 @@
 </style>
 
 <div class="prod-header" id="prodHeader">
-    <h1 class="prod-title">Nuestros Productos</h1>
-    <span class="prod-badge">MENÚ</span>
+    @if (ViewBag.NotificationMessage != null)
+    {
+        <div class="alert alert-success">@ViewBag.NotificationMessage</div>
+    }
+
+    <div class="mb-4">
+        <a asp-action="Crear" class="btn-ver" style="display:inline-block; width:auto; padding:10px 24px;">+ Nuevo producto</a>
+    </div>
 </div>
 
 <div class="row g-4" id="prodGrid">

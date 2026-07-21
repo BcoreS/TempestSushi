@@ -166,9 +166,20 @@
                         @(Model.Activo ? "Activo" : "Inactivo")
                     </span>
                 </div>
+                <hr class="det-divider" />
+                <div class="det-label" style="margin-bottom:8px">PRODUCTOS INCLUIDOS</div>
+                <ul class="ing-list" style="list-style:none; padding:0; display:flex; flex-wrap:wrap; gap:8px;">
+                    @foreach (var p in Model.Productos)
+                    {
+                        <li style="background:#e8f4fd; color:#1a3a6e; border-radius:20px; padding:4px 14px; font-size:.85rem; font-weight:500;">
+                            @p.NombreProducto (x@p.Cantidad)
+                        </li>
+                    }
+                </ul>
             </div>
         </div>
         <a asp-action="Index" class="btn-volver">← Volver al listado</a>
+        <a asp-action="Editar" asp-route-id="@Model.IdCombo" class="btn-volver" style="margin-left:8px; background:#1a3a6e; color:#fff !important;">✎ Editar</a>
     </div>
 </div>
 
