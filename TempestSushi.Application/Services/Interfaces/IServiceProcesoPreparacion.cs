@@ -1,16 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TempestSushi.Application.DTOs;
+﻿using TempestSushi.Application.DTOs;
 
-
-namespace TempestSushi.Application.Services.Interfaces
+public interface IServiceProcesoPreparacion
 {
-    public interface IServiceProcesoPreparacion
-    {
-        Task<ICollection<ProcesoPreparacionListDTO>> ListAsync();
-        Task<ProcesoPreparacionDetalleDTO> FindByProductoIdAsync(int idProducto);
-    }
+    Task<ICollection<ProcesoPreparacionListDTO>> ListAsync();
+
+    Task<ProcesoPreparacionDetalleDTO?>
+        FindByProductoIdAsync(int idProducto);
+
+    Task<ICollection<ProcesoPreparacionMantenimientoDTO>>
+        ListMantenimientoAsync();
+
+    Task<ProcesoPreparacionFormDTO> PrepararCrearAsync();
+
+    Task PrepararFormularioAsync(
+        ProcesoPreparacionFormDTO dto);
+
+    Task CrearAsync(
+        ProcesoPreparacionFormDTO dto);
+
+    Task<ProcesoPreparacionFormDTO?>
+        ObtenerParaEditarAsync(int idProducto);
+
+    Task ActualizarAsync(
+        ProcesoPreparacionFormDTO dto);
+
+    Task EliminarAsync(int idProducto);
 }

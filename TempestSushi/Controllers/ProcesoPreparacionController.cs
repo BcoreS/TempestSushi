@@ -27,15 +27,15 @@ namespace TempestSushi.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-        
-            var proceso = await _serviceProcesoPreparacion.FindByProductoIdAsync(id);
+            var model =
+                await _serviceProcesoPreparacion.FindByProductoIdAsync(id);
 
-            if (proceso == null)
+            if (model == null)
             {
                 return NotFound();
             }
 
-            return View(proceso);
+            return View(model);
         }
     }
 }

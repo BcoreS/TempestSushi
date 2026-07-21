@@ -16,7 +16,9 @@ builder.Services.AddScoped<IRepositoryProcesoPreparacion, RepositoryProcesoPrepa
 builder.Services.AddScoped<IRepositoryCombo, RepositoryCombo>();
 builder.Services.AddScoped<IRepositoryProducto, RepositoryProducto>();
 builder.Services.AddScoped<IRepositoryMenu, RepositoryMenu>();
-
+builder.Services.AddScoped<
+    IRepositoryEstacionCocina,
+    RepositoryEstacionCocina>();
 
 
 builder.Services.AddScoped<IServiceProcesoPreparacion, ServiceProcesoPreparacion>();
