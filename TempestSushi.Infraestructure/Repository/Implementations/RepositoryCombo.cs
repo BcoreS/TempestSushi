@@ -11,7 +11,7 @@ namespace TempestSushi.Infraestructure.Repository.Implementations
         {
             _context = context;
         }
-        public async Task<Combo> FindByIdAsync(int id)
+        public async Task<Combo?> FindByIdAsync(int id)
         {
             return await _context.Set<Combo>()
                 .Include(c => c.IdCategoriaNavigation)

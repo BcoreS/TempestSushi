@@ -1,0 +1,790 @@
+﻿@model TempestSushi.Application.DTOs.ProcesoPreparacionFormDTO
+
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Crear proceso de preparación";
+
+    var estacionesJson = JsonSerializer.Serialize(
+        Model.EstacionesDisponibles.Select(e => new
+        {
+            id = e.Id,
+            nombre = e.Nombre
+        }));
+}
+
+<style>
+    .form-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #d0e8f8;
+    }
+
+    .form-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .form-badge {
+        background: #1a3a6e;
+        color: #4fa8e8;
+        font-size: .7rem;
+        letter-spacing: 2px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .form-card {
+        background: #fff;
+        border: 1.5px solid #d0e8f8;
+        border-radius: 14px;
+        padding: 1.75rem;
+        box-shadow: 0 2px 16px rgba(26, 58, 110, .07);
+        margin-bottom: 1.5rem;
+    }
+
+    .form-section-title {
+        font-family: 'Rajdhani', sans-serif;
+        color: #1a3a6e;
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        font-family: 'Rajdhani', sans-serif;
+        color: #1a3a6e;
+        font-weight: 700;
+        letter-spacing: .5px;
+    }
+
+    .form-control,
+    .form-select {
+        border: 1.5px solid #b9d8ec;
+        border-radius: 8px;
+        color: #1a3a6e;
+        min-height: 42px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #4fa8e8;
+        box-shadow: 0 0 0 .2rem rgba(79, 168, 232, .18);
+    }
+
+    .form-help {
+        color: #6489a3;
+        font-size: .84rem;
+        margin-top: 5px;
+    }
+
+    .pasos-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 1.25rem;
+    }
+
+    .pasos-header .form-section-title {
+        margin-bottom: 0;
+    }
+
+    .btn-agregar-paso {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: #1a3a6e;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        letter-spacing: .8px;
+        transition: background .2s, transform .15s;
+    }
+
+    .btn-agregar-paso:hover {
+        background: #c0392b;
+        transform: translateY(-1px);
+    }
+
+    .paso-card {
+        border: 1.5px solid #d0e8f8;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        background: #fafdff;
+        box-shadow: 0 2px 8px rgba(26, 58, 110, .05);
+    }
+
+    .paso-card-header {
+        background: #e8f4fd;
+        padding: .8rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid #d0e8f8;
+    }
+
+    .paso-identificador {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .paso-numero {
+        width: 32px;
+        height: 32px;
+        background: #1a3a6e;
+        color: #fff;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+    }
+
+    .paso-titulo {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        color: #1a3a6e;
+        letter-spacing: .5px;
+    }
+
+    .paso-acciones {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-paso-accion {
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+        background: #fff;
+        color: #1a3a6e;
+        border: 1.5px solid #b9d8ec;
+        transition: background .2s, color .2s;
+    }
+
+    .btn-paso-accion:hover {
+        background: #1a3a6e;
+        color: #fff;
+    }
+
+    .btn-quitar-paso {
+        color: #c0392b;
+        border-color: #e6aaa4;
+    }
+
+    .btn-quitar-paso:hover {
+        background: #c0392b;
+        border-color: #c0392b;
+        color: #fff;
+    }
+
+    .paso-card-body {
+        padding: 1.25rem;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    .validation-summary-errors {
+        background: #fff5f4;
+        border-left: 4px solid #c0392b;
+        color: #8a3b34;
+        border-radius: 7px;
+        padding: .9rem 1.1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .validation-summary-errors ul {
+        margin-bottom: 0;
+    }
+
+    .text-danger {
+        font-size: .82rem;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 1.5rem;
+    }
+
+    .btn-cancelar,
+    .btn-guardar {
+        border-radius: 8px;
+        padding: 9px 22px;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-decoration: none;
+        transition: background .2s, transform .15s;
+    }
+
+    .btn-cancelar {
+        background: #fff;
+        color: #1a3a6e;
+        border: 1.5px solid #1a3a6e;
+    }
+
+    .btn-cancelar:hover {
+        background: #e8f4fd;
+        color: #1a3a6e;
+    }
+
+    .btn-guardar {
+        background: #1a3a6e;
+        color: #fff;
+        border: 1.5px solid #1a3a6e;
+    }
+
+    .btn-guardar:hover {
+        background: #c0392b;
+        border-color: #c0392b;
+        transform: translateY(-1px);
+    }
+
+    .sin-pasos {
+        display: none;
+        border: 1.5px dashed #8ab2cc;
+        border-radius: 12px;
+        padding: 2rem 1rem;
+        text-align: center;
+        color: #6489a3;
+    }
+
+    @@media (max-width: 768px) {
+        .pasos-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .paso-card-header {
+            align-items: flex-start;
+        }
+
+        .paso-acciones {
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .btn-cancelar,
+        .btn-guardar {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="form-header" id="formHeader">
+    <h1 class="form-title">Crear Proceso de Preparación</h1>
+    <span class="form-badge">COCINA</span>
+</div>
+
+<form asp-controller="ProcesoPreparacion"
+      asp-action="Create"
+      method="post"
+      id="formProceso">
+
+    <div asp-validation-summary="All"
+         class="text-danger"></div>
+
+    <div class="form-card" id="productoCard">
+        <div class="form-section-title">
+            Producto del proceso
+        </div>
+
+        <div>
+            <label asp-for="IdProducto" class="form-label">
+                Producto
+            </label>
+
+            <select asp-for="IdProducto"
+                    class="form-select">
+                <option value="0">
+                    Seleccione un producto
+                </option>
+
+                @foreach (var producto in Model.ProductosDisponibles)
+                {
+                    <option value="@producto.Id">
+                        @producto.Nombre
+                    </option>
+                }
+            </select>
+
+            <span asp-validation-for="IdProducto"
+                  class="text-danger"></span>
+
+            <div class="form-help">
+                Solo se muestran productos activos que todavía no tienen
+                un proceso de preparación configurado.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-card" id="pasosCard">
+        <div class="pasos-header">
+            <div>
+                <div class="form-section-title">
+                    Pasos del proceso
+                </div>
+
+                <div class="form-help">
+                    El orden mostrado será el orden real de preparación.
+                </div>
+            </div>
+
+            <button type="button"
+                    id="btnAgregarPaso"
+                    class="btn-agregar-paso">
+                ➕ Agregar estación
+            </button>
+        </div>
+
+        <div id="listaPasos">
+            @for (var i = 0; i < Model.Pasos.Count; i++)
+            {
+                <div class="paso-card">
+                    <div class="paso-card-header">
+                        <div class="paso-identificador">
+                            <span class="paso-numero">
+                                @(i + 1)
+                            </span>
+
+                            <span class="paso-titulo">
+                                Paso @(i + 1)
+                            </span>
+                        </div>
+
+                        <div class="paso-acciones">
+                            <button type="button"
+                                    class="btn-paso-accion btn-subir"
+                                    title="Mover hacia arriba"
+                                    aria-label="Mover hacia arriba">
+                                ↑
+                            </button>
+
+                            <button type="button"
+                                    class="btn-paso-accion btn-bajar"
+                                    title="Mover hacia abajo"
+                                    aria-label="Mover hacia abajo">
+                                ↓
+                            </button>
+
+                            <button type="button"
+                                    class="btn-paso-accion btn-quitar-paso"
+                                    title="Eliminar paso"
+                                    aria-label="Eliminar paso">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="paso-card-body">
+                        <input asp-for="Pasos[i].NumeroPaso"
+                               type="hidden"
+                               class="numero-paso-input" />
+
+                        <input asp-for="Pasos[i].IdProcesoPreparacion"
+                               type="hidden" />
+
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label asp-for="Pasos[i].IdEstacionCocina"
+                                       class="form-label">
+                                    Estación de cocina
+                                </label>
+
+                                <select asp-for="Pasos[i].IdEstacionCocina"
+                                        class="form-select estacion-select">
+                                    <option value="0">
+                                        Seleccione una estación
+                                    </option>
+
+                                    @foreach (var estacion
+                                        in Model.EstacionesDisponibles)
+                                    {
+                                        <option value="@estacion.Id">
+                                            @estacion.Nombre
+                                        </option>
+                                    }
+                                </select>
+
+                                <span asp-validation-for=
+                                    "Pasos[i].IdEstacionCocina"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label asp-for=
+                                    "Pasos[i].TiempoEstimadoMinutos"
+                                       class="form-label">
+                                    Tiempo estimado
+                                </label>
+
+                                <div class="input-group">
+                                    <input asp-for=
+                                        "Pasos[i].TiempoEstimadoMinutos"
+                                           type="number"
+                                           min="1"
+                                           class="form-control"
+                                           placeholder="Ej. 10" />
+
+                                    <span class="input-group-text">
+                                        minutos
+                                    </span>
+                                </div>
+
+                                <span asp-validation-for=
+                                    "Pasos[i].TiempoEstimadoMinutos"
+                                      class="text-danger">
+                                </span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for=
+                                    "Pasos[i].DescripcionPaso"
+                                       class="form-label">
+                                    Descripción del paso
+                                </label>
+
+                                <textarea asp-for=
+                                    "Pasos[i].DescripcionPaso"
+                                          class="form-control"
+                                          rows="3"
+                                          placeholder="Describe qué se realiza en esta etapa...">
+                                </textarea>
+
+                                <span asp-validation-for=
+                                    "Pasos[i].DescripcionPaso"
+                                      class="text-danger">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <span asp-validation-for="Pasos"
+              class="text-danger"></span>
+
+        <div id="sinPasos" class="sin-pasos">
+            <div class="fs-2 mb-2">🍳</div>
+            El proceso debe contener al menos una estación.
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <a asp-controller="ProcesoPreparacion"
+           asp-action="Mantenimiento"
+           class="btn-cancelar">
+            Cancelar
+        </a>
+
+        <button type="submit"
+                class="btn-guardar">
+            💾 Guardar proceso
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const estaciones = @Html.Raw(estacionesJson);
+
+            const listaPasos =
+                document.getElementById('listaPasos');
+
+            const btnAgregarPaso =
+                document.getElementById('btnAgregarPaso');
+
+            const sinPasos =
+                document.getElementById('sinPasos');
+
+            const formProceso =
+                document.getElementById('formProceso');
+
+            function escaparHtml(texto) {
+                const elemento = document.createElement('div');
+                elemento.textContent = texto;
+                return elemento.innerHTML;
+            }
+
+            function construirOpcionesEstaciones() {
+                let opciones =
+                    '<option value="0">Seleccione una estación</option>';
+
+                estaciones.forEach(function (estacion) {
+                    opciones +=
+                        `<option value="${estacion.id}">` +
+                        `${escaparHtml(estacion.nombre)}` +
+                        `</option>`;
+                });
+
+                return opciones;
+            }
+
+            function crearPaso() {
+                const tarjeta = document.createElement('div');
+                tarjeta.className = 'paso-card';
+
+                tarjeta.innerHTML = `
+                    <div class="paso-card-header">
+                        <div class="paso-identificador">
+                            <span class="paso-numero"></span>
+                            <span class="paso-titulo"></span>
+                        </div>
+
+                        <div class="paso-acciones">
+                            <button type="button"
+                                    class="btn-paso-accion btn-subir"
+                                    title="Mover hacia arriba">
+                                ↑
+                            </button>
+
+                            <button type="button"
+                                    class="btn-paso-accion btn-bajar"
+                                    title="Mover hacia abajo">
+                                ↓
+                            </button>
+
+                            <button type="button"
+                                    class="btn-paso-accion btn-quitar-paso"
+                                    title="Eliminar paso">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="paso-card-body">
+                        <input type="hidden"
+                               class="numero-paso-input" />
+
+                        <input type="hidden"
+                               class="id-proceso-input"
+                               value="" />
+
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">
+                                    Estación de cocina
+                                </label>
+
+                                <select class="form-select estacion-select">
+                                    ${construirOpcionesEstaciones()}
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">
+                                    Tiempo estimado
+                                </label>
+
+                                <div class="input-group">
+                                    <input type="number"
+                                           min="1"
+                                           class="form-control tiempo-input"
+                                           placeholder="Ej. 10" />
+
+                                    <span class="input-group-text">
+                                        minutos
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">
+                                    Descripción del paso
+                                </label>
+
+                                <textarea class="form-control descripcion-input"
+                                          rows="3"
+                                          placeholder="Describe qué se realiza en esta etapa..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                listaPasos.appendChild(tarjeta);
+                actualizarPasos();
+
+                anime({
+                    targets: tarjeta,
+                    translateY: [15, 0],
+                    opacity: [0, 1],
+                    duration: 350,
+                    easing: 'easeOutQuad'
+                });
+            }
+
+            function actualizarPasos() {
+                const tarjetas =
+                    listaPasos.querySelectorAll('.paso-card');
+
+                tarjetas.forEach(function (tarjeta, indice) {
+                    const numero = indice + 1;
+
+                    tarjeta.querySelector('.paso-numero')
+                        .textContent = numero;
+
+                    tarjeta.querySelector('.paso-titulo')
+                        .textContent = `Paso ${numero}`;
+
+                    const numeroInput =
+                        tarjeta.querySelector('.numero-paso-input');
+
+                    const idProcesoInput =
+                        tarjeta.querySelector(
+                            'input[id$="IdProcesoPreparacion"], ' +
+                            '.id-proceso-input');
+
+                    const estacionSelect =
+                        tarjeta.querySelector('.estacion-select');
+
+                    const tiempoInput =
+                        tarjeta.querySelector(
+                            'input[id$="TiempoEstimadoMinutos"], ' +
+                            '.tiempo-input');
+
+                    const descripcionInput =
+                        tarjeta.querySelector(
+                            'textarea[id$="DescripcionPaso"], ' +
+                            '.descripcion-input');
+
+                    numeroInput.name =
+                        `Pasos[${indice}].NumeroPaso`;
+
+                    numeroInput.value = numero;
+
+                    idProcesoInput.name =
+                        `Pasos[${indice}].IdProcesoPreparacion`;
+
+                    estacionSelect.name =
+                        `Pasos[${indice}].IdEstacionCocina`;
+
+                    tiempoInput.name =
+                        `Pasos[${indice}].TiempoEstimadoMinutos`;
+
+                    descripcionInput.name =
+                        `Pasos[${indice}].DescripcionPaso`;
+
+                    tarjeta.querySelector('.btn-subir').disabled =
+                        indice === 0;
+
+                    tarjeta.querySelector('.btn-bajar').disabled =
+                        indice === tarjetas.length - 1;
+                });
+
+                sinPasos.style.display =
+                    tarjetas.length === 0 ? 'block' : 'none';
+            }
+
+            btnAgregarPaso.addEventListener(
+                'click',
+                crearPaso);
+
+            listaPasos.addEventListener(
+                'click',
+                function (event) {
+                    const boton = event.target.closest('button');
+
+                    if (!boton) {
+                        return;
+                    }
+
+                    const tarjeta =
+                        boton.closest('.paso-card');
+
+                    if (boton.classList.contains('btn-quitar-paso')) {
+                        tarjeta.remove();
+                        actualizarPasos();
+                        return;
+                    }
+
+                    if (boton.classList.contains('btn-subir')) {
+                        const anterior =
+                            tarjeta.previousElementSibling;
+
+                        if (anterior) {
+                            listaPasos.insertBefore(
+                                tarjeta,
+                                anterior);
+                        }
+
+                        actualizarPasos();
+                        return;
+                    }
+
+                    if (boton.classList.contains('btn-bajar')) {
+                        const siguiente =
+                            tarjeta.nextElementSibling;
+
+                        if (siguiente) {
+                            listaPasos.insertBefore(
+                                siguiente,
+                                tarjeta);
+                        }
+
+                        actualizarPasos();
+                    }
+                });
+
+            formProceso.addEventListener(
+                'submit',
+                function () {
+                    actualizarPasos();
+                });
+
+            actualizarPasos();
+
+            anime({
+                targets: '#formHeader',
+                translateY: [-20, 0],
+                opacity: [0, 1],
+                duration: 600,
+                easing: 'easeOutExpo'
+            });
+
+            anime({
+                targets: '.form-card',
+                translateY: [20, 0],
+                opacity: [0, 1],
+                duration: 550,
+                delay: anime.stagger(100, { start: 150 }),
+                easing: 'easeOutExpo'
+            });
+        });
+    </script>
+}

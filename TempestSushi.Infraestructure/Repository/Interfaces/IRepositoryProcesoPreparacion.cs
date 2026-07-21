@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TempestSushi.Infraestructure.Models;
+﻿using TempestSushi.Infraestructure.Models;
 
-namespace TempestSushi.Infraestructure.Repository.Interfaces
+public interface IRepositoryProcesoPreparacion
 {
-    public interface IRepositoryProcesoPreparacion
-    {
-        Task<ICollection<ProcesoPreparacion>> FindByProductoIdAsync(int idProducto);
-        Task<ICollection<ProcesoPreparacion>> ListAsync();
-    }
+    Task<ICollection<ProcesoPreparacion>> FindByProductoIdAsync(
+        int idProducto);
+
+    Task<ICollection<ProcesoPreparacion>> ListAsync();
+
+    Task CreateForProductoAsync(
+        int idProducto,
+        IEnumerable<ProcesoPreparacion> pasos);
+
+    Task UpdateForProductoAsync(
+        int idProducto,
+        IEnumerable<ProcesoPreparacion> pasos);
+
+    Task DeleteByProductoIdAsync(int idProducto);
+
+    Task<bool> ExistsForProductoAsync(int idProducto);
 }

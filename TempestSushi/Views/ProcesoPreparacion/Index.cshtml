@@ -116,14 +116,42 @@
             background: #c0392b;
             transform: translateY(-1px);
         }
+
+    .btn-mantenimiento {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #1a3a6e;
+        color: #fff !important;
+        border-radius: 8px;
+        padding: 9px 22px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        letter-spacing: 1px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background .2s, transform .15s;
+    }
+
+        .btn-mantenimiento:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+        }
 </style>
 
 <div class="pp-header" id="ppHeader">
     <h1 class="pp-title">Procesos de Preparación</h1>
     <span class="pp-badge">COCINA</span>
 </div>
-
+<div class="mb-4 d-flex gap-2">
+    <a asp-controller="ProcesoPreparacion"
+       asp-action="Mantenimiento"
+       class="btn-mantenimiento">
+        ⚙️ Administrar procesos
+    </a>
+</div>
 <table class="pp-table" id="ppTable">
+
     <thead>
         <tr>
             <th>Producto</th>
