@@ -1,4 +1,22 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+
+@{
+    var rolUsuario = User.FindFirst(ClaimTypes.Role)?.Value;
+
+    var esPaginaLogin =
+        ViewContext.RouteData.Values["controller"]?.ToString() == "Account"
+        && ViewContext.RouteData.Values["action"]?.ToString() == "Login";
+
+    var claseRol = rolUsuario switch
+    {
+        "Administrador" => "ts-role-admin",
+        "Encargado" => "ts-role-encargado",
+        "Cocina" => "ts-role-cocina",
+        "Cliente" => "ts-role-cliente",
+        _ => "ts-role-default"
+    };
+}
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
@@ -122,6 +140,7 @@
                 font-family: 'Rajdhani', sans-serif;
                 font-size: 1rem;
                 font-weight: 600;
+                font-weight: 600;
                 color: #1a3a6e;
                 text-decoration: none;
                 padding: 6px 14px;
@@ -194,6 +213,123 @@
                 padding: 0 1rem;
             }
         }
+
+        /*Estilos nuevos de avance 5 */
+
+        .ts-navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .ts-user-area {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            padding-left: 1rem;
+            border-left: 1px solid #d0e8f8;
+        }
+
+        .ts-user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+            text-align: right;
+        }
+
+        .ts-user-greeting {
+            align-self: flex-end;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border-radius: 999px;
+            padding: 3px 9px;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .ts-user-greeting:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.20);
+            }
+
+        /* ── Roles de usuario ───────────────────────────────── */
+
+        .ts-role-admin {
+            background: #c0392b;
+        }
+
+        .ts-role-encargado {
+            background: #1a3a6e;
+        }
+
+        .ts-role-cocina {
+            background: #d68910;
+        }
+
+        .ts-role-cliente {
+            background: #3498db;
+        }
+
+        .ts-role-default {
+            background: #6c757d;
+        }
+        .ts-user-name {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1a3a6e;
+            white-space: nowrap;
+        }
+
+        .ts-logout-form {
+            margin: 0;
+        }
+
+        .ts-logout-button,
+        .ts-login-link {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            border-radius: 999px;
+            padding: 0.45rem 1rem;
+            transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .ts-logout-button {
+            border: 1px solid rgba(192, 57, 43, 0.35);
+            background: rgba(192, 57, 43, 0.06);
+            color: #c0392b;
+            cursor: pointer;
+        }
+
+            .ts-logout-button:hover {
+                background: #c0392b;
+                color: #ffffff;
+                transform: translateY(-1px);
+                box-shadow: 0 5px 14px rgba(192, 57, 43, 0.2);
+            }
+
+        .ts-login-link {
+            border: 1px solid rgba(26, 58, 110, 0.25);
+            color: #1a3a6e;
+            text-decoration: none;
+        }
+
+            .ts-login-link:hover {
+                background: #1a3a6e;
+                color: #ffffff;
+                transform: translateY(-1px);
+            }
     </style>
 </head>
 <body>
@@ -203,32 +339,143 @@
         <nav class="ts-navbar" id="tsNavbar">
             <div class="ts-gradient-bar" id="tsGradientBar"></div>
 
-            <a class="ts-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                <!-- Logo: coloca tu imagen en wwwroot/images/tempest-logo.png -->
-                <img src="~/images/logo.png" alt="Tempest Sushi Logo" />
+            <a class="ts-brand"
+               asp-area=""
+               asp-controller="Home"
+               asp-action="Index">
+
+                <img src="~/images/logo.png"
+                     alt="Tempest Sushi Logo" />
+
                 <div class="ts-brand-text">
-                    <span class="ts-brand-title">TEMPEST SUSHI</span>
-                    <span class="ts-brand-sub">テンペスト 寿司 &nbsp;·&nbsp; REINO DE TEMPEST</span>
+                    <span class="ts-brand-title">
+                        TEMPEST SUSHI
+                    </span>
+
+                    <span class="ts-brand-sub">
+                        テンペスト 寿司 &nbsp;·&nbsp; REINO DE TEMPEST
+                    </span>
                 </div>
             </a>
 
-            <button class="navbar-toggler d-sm-none"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#tsNavCollapse"
-                    aria-controls="tsNavCollapse"
-                    aria-expanded="false"
-                    aria-label="Abrir menú">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <button class="navbar-toggler d-sm-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#tsNavCollapse"
+                        aria-controls="tsNavCollapse"
+                        aria-expanded="false"
+                        aria-label="Abrir menú">
 
-            <ul class="ts-nav collapse d-sm-flex" id="tsNavCollapse">
-                <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                <li><a class="nav-link" asp-area="" asp-controller="Producto" asp-action="Index">Productos</a></li>
-                <li><a class="nav-link" asp-area="" asp-controller="Combo" asp-action="Index">Combos</a></li>
-                <li><a class="nav-link" asp-area="" asp-controller="Menu" asp-action="Index">Menús</a></li>
-                <li><a class="nav-link" asp-area="" asp-controller="ProcesoPreparacion" asp-action="Index">Preparación</a></li>
-            </ul>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            }
+
+            <div class="ts-navbar-right">
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <ul class="ts-nav collapse d-sm-flex"
+                        id="tsNavCollapse">
+
+                        <!-- Todos los usuarios autenticados -->
+                        <li>
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Index">
+                                Home
+                            </a>
+                        </li>
+
+                        <!-- Cliente, Encargado y Administrador -->
+                        @if (User.IsInRole("Cliente")
+                                            || User.IsInRole("Encargado")
+                                            || User.IsInRole("Administrador"))
+                        {
+                            <li>
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Producto"
+                                   asp-action="Index">
+                                    Productos
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Combo"
+                                   asp-action="Index">
+                                    Combos
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Menu"
+                                   asp-action="Index">
+                                    Menús
+                                </a>
+                            </li>
+                        }
+
+                        <!-- Cocina y Administrador -->
+                        @if (User.IsInRole("Cocina")
+                                            || User.IsInRole("Administrador"))
+                        {
+                            <li>
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="ProcesoPreparacion"
+                                   asp-action="Index">
+                                    Preparación
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+
+                    <div class="ts-user-area">
+
+                        <div class="ts-user-info">
+
+                            <span class="ts-user-greeting @claseRol">
+                                @rolUsuario
+                            </span>
+
+                            <span class="ts-user-name">
+                                @User.Identity.Name
+                            </span>
+
+                        </div>
+
+                        <form asp-controller="Account"
+                              asp-action="Logout"
+                              method="post"
+                              class="ts-logout-form">
+
+                            <button type="submit"
+                                    class="ts-logout-button">
+                                Cerrar sesión
+                            </button>
+
+                        </form>
+
+                    </div>
+                }
+                else if (!esPaginaLogin)
+                {
+                    <a asp-controller="Account"
+                       asp-action="Login"
+                       class="ts-login-link">
+                        Iniciar sesión
+                    </a>
+                }
+
+            </div>
         </nav>
     </header>
 
@@ -295,6 +542,17 @@
             translateY: [{ value: -5, duration: 1200 }, { value: 0, duration: 1200 }],
             loop: true,
             easing: 'easeInOutSine'
+        });
+
+        // ── Animación del badge de rol de usuario Login ──────────────────────────
+
+                anime({
+            targets: '.ts-user-greeting',
+            opacity: [0, 1],
+            scale: [0.85, 1],
+            delay: 500,
+            duration: 500,
+            easing: 'easeOutBack'
         });
 
         // ── Marca el nav-link activo según la URL ─────────────

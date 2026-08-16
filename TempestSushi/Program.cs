@@ -2,13 +2,26 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using TempestSushi.Application.Profiles;
+using TempestSushi.Application.Services;
 using TempestSushi.Application.Services.Implementations;
 using TempestSushi.Application.Services.Interfaces;
 using TempestSushi.Infraestructure.Data;
 using TempestSushi.Infraestructure.Repository.Implementations;
 using TempestSushi.Infraestructure.Repository.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+
+        options.ExpireTimeSpan = TimeSpan.FromHours(2);
+        options.SlidingExpiration = true;
+    });
 
 //Aquí se implementan los repositorios
 
@@ -19,12 +32,18 @@ builder.Services.AddScoped<IRepositoryMenu, RepositoryMenu>();
 builder.Services.AddScoped<
     IRepositoryEstacionCocina,
     RepositoryEstacionCocina>();
+builder.Services.AddScoped<
+    IRepositoryUsuario,
+    RepositoryUsuario>();
 
 
 builder.Services.AddScoped<IServiceProcesoPreparacion, ServiceProcesoPreparacion>();
 builder.Services.AddScoped<IServiceCombo, ServiceCombo>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IMenuService, MenuService>();
+builder.Services.AddScoped<
+    IServiceAutenticacion,
+    ServiceAutenticacion>();
 
 builder.Services.AddAutoMapper(cfg =>
 {
@@ -68,10 +87,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();
