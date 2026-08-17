@@ -123,9 +123,16 @@
         <div class="alert alert-success">@ViewBag.NotificationMessage</div>
     }
 
-    <div class="mb-4">
-        <a asp-action="Crear" class="btn-ver" style="display:inline-block; width:auto; padding:10px 24px;">+ Nuevo producto</a>
-    </div>
+    @if (User.IsInRole("Administrador"))
+    {
+        <div class="mb-4">
+            <a asp-action="Crear"
+               class="btn-ver"
+               style="display:inline-block; width:auto; padding:10px 24px;">
+                + Nuevo producto
+            </a>
+        </div>
+    }
 </div>
 
 <div class="row g-4" id="prodGrid">

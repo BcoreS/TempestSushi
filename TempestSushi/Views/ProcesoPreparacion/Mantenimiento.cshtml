@@ -237,6 +237,39 @@
             color: #fff;
         }
 
+    .modal-eliminar-content {
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 18px 50px rgba(26, 58, 110, .22);
+    }
+
+    .modal-eliminar-header {
+        background: #f8fcff;
+        border-bottom: 1px solid #d0e8f8;
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-eliminar-body {
+        padding: 1.5rem;
+        color: #1a3a6e;
+    }
+
+    .modal-eliminar-advertencia {
+        color: #8a3b34;
+        font-size: .9rem;
+        background: #fff5f4;
+        border-left: 4px solid #c0392b;
+        border-radius: 6px;
+        padding: .8rem 1rem;
+    }
+
+    .modal-eliminar-footer {
+        border-top: 1px solid #d0e8f8;
+        padding: 1rem 1.5rem;
+        gap: 10px;
+    }
+
     @@media (max-width: 768px) {
         .mant-header {
             align-items: flex-start;
@@ -255,8 +288,13 @@
 
 <div class="mant-header" id="mantHeader">
     <div class="mant-header-info">
-        <h1 class="mant-title">Mantenimiento de Procesos</h1>
-        <span class="mant-badge">ADMINISTRACIÓN</span>
+        <h1 class="mant-title">
+            Mantenimiento de Procesos
+        </h1>
+
+        <span class="mant-badge">
+            COCINA
+        </span>
     </div>
 
     <a asp-controller="ProcesoPreparacion"
@@ -265,6 +303,7 @@
         ➕ Crear proceso
     </a>
 </div>
+
 @if (TempData["MensajeExito"] != null)
 {
     <div class="alert alert-success">
@@ -326,13 +365,16 @@
                                 }
                                 else
                                 {
-                                    <span>Sin estimación</span>
+                                    <span>
+                                        Sin estimación
+                                    </span>
                                 }
                             </span>
                         </td>
 
                         <td>
                             <div class="acciones">
+
                                 <a asp-controller="ProcesoPreparacion"
                                    asp-action="Edit"
                                    asp-route-id="@proceso.IdProducto"
@@ -346,9 +388,9 @@
                                         data-nombre="@proceso.NombreProducto"
                                         data-bs-toggle="modal"
                                         data-bs-target="#modalEliminarProceso">
-
-                                    🗑️ Eliminar
+                                    🔄 Quitar proceso
                                 </button>
+
                             </div>
                         </td>
                     </tr>
@@ -360,7 +402,10 @@
 else
 {
     <div class="mant-vacio" id="mantVacio">
-        <div class="mant-vacio-icono">🍳</div>
+
+        <div class="mant-vacio-icono">
+            🍳
+        </div>
 
         <div class="mant-vacio-titulo">
             No hay procesos configurados
@@ -375,74 +420,91 @@ else
            class="btn-crear-proceso">
             ➕ Crear primer proceso
         </a>
+
     </div>
 }
-<div class="modal fade"
-     id="modalEliminarProceso"
-     tabindex="-1"
-     aria-labelledby="modalEliminarProcesoLabel"
-     aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h5 class="modal-title"
-                    id="modalEliminarProcesoLabel">
-                    Confirmar eliminación
-                </h5>
-
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Cerrar">
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <p>
-                    ¿Deseas eliminar el proceso de preparación de
-                    <strong id="nombreProductoEliminar"></strong>?
-                </p>
-
-                <div class="alert alert-warning mb-0">
-                    Se eliminarán todos los pasos y estaciones asociados
-                    con este producto.
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal">
-                    Cancelar
-                </button>
-
-                <form asp-controller="ProcesoPreparacion"
-                      asp-action="DeleteConfirmed"
-                      method="post"
-                      id="formEliminarProceso">
-
-                    <input type="hidden"
-                           name="id"
-                           id="idProductoEliminar" />
-
-                    <button type="submit"
-                            class="btn btn-danger">
-                        Eliminar proceso
-                    </button>
-                </form>
-            </div>
-
-        </div>
-    </div>
-</div>
 
 <a asp-controller="ProcesoPreparacion"
    asp-action="Index"
    class="btn-volver">
     ← Volver al listado operativo
 </a>
+
+@section Modals {
+
+    <div class="modal fade"
+         id="modalEliminarProceso"
+         tabindex="-1"
+         aria-labelledby="modalEliminarProcesoLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content modal-eliminar-content">
+
+                <div class="modal-header modal-eliminar-header">
+
+                    <h5 class="modal-title"
+                        id="modalEliminarProcesoLabel">
+                        Quitar proceso de preparación
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Cerrar">
+                    </button>
+
+                </div>
+
+                <div class="modal-body modal-eliminar-body">
+
+                    <p class="mb-3">
+                        ¿Deseas quitar la configuración de preparación de
+                        <strong id="nombreProductoEliminar"></strong>?
+                    </p>
+
+                    <div class="modal-eliminar-advertencia">
+                        Se eliminarán todos los pasos y estaciones asociados
+                        con este producto. El producto quedará disponible
+                        para configurar un nuevo proceso de preparación.
+                    </div>
+
+                </div>
+
+                <div class="modal-footer modal-eliminar-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <form asp-controller="ProcesoPreparacion"
+                          asp-action="DeleteConfirmed"
+                          method="post"
+                          id="formEliminarProceso">
+
+                        <input type="hidden"
+                               name="id"
+                               id="idProductoEliminar" />
+
+                        <button type="submit"
+                                class="btn btn-danger">
+                            Quitar proceso
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+}
 
 @section Scripts {
     <script>
@@ -472,17 +534,11 @@ else
             easing: 'easeOutExpo'
         });
 
-        // Evita que el modal quede detrás del backdrop.
-        const modalEliminar =
-            document.getElementById('modalEliminarProceso');
-
-        if (modalEliminar) {
-            document.body.appendChild(modalEliminar);
-        }
-
         document.querySelectorAll('.btn-eliminar-proceso')
             .forEach(function (boton) {
+
                 boton.addEventListener('click', function () {
+
                     const idProducto =
                         this.getAttribute('data-id');
 

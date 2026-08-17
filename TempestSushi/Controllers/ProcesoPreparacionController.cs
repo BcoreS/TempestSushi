@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TempestSushi.Application.DTOs;
 using TempestSushi.Application.Services.Interfaces;
 
 namespace TempestSushi.Controllers
 {
+    [Authorize(Roles = "Cocina,Administrador")]
     public class ProcesoPreparacionController : Controller
     {
         private readonly IServiceProcesoPreparacion
@@ -105,7 +107,8 @@ namespace TempestSushi.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var model =
-                await _serviceProcesoPreparacion.ObtenerParaEditarAsync(id);
+                await _serviceProcesoPreparacion
+                    .ObtenerParaEditarAsync(id);
 
             if (model == null)
             {
@@ -136,7 +139,8 @@ namespace TempestSushi.Controllers
 
             try
             {
-                await _serviceProcesoPreparacion.ActualizarAsync(dto);
+                await _serviceProcesoPreparacion
+                    .ActualizarAsync(dto);
 
                 TempData["MensajeExito"] =
                     "El proceso de preparación se actualizó correctamente.";
@@ -156,15 +160,14 @@ namespace TempestSushi.Controllers
             }
         }
 
-        
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
             {
-                await _serviceProcesoPreparacion.EliminarAsync(id);
+                await _serviceProcesoPreparacion
+                    .EliminarAsync(id);
 
                 TempData["MensajeExito"] =
                     "El proceso de preparación se eliminó correctamente.";

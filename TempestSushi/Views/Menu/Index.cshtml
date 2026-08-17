@@ -220,17 +220,22 @@
 
 
 <div class="mb-4 d-flex gap-2">
-    <a asp-controller="Menu"
-       asp-action="Create"
-       class="btn-disponible">
-        ➕ Crear menú
-    </a>
+
+    @if (User.IsInRole("Administrador"))
+    {
+        <a asp-controller="Menu"
+           asp-action="Create"
+           class="btn-disponible">
+            ➕ Crear menú
+        </a>
+    }
 
     <a asp-controller="Menu"
        asp-action="Disponible"
        class="btn-disponible">
         📅 Ver menú disponible ahora
     </a>
+
 </div>
 
 @if (TempData["MensajeExito"] is string mensaje)
@@ -254,23 +259,27 @@
                     <div class="menu-info-value">@menu.Horario</div>
                     <div class="menu-info-label">VIGENCIA</div>
                     <div class="menu-info-value">@menu.Vigencia</div>
-                    <div class="d-grid gap-2 mt-auto pt-3">
-                        <a asp-controller="Menu"
-                           asp-action="Edit"
-                           asp-route-id="@menu.IdMenu"
-                           class="btn btn-outline-primary btn-editar">
-                            ✏️ Editar
-                        </a>
 
-                        <button type="button"
-                                class="btn btn-outline-danger btn-eliminar"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEliminar"
-                                data-id="@menu.IdMenu"
-                                data-nombre="@menu.Nombre">
-                            🗑️ Eliminar
-                        </button>
-                    </div>
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <div class="d-grid gap-2 mt-auto pt-3">
+                            <a asp-controller="Menu"
+                               asp-action="Edit"
+                               asp-route-id="@menu.IdMenu"
+                               class="btn btn-outline-primary btn-editar">
+                                ✏️ Editar
+                            </a>
+
+                            <button type="button"
+                                    class="btn btn-outline-danger btn-eliminar"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEliminar"
+                                    data-id="@menu.IdMenu"
+                                    data-nombre="@menu.Nombre">
+                                🗑️ Eliminar
+                            </button>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -278,72 +287,74 @@
 </div>
 
 @section Modals {
-    <div class="modal fade"
-         id="modalEliminar"
-         tabindex="-1"
-         aria-labelledby="modalEliminarLabel"
-         aria-hidden="true">
+    @if (User.IsInRole("Administrador"))
+    {
+        <div class="modal fade"
+             id="modalEliminar"
+             tabindex="-1"
+             aria-labelledby="modalEliminarLabel"
+             aria-hidden="true">
 
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content modal-eliminar-content">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content modal-eliminar-content">
 
-                <div class="modal-header modal-eliminar-header">
-                    <div>
-                        <span class="modal-eliminar-icono">⚠️</span>
+                    <div class="modal-header modal-eliminar-header">
+                        <div>
+                            <span class="modal-eliminar-icono">⚠️</span>
 
-                        <h2 class="modal-title fs-5"
-                            id="modalEliminarLabel">
-                            Confirmar eliminación
-                        </h2>
+                            <h2 class="modal-title fs-5"
+                                id="modalEliminarLabel">
+                                Confirmar eliminación
+                            </h2>
+                        </div>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Cerrar">
+                        </button>
                     </div>
 
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Cerrar">
-                    </button>
-                </div>
+                    <div class="modal-body modal-eliminar-body">
+                        <p class="mb-2">
+                            ¿Está seguro de que desea eliminar el menú
+                            <strong id="nombreMenuEliminar"></strong>?
+                        </p>
 
-                <div class="modal-body modal-eliminar-body">
-                    <p class="mb-2">
-                        ¿Está seguro de que desea eliminar el menú
-                        <strong id="nombreMenuEliminar"></strong>?
-                    </p>
+                        <p class="modal-eliminar-advertencia mb-0">
+                            Esta acción eliminará también sus relaciones con
+                            productos y combos, y no se puede deshacer.
+                        </p>
+                    </div>
 
-                    <p class="modal-eliminar-advertencia mb-0">
-                        Esta acción eliminará también sus relaciones con
-                        productos y combos, y no se puede deshacer.
-                    </p>
-                </div>
-
-                <div class="modal-footer modal-eliminar-footer">
-                    <button type="button"
-                            class="btn-modal-cancelar"
-                            data-bs-dismiss="modal">
-                        Cancelar
-                    </button>
-
-                    <form id="formEliminarMenu"
-                          asp-controller="Menu"
-                          asp-action="Delete"
-                          method="post">
-
-                        <input type="hidden"
-                               id="idMenuEliminar"
-                               name="id" />
-
-                        <button type="submit"
-                                class="btn-modal-eliminar">
-                            🗑️ Eliminar menú
+                    <div class="modal-footer modal-eliminar-footer">
+                        <button type="button"
+                                class="btn-modal-cancelar"
+                                data-bs-dismiss="modal">
+                            Cancelar
                         </button>
-                    </form>
-                </div>
 
+                        <form id="formEliminarMenu"
+                              asp-controller="Menu"
+                              asp-action="Delete"
+                              method="post">
+
+                            <input type="hidden"
+                                   id="idMenuEliminar"
+                                   name="id" />
+
+                            <button type="submit"
+                                    class="btn-modal-eliminar">
+                                🗑️ Eliminar menú
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
             </div>
         </div>
-    </div>
+    }
 }
-
 @section Scripts {
     <script>
         anime({
@@ -365,16 +376,18 @@
 
         const modalEliminar = document.getElementById('modalEliminar');
 
-        modalEliminar.addEventListener('show.bs.modal', function (event) {
-            const boton = event.relatedTarget;
+        if (modalEliminar) {
+            modalEliminar.addEventListener('show.bs.modal', function (event) {
+                const boton = event.relatedTarget;
 
-            const idMenu = boton.dataset.id;
-            const nombreMenu = boton.dataset.nombre;
+                const idMenu = boton.dataset.id;
+                const nombreMenu = boton.dataset.nombre;
 
-            document.getElementById('idMenuEliminar').value = idMenu;
+                document.getElementById('idMenuEliminar').value = idMenu;
 
-            document.getElementById('nombreMenuEliminar').textContent =
-                `"${nombreMenu}"`;
-        });
+                document.getElementById('nombreMenuEliminar').textContent =
+                    `"${nombreMenu}"`;
+            });
+        }
     </script>
 }

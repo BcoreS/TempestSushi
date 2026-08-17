@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TempestSushi.Application.DTOs;
 using TempestSushi.Application.Services.Interfaces;
 
 namespace TempestSushi.Web.Controllers
 {
+    [Authorize]
     public class MenuController : Controller
     {
         private readonly IMenuService _service;
@@ -23,14 +25,19 @@ namespace TempestSushi.Web.Controllers
         public async Task<IActionResult> Disponible()
         {
             var menu = await _service.ObtenerMenuDisponibleAsync();
+
             if (menu == null)
             {
-                ViewBag.Mensaje = "No hay ningún menú disponible en este momento.";
+                ViewBag.Mensaje =
+                    "No hay ningún menú disponible en este momento.";
+
                 return View((object?)null);
             }
+
             return View(menu);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -38,6 +45,7 @@ namespace TempestSushi.Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MenuFormDto dto)
@@ -50,11 +58,13 @@ namespace TempestSushi.Web.Controllers
 
             await _service.CrearAsync(dto);
 
-            TempData["MensajeExito"] = "El menú se creó correctamente.";
+            TempData["MensajeExito"] =
+                "El menú se creó correctamente.";
 
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -68,6 +78,7 @@ namespace TempestSushi.Web.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(MenuFormDto dto)
@@ -93,6 +104,7 @@ namespace TempestSushi.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

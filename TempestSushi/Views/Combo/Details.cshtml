@@ -179,7 +179,15 @@
             </div>
         </div>
         <a asp-action="Index" class="btn-volver">← Volver al listado</a>
-        <a asp-action="Editar" asp-route-id="@Model.IdCombo" class="btn-volver" style="margin-left:8px; background:#1a3a6e; color:#fff !important;">✎ Editar</a>
+        @if (User.IsInRole("Administrador"))
+        {
+            <a asp-action="Editar"
+               asp-route-id="@Model.IdCombo"
+               class="btn-volver"
+               style="margin-left:8px; background:#1a3a6e; color:#fff !important;">
+                ✎ Editar
+            </a>
+        }
     </div>
 </div>
 
