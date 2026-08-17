@@ -1,0 +1,206 @@
+﻿@model List<TempestSushi.Application.DTOs.PedidoHistorialDto>
+@{
+    ViewData["Title"] = "Historial de Pedidos";
+    bool esEncargadoOAdmin = ViewBag.EsEncargadoOAdmin;
+    var culturaCR = new System.Globalization.CultureInfo("es-CR");
+}
+
+<style>
+    .ts-page-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        color: #1a3a6e;
+        letter-spacing: 1px;
+        margin-bottom: 1.25rem;
+    }
+
+    .ts-filtros {
+        background: #ffffff;
+        border: 1px solid #d0e8f8;
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: flex-end;
+        box-shadow: 0 2px 10px rgba(26, 58, 110, 0.06);
+    }
+
+        .ts-filtros label {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1a3a6e;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .ts-filtros .form-control,
+        .ts-filtros .form-select {
+            border-radius: 8px;
+            border: 1px solid #c7dcf0;
+        }
+
+    .ts-btn-filtrar {
+        background: #1a3a6e;
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 0.5rem 1.4rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+    }
+
+        .ts-btn-filtrar:hover {
+            background: #142f58;
+            color: #fff;
+        }
+
+    .ts-btn-limpiar {
+        color: #c0392b;
+        text-decoration: none;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        align-self: center;
+    }
+
+    .ts-tabla-pedidos {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(26, 58, 110, 0.08);
+    }
+
+        .ts-tabla-pedidos thead {
+            background: #1a3a6e;
+        }
+
+            .ts-tabla-pedidos thead th {
+                color: #fff;
+                font-family: 'Rajdhani', sans-serif;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                border: none;
+                padding: 0.85rem 1rem;
+            }
+
+        .ts-tabla-pedidos tbody td {
+            padding: 0.85rem 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #eef4fa;
+        }
+
+        .ts-tabla-pedidos tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ts-tabla-pedidos tbody tr:hover {
+            background: #f7fbff;
+        }
+
+    .ts-estado-badge {
+        display: inline-block;
+        padding: 3px 12px;
+        border-radius: 999px;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+        color: #fff;
+        background: #4fa8e8;
+    }
+
+    .ts-link-detalle {
+        color: #c0392b;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        text-decoration: none;
+        border: 1px solid rgba(192, 57, 43, 0.35);
+        border-radius: 999px;
+        padding: 0.3rem 0.9rem;
+        transition: all .2s ease;
+    }
+
+        .ts-link-detalle:hover {
+            background: #c0392b;
+            color: #fff;
+        }
+
+    .ts-empty {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #8ab2cc;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.1rem;
+    }
+</style>
+
+<h2 class="ts-page-title">Historial de Pedidos</h2>
+
+@if (esEncargadoOAdmin)
+{
+    <form method="get" asp-action="Index" class="ts-filtros">
+        <div>
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha" class="form-control" value="@ViewBag.FechaFiltro" />
+        </div>
+        <div>
+            <label for="idEstadoPedido">Estado</label>
+            <select id="idEstadoPedido" name="idEstadoPedido" class="form-select">
+                <option value="">Todos</option>
+                @foreach (var estado in (List<TempestSushi.Application.DTOs.PedidoMetodoOpcionDto>)ViewBag.Estados)
+                {
+                    var seleccionado = ViewBag.EstadoFiltro != null && (int)ViewBag.EstadoFiltro == estado.Id;
+                    <option value="@estado.Id" selected="@seleccionado">@estado.Nombre</option>
+                }
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="ts-btn-filtrar">Filtrar</button>
+        </div>
+        <a asp-action="Index" class="ts-btn-limpiar">Limpiar filtros</a>
+    </form>
+}
+
+@if (!Model.Any())
+{
+    <div class="ts-empty">No hay pedidos registrados todavía.</div>
+}
+else
+{
+    <table class="table ts-tabla-pedidos">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                @if (esEncargadoOAdmin)
+                {
+                    <th>Cliente</th>
+                }
+                <th>Método de entrega</th>
+                <th>Estado</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pedido in Model.OrderByDescending(p => p.FechaPedido))
+            {
+                <tr>
+                    <td>@pedido.FechaPedido.ToString("dd/MM/yyyy HH:mm", culturaCR)</td>
+                    @if (esEncargadoOAdmin)
+                    {
+                        <td>@pedido.ClienteNombre</td>
+                    }
+                    <td>@pedido.MetodoEntregaNombre</td>
+                    <td><span class="ts-estado-badge">@pedido.EstadoNombre</span></td>
+                    <td>@pedido.Total.ToString("C", culturaCR)</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@pedido.IdPedido" class="ts-link-detalle">Ver detalle</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

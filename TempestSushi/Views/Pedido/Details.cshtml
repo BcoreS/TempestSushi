@@ -1,0 +1,250 @@
+﻿@model TempestSushi.Application.DTOs.PedidoDTO
+@{
+    ViewData["Title"] = "Detalle de Pedido";
+    var culturaCR = new System.Globalization.CultureInfo("es-CR");
+}
+
+<style>
+    .ts-factura {
+        background: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(26, 58, 110, 0.10);
+        overflow: hidden;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .ts-factura-header {
+        background: #1a3a6e;
+        color: #fff;
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .ts-factura-titulo {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .ts-factura-numero {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.95rem;
+        opacity: 0.85;
+    }
+
+    .ts-factura-body {
+        padding: 2rem;
+    }
+
+    .ts-encabezado-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem 2rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px dashed #d0e8f8;
+    }
+
+    .ts-campo-label {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #4fa8e8;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+    }
+
+    .ts-campo-valor {
+        font-size: 1rem;
+        color: #1a3a6e;
+        font-weight: 600;
+    }
+
+    .ts-estado-badge {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 999px;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: 0.82rem;
+        letter-spacing: 0.05em;
+        color: #fff;
+        background: #4fa8e8;
+    }
+
+    .ts-tabla-detalle {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1.5rem;
+    }
+
+        .ts-tabla-detalle thead th {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #1a3a6e;
+            border-bottom: 2px solid #1a3a6e;
+            padding: 0.6rem 0.75rem;
+            text-align: left;
+        }
+
+        .ts-tabla-detalle tbody td {
+            padding: 0.7rem 0.75rem;
+            border-bottom: 1px solid #eef4fa;
+            font-size: 0.92rem;
+            color: #294869;
+        }
+
+        .ts-tabla-detalle .ts-col-num {
+            text-align: right;
+        }
+
+    .ts-tipo-tag {
+        font-size: 0.68rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: #8ab2cc;
+    }
+
+    .ts-totales {
+        margin-left: auto;
+        max-width: 320px;
+    }
+
+    .ts-totales-fila {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.4rem 0;
+        font-size: 0.95rem;
+        color: #294869;
+    }
+
+        .ts-totales-fila.ts-envio {
+            color: #8ab2cc;
+        }
+
+        .ts-totales-fila.ts-total-final {
+            border-top: 2px solid #1a3a6e;
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #1a3a6e;
+        }
+
+    .ts-volver {
+        display: inline-block;
+        margin-top: 1.5rem;
+        color: #1a3a6e;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+        .ts-volver:hover {
+            color: #c0392b;
+        }
+</style>
+
+<div class="ts-factura">
+    <div class="ts-factura-header">
+        <h2 class="ts-factura-titulo">Detalle de Pedido</h2>
+        <span class="ts-factura-numero">Pedido N.º @Model.IdPedido</span>
+    </div>
+
+    <div class="ts-factura-body">
+        <div class="ts-encabezado-grid">
+            <div>
+                <div class="ts-campo-label">Fecha</div>
+                <div class="ts-campo-valor">@Model.FechaPedido.ToString("dd/MM/yyyy HH:mm", culturaCR)</div>
+            </div>
+            <div>
+                <div class="ts-campo-label">Estado</div>
+                <div class="ts-campo-valor"><span class="ts-estado-badge">@Model.EstadoNombre</span></div>
+            </div>
+            <div>
+                <div class="ts-campo-label">Cliente</div>
+                <div class="ts-campo-valor">@Model.ClienteNombre</div>
+                <div class="ts-campo-valor" style="font-weight:400; font-size:0.85rem; color:#8ab2cc;">@Model.ClienteIdentificador</div>
+            </div>
+            <div>
+                <div class="ts-campo-label">Encargado</div>
+                <div class="ts-campo-valor">@(Model.EncargadoNombre ?? "—")</div>
+            </div>
+            <div>
+                <div class="ts-campo-label">Método de entrega</div>
+                <div class="ts-campo-valor">
+                    @Model.MetodoEntregaNombre
+                    @if (!string.IsNullOrWhiteSpace(Model.DireccionEntrega))
+                    {
+                        <div style="font-weight:400; font-size:0.85rem; color:#8ab2cc;">@Model.DireccionEntrega</div>
+                    }
+                </div>
+            </div>
+            <div>
+                <div class="ts-campo-label">Método de pago</div>
+                <div class="ts-campo-valor">@Model.MetodoPagoNombre</div>
+            </div>
+        </div>
+
+        <table class="ts-tabla-detalle">
+            <thead>
+                <tr>
+                    <th>Producto / Combo</th>
+                    <th class="ts-col-num">Precio</th>
+                    <th class="ts-col-num">Cantidad</th>
+                    <th class="ts-col-num">Subtotal</th>
+                    <th class="ts-col-num">Impuesto</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var linea in Model.Lineas)
+                {
+                    <tr>
+                        <td>
+                            @linea.Nombre
+                            <div class="ts-tipo-tag">@linea.Tipo</div>
+                        </td>
+                        <td class="ts-col-num">@linea.PrecioUnitario.ToString("C", culturaCR)</td>
+                        <td class="ts-col-num">@linea.Cantidad</td>
+                        <td class="ts-col-num">@linea.Subtotal.ToString("C", culturaCR)</td>
+                        <td class="ts-col-num">@linea.Impuesto.ToString("C", culturaCR)</td>
+                        <td>@(string.IsNullOrWhiteSpace(linea.Observaciones) ? "—" : linea.Observaciones)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="ts-totales">
+            <div class="ts-totales-fila">
+                <span>Total sin impuestos</span>
+                <span>@Model.TotalSinImpuestos.ToString("C", culturaCR)</span>
+            </div>
+            @if (Model.CostoEnvio > 0)
+            {
+                <div class="ts-totales-fila ts-envio">
+                    <span>Costo de envío</span>
+                    <span>@Model.CostoEnvio.ToString("C", culturaCR)</span>
+                </div>
+            }
+            <div class="ts-totales-fila ts-total-final">
+                <span>Total con impuestos</span>
+                <span>@Model.TotalConImpuestos.ToString("C", culturaCR)</span>
+            </div>
+        </div>
+
+        <a asp-action="Index" class="ts-volver">&larr; Volver al historial</a>
+    </div>
+</div>
