@@ -137,7 +137,10 @@
     }
 </style>
 
-<h2 class="ts-page-title">Historial de Pedidos</h2>
+<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
+    <h2 class="ts-page-title" style="margin-bottom:0;">Historial de Pedidos</h2>
+    <a asp-action="Create" class="ts-btn-filtrar" style="text-decoration:none;">+ Nuevo Pedido</a>
+</div>
 
 @if (esEncargadoOAdmin)
 {
