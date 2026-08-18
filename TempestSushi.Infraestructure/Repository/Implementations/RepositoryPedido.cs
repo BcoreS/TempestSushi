@@ -111,5 +111,17 @@ namespace TempestSushi.Infraestructure.Repository.Implementations
             return await _context.EstadoPedidos.ToListAsync();
         }
 
+
+        public async Task<EstadoPedido?> GetEstadoPorIdAsync(int idEstadoPedido)
+        {
+            return await _context.EstadoPedidos
+                .FirstOrDefaultAsync(e => e.IdEstadoPedido == idEstadoPedido);
+        }
+
+        public async Task GuardarCambiosAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

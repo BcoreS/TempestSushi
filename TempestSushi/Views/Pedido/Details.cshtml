@@ -1,8 +1,13 @@
 ﻿@model TempestSushi.Application.DTOs.PedidoDTO
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 @{
     ViewData["Title"] = "Detalle de Pedido";
     var culturaCR = new System.Globalization.CultureInfo("es-CR");
+    var tokens = Antiforgery.GetAndStoreTokens(Context);
+    bool esEmpleado = (bool)ViewBag.EsEmpleado;
 }
+
+<meta name="csrf-token" content="@tokens.RequestToken" />
 
 <style>
     .ts-factura {
@@ -155,6 +160,69 @@
         .ts-volver:hover {
             color: #c0392b;
         }
+
+    .ts-cambiar-estado {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-top: 0.5rem;
+    }
+
+    .ts-select-estado {
+        border-radius: 8px;
+        border: 1px solid #c7dcf0;
+        padding: 0.35rem 0.6rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        color: #1a3a6e;
+    }
+
+    .ts-btn-estado {
+        background: #1a3a6e;
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 0.4rem 1rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: 0.82rem;
+        cursor: pointer;
+    }
+
+        .ts-btn-estado:hover {
+            background: #142f58;
+        }
+
+    .ts-toast-detalle {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        min-width: 260px;
+        padding: 1rem 1.25rem;
+        border-radius: 10px;
+        color: #fff;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+        z-index: 2000;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all .25s ease;
+        pointer-events: none;
+    }
+
+        .ts-toast-detalle.ts-show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .ts-toast-detalle.ts-exito {
+            background: #1a7d3a;
+        }
+
+        .ts-toast-detalle.ts-error {
+            background: #c0392b;
+        }
 </style>
 
 <div class="ts-factura">
@@ -171,7 +239,20 @@
             </div>
             <div>
                 <div class="ts-campo-label">Estado</div>
-                <div class="ts-campo-valor"><span class="ts-estado-badge">@Model.EstadoNombre</span></div>
+                <div class="ts-campo-valor"><span class="ts-estado-badge" id="estadoBadgeActual">@Model.EstadoNombre</span></div>
+
+                @if (esEmpleado)
+                {
+                    <div class="ts-cambiar-estado">
+                        <select id="selectEstado" class="ts-select-estado">
+                            @foreach (var estado in (List<TempestSushi.Application.DTOs.PedidoMetodoOpcionDto>)ViewBag.Estados)
+                            {
+                                <option value="@estado.Id" selected="@(estado.Nombre == Model.EstadoNombre)">@estado.Nombre</option>
+                            }
+                        </select>
+                        <button type="button" id="btnActualizarEstado" class="ts-btn-estado">Actualizar</button>
+                    </div>
+                }
             </div>
             <div>
                 <div class="ts-campo-label">Cliente</div>
@@ -248,3 +329,54 @@
         <a asp-action="Index" class="ts-volver">&larr; Volver al historial</a>
     </div>
 </div>
+
+<div id="toastDetalle" class="ts-toast-detalle"></div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const btnActualizar = document.getElementById('btnActualizarEstado');
+            if (!btnActualizar) return; // el cliente no tiene este botón
+
+            const toast = document.getElementById('toastDetalle');
+            const idPedido = @Model.IdPedido;
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+            function mostrarToastDetalle(mensaje, tipo) {
+                toast.textContent = mensaje;
+                toast.className = 'ts-toast-detalle ts-show ' + (tipo === 'error' ? 'ts-error' : 'ts-exito');
+                clearTimeout(toast._timeoutId);
+                toast._timeoutId = setTimeout(() => toast.classList.remove('ts-show'), 4000);
+            }
+
+            btnActualizar.addEventListener('click', async function () {
+                const idEstado = document.getElementById('selectEstado').value;
+
+                btnActualizar.disabled = true;
+
+                try {
+                    const resp = await fetch('@Url.Action("CambiarEstado", "Pedido")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: JSON.stringify({ idPedido: idPedido, idEstadoPedido: parseInt(idEstado, 10) })
+                    });
+
+                    if (!resp.ok) {
+                        const error = await resp.json().catch(() => ({ mensaje: 'No se pudo actualizar el estado.' }));
+                        throw new Error(error.mensaje || 'No se pudo actualizar el estado.');
+                    }
+
+                    mostrarToastDetalle('Estado actualizado correctamente.', 'exito');
+                    setTimeout(() => location.reload(), 1000);
+
+                } catch (e) {
+                    mostrarToastDetalle(e.message, 'error');
+                    btnActualizar.disabled = false;
+                }
+            });
+        })();
+    </script>
+}

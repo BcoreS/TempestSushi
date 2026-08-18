@@ -33,5 +33,9 @@ namespace TempestSushi.Infraestructure.Repository.Interfaces
 
         Task<List<EstadoPedido>> GetEstadosAsync();
 
+
+        Task<EstadoPedido?> GetEstadoPorIdAsync(int idEstadoPedido);
+        Task GuardarCambiosAsync();
+
     }
 }

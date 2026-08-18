@@ -44,10 +44,14 @@ namespace TempestSushi.Web.Controllers
         {
             var pedido = await _servicePedido.ObtenerDetalleAsync(id);
             if (pedido is null)
-                return NotFound(); // también cubre el caso de "no es tu pedido"
+                return NotFound();
 
+            ViewBag.Estados = await _servicePedido.ObtenerEstadosAsync();
+            ViewBag.EsEmpleado = _usuarioActual.Rol != "Cliente";
             return View(pedido);
         }
+
+
 
         // Formulario de registro
         public async Task<IActionResult> Create()
@@ -88,6 +92,26 @@ namespace TempestSushi.Web.Controllers
             {
                 var linea = await _servicePedido.CalcularLineaAsync(entrada);
                 return Ok(linea);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CambiarEstado([FromBody] CambiarEstadoPedidoDto dto)
+        {
+            try
+            {
+                var pedido = await _servicePedido.ActualizarEstadoAsync(dto);
+                return Ok(pedido);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { mensaje = ex.Message });
             }
             catch (InvalidOperationException ex)
             {

@@ -28,5 +28,9 @@ namespace TempestSushi.Application.Services.Interfaces
 
 
         Task<List<PedidoMetodoOpcionDto>> ObtenerEstadosAsync();
+
+
+
+        Task<PedidoDTO> ActualizarEstadoAsync(CambiarEstadoPedidoDto dto);
     }
 }

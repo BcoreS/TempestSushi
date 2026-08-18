@@ -167,8 +167,8 @@ namespace TempestSushi.Application.Services.Implementations
             };
         }
 
-      
-    
+
+
 
 
         public async Task<PedidoFormularioDto> ObtenerDatosFormularioAsync()
@@ -349,6 +349,34 @@ namespace TempestSushi.Application.Services.Implementations
 
             var pedidoCompleto = await _repositoryPedido.GetByIdAsync(pedidoCreado.IdPedido);
             return await ObtenerDetalleAsync(pedidoCompleto!.IdPedido) ?? throw new InvalidOperationException("Error al recuperar el pedido registrado.");
+        }
+
+        public async Task<PedidoDTO> ActualizarEstadoAsync(CambiarEstadoPedidoDto dto)
+        {
+            if (!_usuarioActual.EstaAutenticado || _usuarioActual.IdUsuario is null)
+                throw new UnauthorizedAccessException("Debe iniciar sesión.");
+
+            // Solo Encargado, Cocina o Administrador pueden cambiar el estado - nunca un Cliente
+            if (_usuarioActual.Rol == "Cliente")
+                throw new UnauthorizedAccessException("No tiene permisos para cambiar el estado del pedido.");
+
+            var pedido = await _repositoryPedido.GetByIdAsync(dto.IdPedido)
+                ?? throw new InvalidOperationException("Pedido no encontrado.");
+
+            var nuevoEstado = await _repositoryPedido.GetEstadoPorIdAsync(dto.IdEstadoPedido)
+                ?? throw new InvalidOperationException("Estado no válido.");
+
+            // Si nadie lo había tomado todavía (lo registró el propio cliente), el empleado que
+            // hace el primer cambio de estado queda asociado como el encargado de ese pedido
+            if (pedido.IdEmpleado is null)
+                pedido.IdEmpleado = _usuarioActual.IdUsuario.Value;
+
+            pedido.IdEstadoPedido = nuevoEstado.IdEstadoPedido;
+
+            await _repositoryPedido.GuardarCambiosAsync();
+
+            return await ObtenerDetalleAsync(pedido.IdPedido)
+                ?? throw new InvalidOperationException("Error al recuperar el pedido actualizado.");
         }
     }
 }
