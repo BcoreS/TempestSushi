@@ -3,7 +3,7 @@ using TempestSushi.Infraestructure.Data;
 using TempestSushi.Infraestructure.Models;
 using TempestSushi.Infraestructure.Repository.Interfaces;
 
-namespace TempestSushi.Infraestructure.Repository.Interfaces
+namespace TempestSushi.Infraestructure.Repository.Implementations
 {
     public class RepositoryUsuario : IRepositoryUsuario
     {
