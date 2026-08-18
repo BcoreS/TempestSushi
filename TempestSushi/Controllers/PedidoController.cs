@@ -5,7 +5,6 @@ using TempestSushi.Application.DTOs;
 using TempestSushi.Application.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using TempestSushi.Application.Options;
-using TempestSushi.Application.Services.Interfaces;
 
 namespace TempestSushi.Web.Controllers
 {
@@ -25,7 +24,6 @@ namespace TempestSushi.Web.Controllers
             _serviceClima = serviceClima;
         }
 
-        // Historial - filtrado automáticamente por rol dentro del Service
         public async Task<IActionResult> Index(DateTime? fecha, int? idEstadoPedido)
         {
             var historial = await _servicePedido.ObtenerHistorialAsync(fecha, idEstadoPedido);
@@ -46,21 +44,29 @@ namespace TempestSushi.Web.Controllers
         // Detalle formato factura
         public async Task<IActionResult> Details(int id)
         {
+
             var pedido = await _servicePedido.ObtenerDetalleAsync(id);
+
             if (pedido is null)
                 return NotFound();
+
 
             ViewBag.Estados = await _servicePedido.ObtenerEstadosAsync();
             ViewBag.EsEmpleado = _usuarioActual.Rol != "Cliente";
 
-            if (pedido.MetodoEntregaNombre.Contains("domicilio", StringComparison.OrdinalIgnoreCase))
+            if (pedido.MetodoEntregaNombre.Contains(
+                "domicilio",
+                StringComparison.OrdinalIgnoreCase))
             {
-                ViewBag.Clima = await _serviceClima.ObtenerClimaEntregaAsync();
+
+                ViewBag.Clima =
+                    await _serviceClima.ObtenerClimaEntregaAsync();
+
+                
             }
 
             return View(pedido);
         }
-
 
         // Formulario de registro
         public async Task<IActionResult> Create()

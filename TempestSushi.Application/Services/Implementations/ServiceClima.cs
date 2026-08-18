@@ -1,7 +1,6 @@
-﻿using System;
+﻿using System.Globalization;
 using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
 using TempestSushi.Application.DTOs;
 using TempestSushi.Application.Services.Interfaces;
 
@@ -11,7 +10,7 @@ namespace TempestSushi.Application.Services.Implementations
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
-        // Coordenadas fijas: San José, Costa Rica
+        // Coordenadas fijas de San José, Costa Rica.
         private const double LATITUD = 9.9281;
         private const double LONGITUD = -84.0907;
 
@@ -25,14 +24,26 @@ namespace TempestSushi.Application.Services.Implementations
             try
             {
                 var client = _httpClientFactory.CreateClient();
-                var url = $"https://api.open-meteo.com/v1/forecast?latitude={LATITUD}&longitude={LONGITUD}&current_weather=true";
+
+                // InvariantCulture evita que las coordenadas se conviertan
+                // usando coma decimal según la configuración regional del equipo.
+                var url =
+                    $"https://api.open-meteo.com/v1/forecast" +
+                    $"?latitude={LATITUD.ToString(CultureInfo.InvariantCulture)}" +
+                    $"&longitude={LONGITUD.ToString(CultureInfo.InvariantCulture)}" +
+                    $"&current=temperature_2m,weather_code";
 
                 var respuesta = await client.GetStringAsync(url);
-                using var json = JsonDocument.Parse(respuesta);
-                var climaActual = json.RootElement.GetProperty("current_weather");
 
-                var temperatura = climaActual.GetProperty("temperature").GetDecimal();
-                var codigoClima = climaActual.GetProperty("weathercode").GetInt32();
+                using var json = JsonDocument.Parse(respuesta);
+
+                var climaActual = json.RootElement.GetProperty("current");
+
+                var temperatura =
+                    climaActual.GetProperty("temperature_2m").GetDecimal();
+
+                var codigoClima =
+                    climaActual.GetProperty("weather_code").GetInt32();
 
                 return new ClimaDto
                 {
@@ -42,7 +53,8 @@ namespace TempestSushi.Application.Services.Implementations
             }
             catch
             {
-                // Si el servicio externo falla, no debe romper la vista del pedido
+                // Si el servicio externo no está disponible,
+                // el detalle del pedido debe seguir funcionando.
                 return null;
             }
         }
