@@ -5,6 +5,7 @@ using TempestSushi.Application.DTOs;
 using TempestSushi.Application.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using TempestSushi.Application.Options;
+using TempestSushi.Application.Services.Interfaces;
 
 namespace TempestSushi.Web.Controllers
 {
@@ -14,11 +15,14 @@ namespace TempestSushi.Web.Controllers
         private readonly IServicePedido _servicePedido;
         private readonly IUsuarioActualService _usuarioActual;
         private readonly EnvioOptions _envioOptions;
-        public PedidoController(IServicePedido servicePedido, IUsuarioActualService usuarioActual, IOptions<EnvioOptions> envioOptions)
+        private readonly IServiceClima _serviceClima;
+
+        public PedidoController(IServicePedido servicePedido, IUsuarioActualService usuarioActual, IOptions<EnvioOptions> envioOptions, IServiceClima serviceClima)
         {
             _servicePedido = servicePedido;
             _usuarioActual = usuarioActual;
             _envioOptions = envioOptions.Value;
+            _serviceClima = serviceClima;
         }
 
         // Historial - filtrado automáticamente por rol dentro del Service
@@ -48,9 +52,14 @@ namespace TempestSushi.Web.Controllers
 
             ViewBag.Estados = await _servicePedido.ObtenerEstadosAsync();
             ViewBag.EsEmpleado = _usuarioActual.Rol != "Cliente";
+
+            if (pedido.MetodoEntregaNombre.Contains("domicilio", StringComparison.OrdinalIgnoreCase))
+            {
+                ViewBag.Clima = await _serviceClima.ObtenerClimaEntregaAsync();
+            }
+
             return View(pedido);
         }
-
 
 
         // Formulario de registro
@@ -119,4 +128,8 @@ namespace TempestSushi.Web.Controllers
             }
         }
     }
+
+
+
+
 }

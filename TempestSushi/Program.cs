@@ -28,6 +28,7 @@ builder.Services
 builder.Services.Configure<ImpuestosOptions>(builder.Configuration.GetSection("Impuestos"));
 builder.Services.Configure<EnvioOptions>(builder.Configuration.GetSection("Envio"));
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<IUsuarioActualService, UsuarioActualService>();
 
 
@@ -49,6 +50,7 @@ builder.Services.AddScoped<IServiceCombo, ServiceCombo>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IMenuService, MenuService>();
 builder.Services.AddScoped<IServicePedido, ServicePedido>();
+builder.Services.AddScoped<IServiceClima, ServiceClima>();
 builder.Services.AddScoped<
     IServiceAutenticacion,
     ServiceAutenticacion>();

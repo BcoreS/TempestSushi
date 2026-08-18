@@ -193,6 +193,21 @@
             background: #142f58;
         }
 
+    .ts-clima-franja {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: #f0f6fc;
+        border: 1px solid #d0e8f8;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        margin: -1rem 0 2rem 0;
+    }
+
+    .ts-clima-icono {
+        font-size: 1.6rem;
+    }
+
     .ts-toast-detalle {
         position: fixed;
         bottom: 24px;
@@ -278,6 +293,19 @@
                 <div class="ts-campo-valor">@Model.MetodoPagoNombre</div>
             </div>
         </div>
+
+        @if (Model.MetodoEntregaNombre.Contains("domicilio", StringComparison.OrdinalIgnoreCase) && ViewBag.Clima != null)
+        {
+            <div class="ts-clima-franja">
+                <span class="ts-clima-icono">🌤️</span>
+                <div>
+                    <div class="ts-campo-label" style="margin-bottom:0;">Clima actual para la entrega</div>
+                    <div class="ts-campo-valor">
+                        @(((TempestSushi.Application.DTOs.ClimaDto)ViewBag.Clima).Temperatura)°C — @(((TempestSushi.Application.DTOs.ClimaDto)ViewBag.Clima).Descripcion)
+                    </div>
+                </div>
+            </div>
+        }
 
         <table class="ts-tabla-detalle">
             <thead>
