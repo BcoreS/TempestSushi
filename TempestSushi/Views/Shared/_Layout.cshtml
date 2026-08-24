@@ -406,6 +406,18 @@
                             </a>
                         </li>
 
+                        @if (User.IsInRole("Encargado") ||
+                                            User.IsInRole("Administrador"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Reporte"
+                                   asp-action="Index">
+                                    Reportes
+                                </a>
+                            </li>
+                        }
+
                         <!-- Cliente, Encargado y Administrador -->
                         @if (User.IsInRole("Cliente")
                                             || User.IsInRole("Encargado")
@@ -448,6 +460,7 @@
                                 </a>
                             </li>
                         }
+
 
                         <!-- Cocina y Administrador -->
                         @if (User.IsInRole("Cocina")

@@ -10,8 +10,10 @@ using TempestSushi.Infraestructure.Repository.Implementations;
 using TempestSushi.Infraestructure.Repository.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using TempestSushi.Application.Options;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+QuestPDF.Settings.License = LicenseType.Community;
 
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -30,6 +32,10 @@ builder.Services.Configure<EnvioOptions>(builder.Configuration.GetSection("Envio
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IUsuarioActualService, UsuarioActualService>();
+builder.Services.AddScoped<
+    IRepositoryReporte,
+    RepositoryReporte>();
+
 
 
 builder.Services.AddScoped<IRepositoryProcesoPreparacion, RepositoryProcesoPreparacion>();
@@ -54,6 +60,12 @@ builder.Services.AddScoped<IServiceClima, ServiceClima>();
 builder.Services.AddScoped<
     IServiceAutenticacion,
     ServiceAutenticacion>();
+builder.Services.AddScoped<
+    IServiceReporte,
+    ServiceReporte>();
+builder.Services.AddScoped<
+    IServiceReportePdf,
+    ServiceReportePdf>();
 
 builder.Services.AddAutoMapper(cfg =>
 {

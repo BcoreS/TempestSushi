@@ -22,7 +22,7 @@ namespace TempestSushi.Application.Services.Implementations
         private readonly ImpuestosOptions _impuestosOptions;
         private readonly EnvioOptions _envioOptions;
 
-        private const string ESTADO_INICIAL = "Pendiente de pago";
+        private const string ESTADO_INICIAL = "Procesando";
         private const string METODO_ENTREGA_DOMICILIO = "Entrega a domicilio";
 
         public ServicePedido(
