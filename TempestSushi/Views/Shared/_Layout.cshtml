@@ -16,33 +16,48 @@
         _ => "ts-role-default"
     };
 }
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TempestSushi</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    <style>
-        /* ── Colores del logo ──────────────────────────────────────
-                   Azul marino : #1a3a6e   (TEMPEST text, bordes fuertes)
-                   Azul cielo  : #4fa8e8   (SUSHI text, acentos, olas)
-                   Rojo        : #c0392b   (sello 嵐, hover activo)
-                ────────────────────────────────────────────────────────── */
 
-        *, *::before, *::after {
-            box-sizing: border-box;
+    <title>@ViewData["Title"] - TempestSushi</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin />
+
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Noto+Sans+JP:wght@400;500&display=swap"
+          rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <style>
+        :root {
+            --ts-navy: #1a3a6e;
+            --ts-blue: #4fa8e8;
+            --ts-red: #c0392b;
+            --ts-orange: #d68910;
+            --ts-bg: #f0f6fc;
+            --ts-border: #d0e8f8;
         }
 
-        body {
-            font-family: 'Noto Sans JP', sans-serif;
-            background: #f0f6fc;
-            margin: 0;
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
         }
 
         html,
@@ -52,50 +67,58 @@
 
         body {
             min-height: 100vh;
-            font-family: 'Noto Sans JP', sans-serif;
-            background: #f0f6fc;
             margin: 0;
             display: flex;
             flex-direction: column;
+            font-family: 'Noto Sans JP', sans-serif;
+            background: var(--ts-bg);
         }
 
-        /* ── NAVBAR ───────────────────────────────────────────── */
+        /* ═══════════════════════════════════════
+                   NAVBAR
+                   ═══════════════════════════════════════ */
+
         .ts-navbar {
-            background: #ffffff;
-            border-bottom: 2px solid #1a3a6e;
+            min-height: 72px;
             padding: 0 2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 72px;
             position: relative;
-            box-shadow: 0 2px 12px rgba(26, 58, 110, 0.10);
-            opacity: 0; /* Anime.js lo revela */
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(26, 58, 110, 0.12);
+            box-shadow: 0 3px 18px rgba(26, 58, 110, 0.09);
+            opacity: 0;
         }
 
-        /* Línea animada debajo del borde */
         .ts-gradient-bar {
             position: absolute;
-            bottom: -4px;
+            bottom: -3px;
             left: 0;
-            width: 60px; /* Anime.js la expande */
+            width: 60px;
             height: 3px;
-            background: linear-gradient(90deg, #1a3a6e, #4fa8e8, #c0392b);
+            background: linear-gradient( 90deg, var(--ts-navy), var(--ts-blue), var(--ts-red) );
             border-radius: 2px;
         }
 
-        /* ── BRAND ────────────────────────────────────────────── */
+        /* ═══════════════════════════════════════
+                   BRAND
+                   ═══════════════════════════════════════ */
+
         .ts-brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 11px;
             text-decoration: none;
+            flex-shrink: 0;
         }
 
             .ts-brand img {
-                height: 52px;
+                height: 50px;
                 width: auto;
-                filter: drop-shadow(0 2px 6px rgba(26, 58, 110, 0.18));
+                filter: drop-shadow( 0 2px 6px rgba(26, 58, 110, 0.18) );
             }
 
         .ts-brand-text {
@@ -106,73 +129,117 @@
 
         .ts-brand-title {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.35rem;
             font-weight: 700;
-            color: #1a3a6e;
-            letter-spacing: 2px;
+            color: var(--ts-navy);
+            letter-spacing: 1.8px;
         }
 
         .ts-brand-sub {
-            font-size: 0.62rem;
-            color: #4fa8e8;
-            letter-spacing: 3px;
+            margin-top: 3px;
+            font-size: 0.58rem;
             font-weight: 500;
-            margin-top: 2px;
+            color: var(--ts-blue);
+            letter-spacing: 2.4px;
         }
 
-        /* ── NAV LINKS ────────────────────────────────────────── */
+        /* ═══════════════════════════════════════
+                   PARTE DERECHA
+                   ═══════════════════════════════════════ */
+
+        .ts-navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 0;
+        }
+
+        /* ═══════════════════════════════════════
+                   NAVEGACIÓN
+                   ═══════════════════════════════════════ */
+
         .ts-nav {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 0.25rem;
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
-        .ts-main {
-            opacity: 0;
-            flex: 1 0 auto;
-            width: 100%;
-        }
-
-            .ts-nav li a {
+            .ts-nav > li > .nav-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+                padding: 0.48rem 0.85rem;
+                border-radius: 999px;
                 font-family: 'Rajdhani', sans-serif;
-                font-size: 1rem;
-                font-weight: 600;
-                font-weight: 600;
-                color: #1a3a6e;
+                font-size: 0.94rem;
+                font-weight: 700;
+                letter-spacing: 0.03em;
+                color: var(--ts-navy);
                 text-decoration: none;
-                padding: 6px 14px;
-                border-radius: 6px;
-                letter-spacing: 1px;
-                position: relative;
-                transition: color .2s, background .2s;
+                transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
             }
 
-                .ts-nav li a::after {
-                    content: '';
-                    position: absolute;
-                    bottom: 2px;
-                    left: 50%;
-                    right: 50%;
-                    height: 2px;
-                    background: #c0392b;
-                    transition: left .25s, right .25s;
-                    border-radius: 2px;
-                }
-
-                .ts-nav li a:hover,
-                .ts-nav li a.active {
-                    color: #c0392b;
+                .ts-nav > li > .nav-link:hover,
+                .ts-nav > li > .nav-link.active {
+                    color: var(--ts-red);
                     background: rgba(192, 57, 43, 0.07);
+                    transform: translateY(-1px);
                 }
 
-                .ts-nav li a:hover::after,
-                .ts-nav li a.active::after {
-                    left: 12%;
-                    right: 12%;
+            /* ═══════════════════════════════════════
+                   DROPDOWNS
+                   ═══════════════════════════════════════ */
+
+            .ts-nav .dropdown-menu {
+                min-width: 215px;
+                margin-top: 0.65rem;
+                padding: 0.5rem;
+                border: 1px solid rgba(26, 58, 110, 0.12);
+                border-radius: 13px;
+                background: rgba(255, 255, 255, 0.98);
+                box-shadow: 0 14px 38px rgba(26, 58, 110, 0.16);
+            }
+
+            .ts-nav .dropdown-item {
+                display: flex;
+                align-items: center;
+                padding: 0.58rem 0.75rem;
+                border-radius: 8px;
+                font-family: 'Rajdhani', sans-serif;
+                font-weight: 700;
+                font-size: 0.9rem;
+                color: var(--ts-navy);
+                transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+            }
+
+                .ts-nav .dropdown-item:hover {
+                    background: rgba(79, 168, 232, 0.10);
+                    color: var(--ts-red);
+                    transform: translateX(2px);
                 }
+
+        .ts-dropdown-label {
+            padding: 0.35rem 0.75rem 0.25rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.10em;
+            color: #91a8bb;
+            text-transform: uppercase;
+        }
+
+        .ts-dropdown-divider {
+            height: 1px;
+            margin: 0.35rem 0;
+            background: #e5eef5;
+        }
+
+        /* ═══════════════════════════════════════
+                   BADGE PEDIDOS
+                   ═══════════════════════════════════════ */
 
         .ts-cart-badge {
             display: inline-flex;
@@ -183,75 +250,31 @@
             padding: 0 5px;
             margin-left: 4px;
             border-radius: 999px;
-            background: #c0392b;
-            color: #fff;
+            background: var(--ts-red);
+            color: #ffffff;
+            font-family: 'Rajdhani', sans-serif;
             font-size: 0.68rem;
             font-weight: 700;
-            font-family: 'Rajdhani', sans-serif;
-            vertical-align: middle;
         }
 
-        /* ── FOOTER ───────────────────────────────────────────── */
-        footer.ts-footer {
-            border-top: 2px solid #d0e8f8;
-            background: #fff;
-            padding: 1.25rem 2rem;
-            text-align: center;
-            color: #8ab2cc;
-            font-size: .85rem;
-            letter-spacing: 1px;
-            opacity: 0;
-            flex-shrink: 0;
-            margin-top: auto;
-        }
-
-            footer.ts-footer a {
-                color: #1a3a6e;
-                text-decoration: none;
-                font-weight: 600;
-            }
-
-        /* ── CONTENIDO PRINCIPAL ──────────────────────────────── */
-        .ts-main {
-            opacity: 0; /* Anime.js lo revela */
-        }
-
-        /* ── RESPONSIVE: ocultar sub-brand en móvil ───────────── */
-        @@media (max-width: 576px) {
-            .ts-brand-sub {
-                display: none;
-            }
-
-            .ts-brand-title {
-                font-size: 1.1rem;
-            }
-
-            .ts-navbar {
-                padding: 0 1rem;
-            }
-        }
-
-        /*Estilos nuevos de avance 5 */
-
-        .ts-navbar-right {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-        }
+        /* ═══════════════════════════════════════
+                   USUARIO
+                   ═══════════════════════════════════════ */
 
         .ts-user-area {
             display: flex;
             align-items: center;
-            gap: 0.9rem;
+            gap: 0.8rem;
             padding-left: 1rem;
-            border-left: 1px solid #d0e8f8;
+            border-left: 1px solid var(--ts-border);
+            flex-shrink: 0;
         }
 
         .ts-user-info {
             display: flex;
             flex-direction: column;
-            line-height: 1.15;
             text-align: right;
+            line-height: 1.1;
         }
 
         .ts-user-greeting {
@@ -259,37 +282,29 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.68rem;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            border-radius: 999px;
-            padding: 3px 9px;
             margin-bottom: 3px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #ffffff;
+            text-transform: uppercase;
             white-space: nowrap;
-            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.15);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.13);
         }
 
-            .ts-user-greeting:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.20);
-            }
-
-        /* ── Roles de usuario ───────────────────────────────── */
-
         .ts-role-admin {
-            background: #c0392b;
+            background: var(--ts-red);
         }
 
         .ts-role-encargado {
-            background: #1a3a6e;
+            background: var(--ts-navy);
         }
 
         .ts-role-cocina {
-            background: #d68910;
+            background: var(--ts-orange);
         }
 
         .ts-role-cliente {
@@ -299,13 +314,21 @@
         .ts-role-default {
             background: #6c757d;
         }
+
         .ts-user-name {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #1a3a6e;
+            max-width: 165px;
+            overflow: hidden;
+            text-overflow: ellipsis;
             white-space: nowrap;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--ts-navy);
         }
+
+        /* ═══════════════════════════════════════
+                   LOGOUT / LOGIN
+                   ═══════════════════════════════════════ */
 
         .ts-logout-form {
             margin: 0;
@@ -313,24 +336,24 @@
 
         .ts-logout-button,
         .ts-login-link {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
+            padding: 0.42rem 0.9rem;
             border-radius: 999px;
-            padding: 0.45rem 1rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
             transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .ts-logout-button {
-            border: 1px solid rgba(192, 57, 43, 0.35);
-            background: rgba(192, 57, 43, 0.06);
-            color: #c0392b;
+            border: 1px solid rgba(192, 57, 43, 0.28);
+            background: rgba(192, 57, 43, 0.05);
+            color: var(--ts-red);
             cursor: pointer;
         }
 
             .ts-logout-button:hover {
-                background: #c0392b;
+                background: var(--ts-red);
                 color: #ffffff;
                 transform: translateY(-1px);
                 box-shadow: 0 5px 14px rgba(192, 57, 43, 0.2);
@@ -338,23 +361,138 @@
 
         .ts-login-link {
             border: 1px solid rgba(26, 58, 110, 0.25);
-            color: #1a3a6e;
+            color: var(--ts-navy);
             text-decoration: none;
         }
 
             .ts-login-link:hover {
-                background: #1a3a6e;
+                background: var(--ts-navy);
                 color: #ffffff;
                 transform: translateY(-1px);
             }
+
+        /* ═══════════════════════════════════════
+                   CONTENIDO
+                   ═══════════════════════════════════════ */
+
+        .ts-main {
+            width: 100%;
+            flex: 1 0 auto;
+            opacity: 0;
+        }
+
+        /* ═══════════════════════════════════════
+                   FOOTER
+                   ═══════════════════════════════════════ */
+
+        footer.ts-footer {
+            flex-shrink: 0;
+            margin-top: auto;
+            padding: 1.25rem 2rem;
+            border-top: 1px solid var(--ts-border);
+            background: #ffffff;
+            text-align: center;
+            color: #8ab2cc;
+            font-size: 0.82rem;
+            letter-spacing: 1px;
+            opacity: 0;
+        }
+
+            footer.ts-footer a {
+                color: var(--ts-navy);
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+        /* ═══════════════════════════════════════
+                   RESPONSIVE
+                   ═══════════════════════════════════════ */
+
+        @@media (max-width: 1050px) {
+
+            .ts-brand-sub {
+                display: none;
+            }
+
+            .ts-brand-title {
+                font-size: 1.15rem;
+            }
+
+            .ts-brand img {
+                height: 44px;
+            }
+
+            .ts-navbar {
+                padding: 0 1rem;
+            }
+
+            .ts-nav > li > .nav-link {
+                padding: 0.42rem 0.65rem;
+                font-size: 0.88rem;
+            }
+        }
+
+        @@media (max-width: 768px) {
+
+            .ts-navbar {
+                min-height: 68px;
+                flex-wrap: wrap;
+                padding: 0.5rem 1rem;
+            }
+
+            .ts-navbar-right {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.7rem;
+            }
+
+            .ts-nav {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                padding: 0.75rem 0;
+            }
+
+                .ts-nav > li {
+                    width: 100%;
+                }
+
+                    .ts-nav > li > .nav-link {
+                        width: 100%;
+                        justify-content: space-between;
+                        border-radius: 8px;
+                    }
+
+            .ts-user-area {
+                width: 100%;
+                justify-content: space-between;
+                padding: 0.8rem 0;
+                border-left: none;
+                border-top: 1px solid var(--ts-border);
+            }
+
+            .ts-user-info {
+                text-align: left;
+            }
+
+            .ts-user-greeting {
+                align-self: flex-start;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-    <!-- ══ NAVBAR ══════════════════════════════════════════════ -->
     <header>
-        <nav class="ts-navbar" id="tsNavbar">
-            <div class="ts-gradient-bar" id="tsGradientBar"></div>
+
+        <nav class="ts-navbar"
+             id="tsNavbar">
+
+            <div class="ts-gradient-bar"
+                 id="tsGradientBar">
+            </div>
 
             <a class="ts-brand"
                asp-area=""
@@ -365,19 +503,22 @@
                      alt="Tempest Sushi Logo" />
 
                 <div class="ts-brand-text">
+
                     <span class="ts-brand-title">
                         TEMPEST SUSHI
                     </span>
 
                     <span class="ts-brand-sub">
-                        テンペスト 寿司 &nbsp;·&nbsp; REINO DE TEMPEST
+                        テンペスト 寿司 · REINO DE TEMPEST
                     </span>
+
                 </div>
+
             </a>
 
             @if (User.Identity?.IsAuthenticated == true)
             {
-                <button class="navbar-toggler d-sm-none"
+                <button class="navbar-toggler d-md-none"
                         type="button"
                         data-bs-toggle="collapse"
                         data-bs-target="#tsNavCollapse"
@@ -385,7 +526,9 @@
                         aria-expanded="false"
                         aria-label="Abrir menú">
 
-                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon">
+                    </span>
+
                 </button>
             }
 
@@ -393,86 +536,170 @@
 
                 @if (User.Identity?.IsAuthenticated == true)
                 {
-                    <ul class="ts-nav collapse d-sm-flex"
+                    <ul class="ts-nav collapse d-md-flex"
                         id="tsNavCollapse">
 
-                        <!-- Todos los usuarios autenticados -->
+                        <!-- HOME -->
                         <li>
+
                             <a class="nav-link"
-                               asp-area=""
                                asp-controller="Home"
                                asp-action="Index">
                                 Home
                             </a>
+
                         </li>
 
-                        @if (User.IsInRole("Encargado") ||
-                                            User.IsInRole("Administrador"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                   asp-controller="Reporte"
-                                   asp-action="Index">
-                                    Reportes
-                                </a>
-                            </li>
-                        }
-
-                        <!-- Cliente, Encargado y Administrador -->
+                        <!-- OPERACIÓN -->
                         @if (User.IsInRole("Cliente")
                                             || User.IsInRole("Encargado")
-                                            || User.IsInRole("Administrador"))
+                                            || User.IsInRole("Administrador")
+                                            || User.IsInRole("Cocina"))
                         {
-                            <li>
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="Producto"
-                                   asp-action="Index">
-                                    Productos
-                                </a>
-                            </li>
+                            <li class="nav-item dropdown">
 
-                            <li>
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="Combo"
-                                   asp-action="Index">
-                                    Combos
-                                </a>
-                            </li>
+                                <a class="nav-link dropdown-toggle"
+                                   href="#"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
 
-                            <li>
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="Menu"
-                                   asp-action="Index">
-                                    Menús
-                                </a>
-                            </li>
+                                    Operación
 
-                            <li>
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="Pedido"
-                                   asp-action="Index">
-                                    Pedidos
-                                    <span id="ts-cart-badge" class="ts-cart-badge" style="display:none;">0</span>
                                 </a>
+
+                                <ul class="dropdown-menu">
+
+                                    @if (User.IsInRole("Cliente")
+                                                                || User.IsInRole("Encargado")
+                                                                || User.IsInRole("Administrador"))
+                                    {
+                                        <li class="ts-dropdown-label">
+                                            Catálogo
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Producto"
+                                               asp-action="Index">
+                                                Productos
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Combo"
+                                               asp-action="Index">
+                                                Combos
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Menu"
+                                               asp-action="Index">
+                                                Menús
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <div class="ts-dropdown-divider">
+                                            </div>
+                                        </li>
+
+                                        <li class="ts-dropdown-label">
+                                            Pedidos
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Pedido"
+                                               asp-action="Index">
+
+                                                Pedidos
+
+                                                <span id="ts-cart-badge"
+                                                      class="ts-cart-badge"
+                                                      style="display:none;">
+                                                    0
+                                                </span>
+
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (User.IsInRole("Cocina")
+                                                                || User.IsInRole("Administrador"))
+                                    {
+                                        @if (User.IsInRole("Administrador"))
+                                        {
+                                            <li>
+                                                <div class="ts-dropdown-divider">
+                                                </div>
+                                            </li>
+                                        }
+
+                                        <li class="ts-dropdown-label">
+                                            Cocina
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="ProcesoPreparacion"
+                                               asp-action="Index">
+                                                Preparación
+                                            </a>
+                                        </li>
+                                    }
+
+                                </ul>
+
                             </li>
                         }
 
-
-                        <!-- Cocina y Administrador -->
-                        @if (User.IsInRole("Cocina")
-                                            || User.IsInRole("Administrador"))
+                        <!-- ADMINISTRACIÓN -->
+                        @if (User.IsInRole("Administrador")
+                                            || User.IsInRole("Encargado"))
                         {
-                            <li>
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="ProcesoPreparacion"
-                                   asp-action="Index">
-                                    Preparación
+                            <li class="nav-item dropdown">
+
+                                <a class="nav-link dropdown-toggle"
+                                   href="#"
+                                   role="button"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false">
+
+                                    Administración
+
                                 </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+
+                                    @if (User.IsInRole("Encargado")
+                                                                || User.IsInRole("Administrador"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Reporte"
+                                               asp-action="Index">
+                                                Reportes
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @if (User.IsInRole("Administrador"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="Usuario"
+                                               asp-action="Index">
+                                                Usuarios
+                                            </a>
+                                        </li>
+                                    }
+
+                                </ul>
+
                             </li>
                         }
 
@@ -486,7 +713,8 @@
                                 @rolUsuario
                             </span>
 
-                            <span class="ts-user-name">
+                            <span class="ts-user-name"
+                                  title="@User.Identity.Name">
                                 @User.Identity.Name
                             </span>
 
@@ -516,32 +744,52 @@
                 }
 
             </div>
+
         </nav>
+
     </header>
 
-    <!-- ══ CONTENIDO ═══════════════════════════════════════════ -->
-    <div class="container ts-main" id="tsMain">
-        <main role="main" class="pb-4 pt-3">
+    <div class="container ts-main"
+         id="tsMain">
+
+        <main role="main"
+              class="pb-4 pt-3">
+
             @RenderBody()
+
         </main>
+
     </div>
 
-    <!-- ══ MODALES DE LAS VISTAS ═══════════════════════════════ -->
-    @await RenderSectionAsync("Modals", required: false)
+    @await RenderSectionAsync(
+    "Modals",
+        required: false)
 
-    <!-- ══ FOOTER ══════════════════════════════════════════════ -->
-    <footer class="ts-footer" id="tsFooter">
-        &copy; 2026 — <strong>TempestSushi</strong> &nbsp;·&nbsp;
-        <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="ts-footer"
+            id="tsFooter">
+
+        &copy; 2026 —
+        <strong>TempestSushi</strong>
+
+        &nbsp;·&nbsp;
+
+        <a asp-controller="Home"
+           asp-action="Privacy">
+            Privacy
+        </a>
+
     </footer>
 
-    <!-- ══ SCRIPTS ═════════════════════════════════════════════ -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true">
+    </script>
 
     <script>
-        // ── Entrada de página ─────────────────────────────────
+
         anime({
             targets: '#tsNavbar',
             translateY: [-64, 0],
@@ -567,7 +815,6 @@
             easing: 'easeOutSine'
         });
 
-        // ── Barra de degradado animada ────────────────────────
         anime({
             targets: '#tsGradientBar',
             width: ['60px', '100%'],
@@ -576,17 +823,23 @@
             easing: 'easeOutExpo'
         });
 
-        // ── Logo flotando suavemente ──────────────────────────
         anime({
             targets: '.ts-brand img',
-            translateY: [{ value: -5, duration: 1200 }, { value: 0, duration: 1200 }],
+            translateY: [
+                {
+                    value: -5,
+                    duration: 1200
+                },
+                {
+                    value: 0,
+                    duration: 1200
+                }
+            ],
             loop: true,
             easing: 'easeInOutSine'
         });
 
-        // ── Animación del badge de rol de usuario Login ──────────────────────────
-
-                anime({
+        anime({
             targets: '.ts-user-greeting',
             opacity: [0, 1],
             scale: [0.85, 1],
@@ -595,30 +848,89 @@
             easing: 'easeOutBack'
         });
 
-        // ── Marca el nav-link activo según la URL ─────────────
         (function markActiveNav() {
-            const path = window.location.pathname.toLowerCase();
-            document.querySelectorAll('.ts-nav .nav-link').forEach(function (a) {
-                const href = a.getAttribute('href') || '';
-                if (href === '/' ? path === '/' : path.startsWith(href.toLowerCase())) {
-                    a.classList.add('active');
-                }
-            });
+
+            const path =
+                window.location.pathname
+                    .toLowerCase();
+
+            document
+                .querySelectorAll(
+                    '.ts-nav a[href]'
+                )
+                .forEach(function (a) {
+
+                    const href =
+                        a.getAttribute('href') || '';
+
+                    if (!href ||
+                        href === '#') {
+                        return;
+                    }
+
+                    if (
+                        href === '/'
+                            ? path === '/'
+                            : path.startsWith(
+                                href.toLowerCase()
+                            )
+                    ) {
+                        a.classList.add(
+                            'active'
+                        );
+
+                        const dropdown =
+                            a.closest(
+                                '.dropdown'
+                            );
+
+                        if (dropdown) {
+
+                            const toggle =
+                                dropdown.querySelector(
+                                    '.dropdown-toggle'
+                                );
+
+                            if (toggle) {
+                                toggle.classList.add(
+                                    'active'
+                                );
+                            }
+                        }
+                    }
+                });
+
         })();
 
-        // ── Ripple suave al hacer clic en nav-link ────────────
-        document.querySelectorAll('.ts-nav .nav-link').forEach(function (a) {
-            a.addEventListener('click', function () {
-                anime({
-                    targets: a,
-                    scale: [1, 1.08, 1],
-                    duration: 320,
-                    easing: 'easeOutQuad'
-                });
+        document
+            .querySelectorAll(
+                '.ts-nav .nav-link'
+            )
+            .forEach(function (a) {
+
+                a.addEventListener(
+                    'click',
+                    function () {
+
+                        anime({
+                            targets: a,
+                            scale: [
+                                1,
+                                1.05,
+                                1
+                            ],
+                            duration: 260,
+                            easing: 'easeOutQuad'
+                        });
+
+                    });
             });
-        });
+
     </script>
 
-    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false)
+
 </body>
 </html>

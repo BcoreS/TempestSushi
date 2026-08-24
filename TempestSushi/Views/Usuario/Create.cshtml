@@ -1,0 +1,361 @@
+﻿@model TempestSushi.Application.DTOs.UsuarioCrearDTO
+
+@{
+    ViewData["Title"] = "Crear usuario";
+}
+
+<style>
+    .usuario-form-page {
+        max-width: 850px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    .usuario-form-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #d0e8f8;
+    }
+
+    .usuario-form-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .usuario-form-subtitle {
+        color: #7895ad;
+        font-size: 0.88rem;
+        margin-top: 0.25rem;
+        margin-bottom: 0;
+    }
+
+    .usuario-form-card {
+        background: #ffffff;
+        border: 1px solid #dceaf5;
+        border-radius: 14px;
+        padding: 2rem;
+        box-shadow: 0 4px 18px rgba(26, 58, 110, 0.08);
+    }
+
+    .usuario-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0 1.25rem;
+    }
+
+    .usuario-form-group {
+        margin-bottom: 1.35rem;
+    }
+
+    .usuario-form-full {
+        grid-column: 1 / -1;
+    }
+
+    .usuario-label {
+        display: block;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        color: #1a3a6e;
+        margin-bottom: 0.45rem;
+    }
+
+    .usuario-input,
+    .usuario-select {
+        width: 100%;
+        border: 1px solid #cfe0ed;
+        border-radius: 9px;
+        padding: 0.7rem 0.85rem;
+        background: #ffffff;
+        color: #294869;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .usuario-input:focus,
+        .usuario-select:focus {
+            border-color: #4fa8e8;
+            box-shadow: 0 0 0 3px rgba(79, 168, 232, 0.12);
+        }
+
+    .usuario-validation {
+        display: block;
+        color: #c0392b;
+        font-size: 0.78rem;
+        margin-top: 0.35rem;
+    }
+
+    .usuario-summary {
+        color: #a93226;
+        background: rgba(192, 57, 43, 0.08);
+        border: 1px solid rgba(192, 57, 43, 0.20);
+        border-radius: 9px;
+        padding: 0.8rem 1rem;
+        margin-bottom: 1.25rem;
+        font-size: 0.85rem;
+    }
+
+        .usuario-summary:empty {
+            display: none;
+        }
+
+    .usuario-note {
+        color: #7895ad;
+        font-size: 0.78rem;
+        margin-top: 0.35rem;
+    }
+
+    .usuario-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+        margin-top: 0.75rem;
+    }
+
+    .usuario-btn {
+        border-radius: 999px;
+        padding: 0.7rem 1.4rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .usuario-btn-volver {
+        background: #eef5fa;
+        color: #1a3a6e;
+        border: 1px solid #d0e8f8;
+    }
+
+        .usuario-btn-volver:hover {
+            color: #1a3a6e;
+            background: #e0edf6;
+            transform: translateY(-1px);
+        }
+
+    .usuario-btn-guardar {
+        background: #1a3a6e;
+        color: #ffffff;
+    }
+
+        .usuario-btn-guardar:hover {
+            background: #244d91;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 7px 18px rgba(26, 58, 110, 0.22);
+        }
+
+    @@media (max-width: 700px) {
+        .usuario-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .usuario-form-full {
+            grid-column: auto;
+        }
+
+        .usuario-form-card {
+            padding: 1.4rem;
+        }
+
+        .usuario-actions {
+            flex-direction: column-reverse;
+        }
+
+        .usuario-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="usuario-form-page">
+
+    <div class="usuario-form-header">
+
+        <h1 class="usuario-form-title">
+            Crear usuario
+        </h1>
+
+        <p class="usuario-form-subtitle">
+            Registre una nueva cuenta y asigne su rol dentro del sistema.
+        </p>
+
+    </div>
+
+    <div class="usuario-form-card">
+
+        <form asp-controller="Usuario"
+              asp-action="Create"
+              method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="usuario-summary">
+            </div>
+
+            <div class="usuario-form-grid">
+
+                <div class="usuario-form-group">
+
+                    <label asp-for="Nombre"
+                           class="usuario-label">
+                    </label>
+
+                    <input asp-for="Nombre"
+                           class="usuario-input"
+                           autocomplete="off"
+                           placeholder="Nombre" />
+
+                    <span asp-validation-for="Nombre"
+                          class="usuario-validation">
+                    </span>
+
+                </div>
+
+                <div class="usuario-form-group">
+
+                    <label asp-for="Apellidos"
+                           class="usuario-label">
+                    </label>
+
+                    <input asp-for="Apellidos"
+                           class="usuario-input"
+                           autocomplete="off"
+                           placeholder="Apellidos" />
+
+                    <span asp-validation-for="Apellidos"
+                          class="usuario-validation">
+                    </span>
+
+                </div>
+
+                <div class="usuario-form-group usuario-form-full">
+
+                    <label asp-for="Correo"
+                           class="usuario-label">
+                    </label>
+
+                    <input asp-for="Correo"
+                           class="usuario-input"
+                           autocomplete="off"
+                           placeholder="correo@ejemplo.com" />
+
+                    <span asp-validation-for="Correo"
+                          class="usuario-validation">
+                    </span>
+
+                </div>
+
+                <div class="usuario-form-group">
+
+                    <label asp-for="Telefono"
+                           class="usuario-label">
+                    </label>
+
+                    <input asp-for="Telefono"
+                           class="usuario-input"
+                           autocomplete="off"
+                           placeholder="Número de teléfono" />
+
+                    <span asp-validation-for="Telefono"
+                          class="usuario-validation">
+                    </span>
+
+                </div>
+
+                <div class="usuario-form-group">
+
+                    <label asp-for="IdRolUsuario"
+                           class="usuario-label">
+                    </label>
+
+                    <select asp-for="IdRolUsuario"
+                            asp-items="ViewBag.Roles"
+                            class="usuario-select">
+
+                        <option value="">
+                            Seleccione un rol...
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="IdRolUsuario"
+                          class="usuario-validation">
+                    </span>
+
+                </div>
+
+                <div class="usuario-form-group usuario-form-full">
+
+                    <label asp-for="Password"
+                           class="usuario-label">
+                    </label>
+
+                    <input asp-for="Password"
+                           class="usuario-input"
+                           autocomplete="new-password"
+                           placeholder="Contraseña temporal" />
+
+                    <span asp-validation-for="Password"
+                          class="usuario-validation">
+                    </span>
+
+                    <div class="usuario-note">
+                        El usuario deberá cambiar esta contraseña posteriormente.
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="usuario-actions">
+
+                <a asp-controller="Usuario"
+                   asp-action="Index"
+                   class="usuario-btn usuario-btn-volver">
+                    Volver
+                </a>
+
+                <button type="submit"
+                        class="usuario-btn usuario-btn-guardar">
+                    Crear usuario
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        if (typeof anime !== 'undefined') {
+
+            anime({
+                targets: '.usuario-form-header',
+                opacity: [0, 1],
+                translateY: [-12, 0],
+                duration: 550,
+                easing: 'easeOutQuad'
+            });
+
+            anime({
+                targets: '.usuario-form-card',
+                opacity: [0, 1],
+                translateY: [18, 0],
+                delay: 120,
+                duration: 650,
+                easing: 'easeOutExpo'
+            });
+        }
+    </script>
+}

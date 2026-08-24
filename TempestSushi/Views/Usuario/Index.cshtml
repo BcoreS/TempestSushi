@@ -1,0 +1,506 @@
+﻿@model ICollection<TempestSushi.Application.DTOs.UsuarioListadoDTO>
+
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Usuarios";
+
+    var idUsuarioActual =
+        User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+}
+
+<style>
+    .usuarios-page {
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    .usuarios-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #d0e8f8;
+    }
+
+    .usuarios-header-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .usuarios-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a3a6e;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .usuarios-subtitle {
+        color: #7895ad;
+        font-size: 0.88rem;
+        margin: 0;
+    }
+
+    .usuarios-btn-crear {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        border: none;
+        border-radius: 999px;
+        padding: 0.7rem 1.4rem;
+        background: #1a3a6e;
+        color: #ffffff;
+        text-decoration: none;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .usuarios-btn-crear:hover {
+            background: #244d91;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 7px 18px rgba(26, 58, 110, 0.22);
+        }
+
+    .usuarios-alert {
+        border-radius: 10px;
+        padding: 0.85rem 1rem;
+        margin-bottom: 1.2rem;
+        font-size: 0.9rem;
+    }
+
+    .usuarios-alert-exito {
+        background: rgba(39, 174, 96, 0.10);
+        border: 1px solid rgba(39, 174, 96, 0.25);
+        color: #1e7d46;
+    }
+
+    .usuarios-alert-error {
+        background: rgba(192, 57, 43, 0.09);
+        border: 1px solid rgba(192, 57, 43, 0.25);
+        color: #a93226;
+    }
+
+    .usuarios-card {
+        background: #ffffff;
+        border: 1px solid #dceaf5;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 4px 18px rgba(26, 58, 110, 0.08);
+    }
+
+    .usuarios-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .usuarios-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+    }
+
+        .usuarios-table thead {
+            background: #f0f6fc;
+        }
+
+        .usuarios-table th {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #1a3a6e;
+            padding: 0.85rem 1rem;
+            border-bottom: 2px solid #d0e8f8;
+            white-space: nowrap;
+        }
+
+        .usuarios-table td {
+            padding: 0.9rem 1rem;
+            color: #294869;
+            font-size: 0.88rem;
+            border-bottom: 1px solid #edf4f9;
+            vertical-align: middle;
+        }
+
+        .usuarios-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .usuarios-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+            .usuarios-table tbody tr:hover {
+                background: #f8fbfe;
+            }
+
+    .usuario-nombre {
+        font-weight: 700;
+        color: #1a3a6e;
+    }
+
+    .usuario-correo {
+        color: #66869e;
+        font-size: 0.82rem;
+        margin-top: 2px;
+    }
+
+    .usuario-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 0.3rem 0.65rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+    }
+
+    .usuario-rol-administrador {
+        background: rgba(192, 57, 43, 0.12);
+        color: #c0392b;
+    }
+
+    .usuario-rol-encargado {
+        background: rgba(26, 58, 110, 0.12);
+        color: #1a3a6e;
+    }
+
+    .usuario-rol-cocina {
+        background: rgba(214, 137, 16, 0.14);
+        color: #a96906;
+    }
+
+    .usuario-rol-cliente {
+        background: rgba(52, 152, 219, 0.12);
+        color: #237bb5;
+    }
+
+    .usuario-activo {
+        background: rgba(39, 174, 96, 0.12);
+        color: #1e8449;
+    }
+
+    .usuario-inactivo {
+        background: rgba(127, 140, 141, 0.15);
+        color: #626f70;
+    }
+
+    .usuarios-acciones {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-usuario-editar,
+    .btn-usuario-estado {
+        border-radius: 7px;
+        padding: 0.38rem 0.7rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: 0.78rem;
+        text-decoration: none;
+        transition: transform 0.15s ease, background 0.15s ease;
+        white-space: nowrap;
+    }
+
+    .btn-usuario-editar {
+        border: 1px solid rgba(26, 58, 110, 0.25);
+        background: rgba(26, 58, 110, 0.06);
+        color: #1a3a6e;
+    }
+
+        .btn-usuario-editar:hover {
+            background: #1a3a6e;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+    .btn-usuario-estado {
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-usuario-desactivar {
+        background: rgba(192, 57, 43, 0.08);
+        color: #c0392b;
+        border: 1px solid rgba(192, 57, 43, 0.20);
+    }
+
+        .btn-usuario-desactivar:hover {
+            background: #c0392b;
+            color: #ffffff;
+        }
+
+    .btn-usuario-activar {
+        background: rgba(39, 174, 96, 0.09);
+        color: #1e8449;
+        border: 1px solid rgba(39, 174, 96, 0.22);
+    }
+
+        .btn-usuario-activar:hover {
+            background: #27ae60;
+            color: #ffffff;
+        }
+
+    .usuario-propio {
+        display: inline-block;
+        margin-left: 0.3rem;
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: #d68910;
+    }
+
+    .usuarios-vacio {
+        padding: 3rem 1rem;
+        text-align: center;
+        color: #7895ad;
+    }
+
+    @@media (max-width: 768px) {
+        .usuarios-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .usuarios-btn-crear {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="usuarios-page">
+
+    <div class="usuarios-header">
+
+        <div class="usuarios-header-info">
+
+            <h1 class="usuarios-title">
+                Gestión de usuarios
+            </h1>
+
+            <p class="usuarios-subtitle">
+                Administre las cuentas, roles y estado de acceso al sistema.
+            </p>
+
+        </div>
+
+        <a asp-controller="Usuario"
+           asp-action="Create"
+           class="usuarios-btn-crear">
+            + Crear usuario
+        </a>
+
+    </div>
+
+    @if (TempData["MensajeExito"] != null)
+    {
+        <div class="usuarios-alert usuarios-alert-exito">
+            @TempData["MensajeExito"]
+        </div>
+    }
+
+    @if (TempData["MensajeError"] != null)
+    {
+        <div class="usuarios-alert usuarios-alert-error">
+            @TempData["MensajeError"]
+        </div>
+    }
+
+    <div class="usuarios-card">
+
+        @if (Model.Any())
+        {
+            <div class="usuarios-table-wrapper">
+
+                <table class="usuarios-table">
+
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Teléfono</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Fecha de registro</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var usuario in Model)
+                        {
+                            var esUsuarioActual =
+                            idUsuarioActual ==
+                            usuario.IdUsuario.ToString();
+
+                            var claseRol =
+                            usuario.Rol switch
+                            {
+                                "Administrador" => "usuario-rol-administrador",
+                                "Encargado" => "usuario-rol-encargado",
+                                "Cocina" => "usuario-rol-cocina",
+                                "Cliente" => "usuario-rol-cliente",
+                                _ => "usuario-inactivo"
+                            };
+
+                            <tr>
+
+                                <td>
+                                    <div class="usuario-nombre">
+                                        @usuario.NombreCompleto
+
+                                        @if (esUsuarioActual)
+                                        {
+                                            <span class="usuario-propio">
+                                                Usted
+                                            </span>
+                                        }
+                                </div>
+
+                                <div class="usuario-correo">
+                                    @usuario.Correo
+                                </div>
+                            </td>
+
+                            <td>
+                                @(string.IsNullOrWhiteSpace(usuario.Telefono)
+                                                            ? "—"
+                                                            : usuario.Telefono)
+                        </td>
+
+                                <td>
+                                    <span class="usuario-badge @claseRol">
+                                        @usuario.Rol
+                                    </span>
+                                </td>
+
+                                <td>
+                            @if (usuario.Activo)
+                                    {
+                                        <span class="usuario-badge usuario-activo">
+                                            Activo
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="usuario-badge usuario-inactivo">
+                                            Inactivo
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @usuario.FechaRegistro.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>
+
+                                    <div class="usuarios-acciones">
+
+                                        <a asp-controller="Usuario"
+                                           asp-action="Edit"
+                                           asp-route-id="@usuario.IdUsuario"
+                                           class="btn-usuario-editar">
+                                            Editar
+                                        </a>
+
+                                        @if (!esUsuarioActual)
+                                        {
+                                            <form asp-controller="Usuario"
+                                                  asp-action="CambiarEstado"
+                                                  asp-route-id="@usuario.IdUsuario"
+                                                  method="post"
+                                                  style="margin:0;">
+
+                                                @if (usuario.Activo)
+                                                {
+                                                    <button type="submit"
+                                                            class="btn-usuario-estado btn-usuario-desactivar"
+                                                            onclick="return confirm('¿Desea inactivar este usuario?');">
+                                                        Inactivar
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button type="submit"
+                                                            class="btn-usuario-estado btn-usuario-activar"
+                                                            onclick="return confirm('¿Desea activar este usuario?');">
+                                                        Activar
+                                                    </button>
+                                                }
+
+                                            </form>
+                                        }
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+        else
+        {
+            <div class="usuarios-vacio">
+                No existen usuarios registrados.
+            </div>
+        }
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        if (typeof anime !== 'undefined') {
+
+            anime({
+                targets: '.usuarios-header',
+                opacity: [0, 1],
+                translateY: [-12, 0],
+                duration: 550,
+                easing: 'easeOutQuad'
+            });
+
+            anime({
+                targets: '.usuarios-card',
+                opacity: [0, 1],
+                translateY: [18, 0],
+                delay: 120,
+                duration: 650,
+                easing: 'easeOutExpo'
+            });
+
+            anime({
+                targets: '.usuarios-table tbody tr',
+                opacity: [0, 1],
+                translateX: [-8, 0],
+                delay: anime.stagger(45, {
+                    start: 250
+                }),
+                duration: 400,
+                easing: 'easeOutQuad'
+            });
+        }
+    </script>
+}

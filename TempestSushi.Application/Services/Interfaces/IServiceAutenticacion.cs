@@ -7,5 +7,8 @@ namespace TempestSushi.Application.Services.Interfaces
         Task<UsuarioAutenticadoDTO?> AutenticarAsync(
             string correo,
             string password);
+
+        Task<bool> RegistrarClienteAsync(
+            RegistroClienteDTO registro);
     }
 }

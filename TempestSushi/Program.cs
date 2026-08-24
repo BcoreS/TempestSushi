@@ -66,6 +66,9 @@ builder.Services.AddScoped<
 builder.Services.AddScoped<
     IServiceReportePdf,
     ServiceReportePdf>();
+builder.Services.AddScoped<
+    IServiceUsuario,
+    ServiceUsuario>();
 
 builder.Services.AddAutoMapper(cfg =>
 {

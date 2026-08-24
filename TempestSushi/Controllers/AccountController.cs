@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using TempestSushi.Application.DTOs;
 using TempestSushi.Application.Services.Interfaces;
 using TempestSushi.Web.Models;
 
@@ -17,12 +18,15 @@ namespace TempestSushi.Web.Controllers
             _serviceAutenticacion = serviceAutenticacion;
         }
 
+        // ---------- LOGIN ----------
         [HttpGet]
         public IActionResult Login()
         {
             if (User.Identity?.IsAuthenticated == true)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction(
+                    "Index",
+                    "Home");
             }
 
             return View();
@@ -75,10 +79,12 @@ namespace TempestSushi.Web.Controllers
                 claims,
                 CookieAuthenticationDefaults.AuthenticationScheme);
 
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = model.Recordarme
-            };
+            var authProperties =
+                new AuthenticationProperties
+                {
+                    IsPersistent =
+                        model.Recordarme
+                };
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
@@ -90,6 +96,60 @@ namespace TempestSushi.Web.Controllers
                 "Home");
         }
 
+        // ---------- REGISTRO DE CLIENTE ----------
+        [HttpGet]
+        public IActionResult Register()
+        {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return RedirectToAction(
+                    "Index",
+                    "Home");
+            }
+
+            return View(
+                new RegistroClienteDTO());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(
+            RegistroClienteDTO model)
+        {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return RedirectToAction(
+                    "Index",
+                    "Home");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var registrado =
+                await _serviceAutenticacion
+                    .RegistrarClienteAsync(model);
+
+            if (!registrado)
+            {
+                ModelState.AddModelError(
+                    nameof(model.Correo),
+                    "Ya existe una cuenta registrada con este correo electrónico.");
+
+                return View(model);
+            }
+
+            TempData["RegistroExitoso"] =
+                "Cuenta creada correctamente. Ya puede iniciar sesión.";
+
+            return RedirectToAction(
+                "Login",
+                "Account");
+        }
+
+        // ---------- LOGOUT ----------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -102,6 +162,7 @@ namespace TempestSushi.Web.Controllers
                 "Account");
         }
 
+        // ---------- ACCESO DENEGADO ----------
         public IActionResult AccessDenied()
         {
             return View();

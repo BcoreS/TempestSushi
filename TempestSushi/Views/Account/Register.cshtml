@@ -1,7 +1,7 @@
-﻿@model TempestSushi.Web.Models.LoginViewModel
+﻿@model TempestSushi.Application.DTOs.RegistroClienteDTO
 
 @{
-    ViewData["Title"] = "Iniciar sesión";
+    ViewData["Title"] = "Crear cuenta";
 }
 
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
         --gold: #d4af37;
     }
 
-    .ts-login-page {
+    .ts-register-page {
         margin-left: calc(50% - 50vw);
         margin-right: calc(50% - 50vw);
         width: 100vw;
@@ -27,17 +27,17 @@
         background: radial-gradient( ellipse at 50% 0%, rgba(196, 30, 58, 0.18), transparent 55% ), linear-gradient( 180deg, var(--ink) 0%, var(--abyss) 65%, #142454 100% );
     }
 
-    .ts-login-wrapper {
+    .ts-register-wrapper {
         width: 100%;
-        max-width: 440px;
+        max-width: 680px;
     }
 
-    .ts-login-brand {
+    .ts-register-brand {
         text-align: center;
         margin-bottom: 2rem;
     }
 
-    .ts-login-kicker {
+    .ts-register-kicker {
         font-family: 'Zen Kaku Gothic New', sans-serif;
         color: var(--vermillion);
         font-size: 0.75rem;
@@ -46,7 +46,7 @@
         margin-bottom: 0.65rem;
     }
 
-    .ts-login-title {
+    .ts-register-title {
         font-family: 'Bodoni Moda', serif;
         font-size: clamp(2.5rem, 6vw, 4rem);
         font-weight: 700;
@@ -55,19 +55,27 @@
         margin: 0;
     }
 
-        .ts-login-title span {
+        .ts-register-title span {
             color: var(--gold);
             font-style: italic;
         }
 
-    .ts-login-subtitle {
+    .ts-register-subtitle {
         font-family: 'Zen Kaku Gothic New', sans-serif;
         color: rgba(232, 237, 245, 0.65);
         margin-top: 0.8rem;
         font-size: 0.95rem;
     }
 
-    .ts-login-card {
+    .ts-accent-line {
+        width: 65px;
+        height: 2px;
+        background: var(--vermillion);
+        margin: 1rem auto 0;
+        border-radius: 10px;
+    }
+
+    .ts-register-card {
         background: rgba(255, 255, 255, 0.055);
         backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.09);
@@ -76,8 +84,18 @@
         box-shadow: 0 25px 60px rgba(0, 0, 0, 0.32);
     }
 
+    .ts-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0 1.25rem;
+    }
+
     .ts-form-group {
         margin-bottom: 1.35rem;
+    }
+
+    .ts-form-group-full {
+        grid-column: 1 / -1;
     }
 
     .ts-label {
@@ -134,36 +152,14 @@
             display: none;
         }
 
-    .ts-success {
+    .ts-password-note {
         font-family: 'Zen Kaku Gothic New', sans-serif;
-        font-size: 0.85rem;
-        color: #b8f3c7;
-        background: rgba(39, 174, 96, 0.12);
-        border: 1px solid rgba(39, 174, 96, 0.30);
-        border-radius: 10px;
-        padding: 0.8rem 1rem;
-        margin-bottom: 1.3rem;
+        color: rgba(232, 237, 245, 0.48);
+        font-size: 0.76rem;
+        margin-top: 0.4rem;
     }
 
-    .ts-check-row {
-        display: flex;
-        align-items: center;
-        gap: 0.55rem;
-        margin-bottom: 1.5rem;
-    }
-
-        .ts-check-row input {
-            accent-color: var(--vermillion);
-        }
-
-    .ts-check-label {
-        font-family: 'Zen Kaku Gothic New', sans-serif;
-        color: rgba(232, 237, 245, 0.72);
-        font-size: 0.88rem;
-        cursor: pointer;
-    }
-
-    .ts-login-button {
+    .ts-register-button {
         width: 100%;
         border: none;
         border-radius: 999px;
@@ -177,13 +173,13 @@
         transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
     }
 
-        .ts-login-button:hover {
+        .ts-register-button:hover {
             transform: translateY(-2px);
             background: #d52443;
             box-shadow: 0 14px 34px rgba(196, 30, 58, 0.45);
         }
 
-    .ts-login-register {
+    .ts-login-link {
         text-align: center;
         margin-top: 1.25rem;
         font-family: 'Zen Kaku Gothic New', sans-serif;
@@ -191,18 +187,18 @@
         font-size: 0.88rem;
     }
 
-        .ts-login-register a {
+        .ts-login-link a {
             color: var(--gold);
             text-decoration: none;
             font-weight: 700;
             transition: color 0.2s ease;
         }
 
-            .ts-login-register a:hover {
+            .ts-login-link a:hover {
                 color: #f0cf5f;
             }
 
-    .ts-login-footer {
+    .ts-register-footer {
         text-align: center;
         margin-top: 1.4rem;
         font-family: 'Zen Kaku Gothic New', sans-serif;
@@ -210,128 +206,185 @@
         font-size: 0.78rem;
     }
 
-    .ts-accent-line {
-        width: 65px;
-        height: 2px;
-        background: var(--vermillion);
-        margin: 1rem auto 0;
-        border-radius: 10px;
-    }
-
-    @@media (max-width: 576px) {
-        .ts-login-page {
+    @@media (max-width: 700px) {
+        .ts-register-page {
             padding: 2.5rem 1rem;
         }
 
-        .ts-login-card {
+        .ts-register-card {
             padding: 1.5rem;
+        }
+
+        .ts-form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .ts-form-group-full {
+            grid-column: auto;
         }
     }
 </style>
 
-<section class="ts-login-page">
+<section class="ts-register-page">
 
-    <div class="ts-login-wrapper">
+    <div class="ts-register-wrapper">
 
-        <div class="ts-login-brand">
+        <div class="ts-register-brand">
 
-            <div class="ts-login-kicker">
-                Acceso al sistema
+            <div class="ts-register-kicker">
+                Registro de cliente
             </div>
 
-            <h1 class="ts-login-title">
+            <h1 class="ts-register-title">
                 TEMPEST <span>SUSHI</span>
             </h1>
 
             <div class="ts-accent-line"></div>
 
-            <p class="ts-login-subtitle">
-                Inicia sesión para continuar.
+            <p class="ts-register-subtitle">
+                Crea tu cuenta para realizar y consultar tus pedidos.
             </p>
 
         </div>
 
-        <div class="ts-login-card">
-
-            @if (TempData["RegistroExitoso"] != null)
-            {
-                <div class="ts-success">
-                    @TempData["RegistroExitoso"]
-                </div>
-            }
+        <div class="ts-register-card">
 
             <form asp-controller="Account"
-                  asp-action="Login"
+                  asp-action="Register"
                   method="post">
 
                 <div asp-validation-summary="ModelOnly"
                      class="ts-summary">
                 </div>
 
-                <div class="ts-form-group">
+                <div class="ts-form-grid">
 
-                    <label asp-for="Correo"
-                           class="ts-label">
-                    </label>
+                    <div class="ts-form-group">
 
-                    <input asp-for="Correo"
-                           class="ts-input"
-                           autocomplete="email"
-                           placeholder="correo@ejemplo.com" />
+                        <label asp-for="Nombre"
+                               class="ts-label">
+                        </label>
 
-                    <span asp-validation-for="Correo"
-                          class="ts-validation">
-                    </span>
+                        <input asp-for="Nombre"
+                               class="ts-input"
+                               autocomplete="given-name"
+                               placeholder="Nombre" />
 
-                </div>
+                        <span asp-validation-for="Nombre"
+                              class="ts-validation">
+                        </span>
 
-                <div class="ts-form-group">
+                    </div>
 
-                    <label asp-for="Password"
-                           class="ts-label">
-                    </label>
+                    <div class="ts-form-group">
 
-                    <input asp-for="Password"
-                           class="ts-input"
-                           autocomplete="current-password"
-                           placeholder="Ingrese su contraseña" />
+                        <label asp-for="Apellidos"
+                               class="ts-label">
+                        </label>
 
-                    <span asp-validation-for="Password"
-                          class="ts-validation">
-                    </span>
+                        <input asp-for="Apellidos"
+                               class="ts-input"
+                               autocomplete="family-name"
+                               placeholder="Apellidos" />
 
-                </div>
+                        <span asp-validation-for="Apellidos"
+                              class="ts-validation">
+                        </span>
 
-                <div class="ts-check-row">
+                    </div>
 
-                    <input asp-for="Recordarme"
-                           class="form-check-input" />
+                    <div class="ts-form-group ts-form-group-full">
 
-                    <label asp-for="Recordarme"
-                           class="ts-check-label">
-                    </label>
+                        <label asp-for="Correo"
+                               class="ts-label">
+                        </label>
+
+                        <input asp-for="Correo"
+                               class="ts-input"
+                               autocomplete="email"
+                               placeholder="correo@ejemplo.com" />
+
+                        <span asp-validation-for="Correo"
+                              class="ts-validation">
+                        </span>
+
+                    </div>
+
+                    <div class="ts-form-group ts-form-group-full">
+
+                        <label asp-for="Telefono"
+                               class="ts-label">
+                        </label>
+
+                        <input asp-for="Telefono"
+                               class="ts-input"
+                               autocomplete="tel"
+                               placeholder="Número de teléfono" />
+
+                        <span asp-validation-for="Telefono"
+                              class="ts-validation">
+                        </span>
+
+                    </div>
+
+                    <div class="ts-form-group">
+
+                        <label asp-for="Password"
+                               class="ts-label">
+                        </label>
+
+                        <input asp-for="Password"
+                               class="ts-input"
+                               autocomplete="new-password"
+                               placeholder="Contraseña" />
+
+                        <span asp-validation-for="Password"
+                              class="ts-validation">
+                        </span>
+
+                        <div class="ts-password-note">
+                            Mínimo 8 caracteres.
+                        </div>
+
+                    </div>
+
+                    <div class="ts-form-group">
+
+                        <label asp-for="ConfirmarPassword"
+                               class="ts-label">
+                        </label>
+
+                        <input asp-for="ConfirmarPassword"
+                               class="ts-input"
+                               autocomplete="new-password"
+                               placeholder="Confirme la contraseña" />
+
+                        <span asp-validation-for="ConfirmarPassword"
+                              class="ts-validation">
+                        </span>
+
+                    </div>
 
                 </div>
 
                 <button type="submit"
-                        class="ts-login-button">
-                    Iniciar sesión
+                        class="ts-register-button">
+                    Crear cuenta
                 </button>
 
             </form>
 
-            <div class="ts-login-register">
-                ¿Aún no tienes una cuenta?
-
+            <div class="ts-login-link">
+                ¿Ya tienes una cuenta?
                 <a asp-controller="Account"
-                   asp-action="Register">
-                    Crear cuenta
+                   asp-action="Login">
+                    Iniciar sesión
                 </a>
             </div>
 
         </div>
 
-        <div class="ts-login-footer">
+        <div class="ts-register-footer">
             TempestSushi · Cocina de tormenta, precisión de mar
         </div>
 
@@ -346,7 +399,7 @@
         if (typeof anime !== 'undefined') {
 
             anime({
-                targets: '.ts-login-brand',
+                targets: '.ts-register-brand',
                 opacity: [0, 1],
                 translateY: [-15, 0],
                 duration: 650,
@@ -354,7 +407,7 @@
             });
 
             anime({
-                targets: '.ts-login-card',
+                targets: '.ts-register-card',
                 opacity: [0, 1],
                 translateY: [22, 0],
                 scale: [0.98, 1],
@@ -364,7 +417,7 @@
             });
 
             anime({
-                targets: '.ts-login-footer',
+                targets: '.ts-register-footer',
                 opacity: [0, 1],
                 delay: 600,
                 duration: 500,
