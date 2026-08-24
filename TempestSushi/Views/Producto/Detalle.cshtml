@@ -1,9 +1,21 @@
 ﻿@model TempestSushi.Application.DTOs.ProductoDetalleDto
+
 @{
     ViewData["Title"] = "Detalle del Producto";
 }
 
 <style>
+    .producto-detail-page {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .det-header {
         margin-bottom: 2rem;
         padding-bottom: 1rem;
@@ -11,58 +23,84 @@
     }
 
     .det-title {
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 1.9rem;
-        font-weight: 700;
-        color: #1a3a6e;
         margin: 0 0 4px 0;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: clamp(1.65rem, 4vw, 1.9rem);
+        font-weight: 700;
+        line-height: 1.2;
+        color: #1a3a6e;
+        overflow-wrap: anywhere;
     }
 
     .det-sub {
+        display: block;
         color: #4fa8e8;
-        font-size: .85rem;
+        font-size: 0.82rem;
+        font-weight: 600;
         letter-spacing: 2px;
     }
 
+    /* ═══════════════════════════════════════
+           CARD
+           ═══════════════════════════════════════ */
+
     .det-card {
-        background: #fff;
+        width: 100%;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        background: #ffffff;
         border: 1.5px solid #d0e8f8;
         border-radius: 14px;
-        overflow: hidden;
-        box-shadow: 0 2px 16px rgba(26,58,110,0.07);
-        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 16px rgba(26, 58, 110, 0.07);
     }
 
+    /* ═══════════════════════════════════════
+           IMAGEN
+           ═══════════════════════════════════════ */
+
     .det-img {
+        display: block;
         width: 100%;
         max-height: 320px;
         object-fit: cover;
+        object-position: center;
     }
+
+    /* ═══════════════════════════════════════
+           CUERPO
+           ═══════════════════════════════════════ */
 
     .det-body {
         padding: 1.75rem 2rem;
     }
 
     .det-nombre {
+        margin-bottom: 6px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.6rem;
         font-weight: 700;
+        line-height: 1.25;
         color: #1a3a6e;
-        margin-bottom: 6px;
+        overflow-wrap: anywhere;
     }
 
     .det-desc {
-        color: #5a7fa0;
-        font-size: .95rem;
         margin-bottom: 1.25rem;
+        color: #5a7fa0;
+        font-size: 0.95rem;
         line-height: 1.6;
+        overflow-wrap: anywhere;
     }
 
     .det-divider {
+        margin: 1.25rem 0;
         border: none;
         border-top: 1px solid #d0e8f8;
-        margin: 1.25rem 0;
     }
+
+    /* ═══════════════════════════════════════
+           DATOS
+           ═══════════════════════════════════════ */
 
     .det-row {
         display: flex;
@@ -72,118 +110,411 @@
     }
 
     .det-label {
-        font-size: .78rem;
-        color: #4fa8e8;
-        letter-spacing: 2px;
-        font-weight: 600;
         min-width: 100px;
+        color: #4fa8e8;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 2px;
     }
 
     .det-value {
+        min-width: 0;
         color: #1a3a6e;
-        font-size: .95rem;
+        font-size: 0.95rem;
         font-weight: 500;
+        overflow-wrap: anywhere;
     }
 
     .det-precio {
+        color: #c0392b;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.4rem;
         font-weight: 700;
-        color: #c0392b;
+        white-space: nowrap;
     }
 
+    .det-ingredientes-label {
+        margin-bottom: 8px;
+    }
+
+    /* ═══════════════════════════════════════
+           INGREDIENTES
+           ═══════════════════════════════════════ */
+
     .ing-list {
-        list-style: none;
-        padding: 0;
-        margin: 8px 0 0 0;
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
+        margin: 8px 0 0 0;
+        padding: 0;
+        list-style: none;
     }
 
         .ing-list li {
+            max-width: 100%;
+            padding: 5px 14px;
+            border-radius: 999px;
             background: #e8f4fd;
             color: #1a3a6e;
-            border-radius: 20px;
-            padding: 4px 14px;
-            font-size: .85rem;
+            font-size: 0.85rem;
             font-weight: 500;
+            line-height: 1.35;
+            overflow-wrap: anywhere;
         }
 
-    .btn-volver {
+    /* ═══════════════════════════════════════
+           ACCIONES
+           ═══════════════════════════════════════ */
+
+    .det-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+    }
+
+    .btn-volver,
+    .btn-editar {
+        min-height: 42px;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 6px;
+        padding: 7px 20px;
+        border-radius: 8px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-align: center;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-volver {
+        border: 1.5px solid #1a3a6e;
         background: transparent;
         color: #1a3a6e;
-        border: 1.5px solid #1a3a6e;
-        border-radius: 8px;
-        padding: 7px 20px;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
-        letter-spacing: 1px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all .2s;
     }
 
         .btn-volver:hover {
             background: #1a3a6e;
-            color: #fff !important;
+            color: #ffffff !important;
+            transform: translateY(-1px);
         }
+
+    .btn-editar {
+        border: 1.5px solid #1a3a6e;
+        background: #1a3a6e;
+        color: #ffffff !important;
+    }
+
+        .btn-editar:hover {
+            border-color: #c0392b;
+            background: #c0392b;
+            color: #ffffff !important;
+            transform: translateY(-1px);
+        }
+
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .producto-detail-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
+        .det-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .det-body {
+            padding: 1.5rem;
+        }
+
+        .det-img {
+            max-height: 280px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .producto-detail-page {
+            padding-top: 0.5rem;
+        }
+
+        .det-header {
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.8rem;
+        }
+
+        .det-title {
+            font-size: 1.6rem;
+        }
+
+        .det-sub {
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .det-card {
+            border-radius: 12px;
+        }
+
+        .det-img {
+            max-height: 230px;
+        }
+
+        .det-body {
+            padding: 1.2rem;
+        }
+
+        .det-nombre {
+            font-size: 1.35rem;
+        }
+
+        .det-desc {
+            font-size: 0.9rem;
+        }
+
+        .det-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            margin-bottom: 0.9rem;
+        }
+
+        .det-label {
+            min-width: 0;
+            font-size: 0.72rem;
+            letter-spacing: 1.5px;
+        }
+
+        .det-precio {
+            font-size: 1.3rem;
+        }
+
+        .ing-list {
+            gap: 7px;
+        }
+
+            .ing-list li {
+                font-size: 0.82rem;
+                padding: 5px 11px;
+            }
+
+        .det-actions {
+            width: 100%;
+            flex-direction: column;
+        }
+
+        .btn-volver,
+        .btn-editar {
+            width: 100%;
+            min-height: 45px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .det-title {
+            font-size: 1.5rem;
+        }
+
+        .det-body {
+            padding: 1rem 0.9rem;
+        }
+
+        .det-img {
+            max-height: 200px;
+        }
+
+        .det-nombre {
+            font-size: 1.25rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .btn-volver,
+        .btn-editar {
+            transition: none;
+        }
+    }
 </style>
 
-<div class="det-header" id="detHeader">
-    <h1 class="det-title">@Model.Nombre</h1>
-    <span class="det-sub">DETALLE DEL PRODUCTO</span>
-</div>
+<div class="producto-detail-page">
 
-<div class="row justify-content-center">
-    <div class="col-12 col-lg-8">
-        <div class="det-card" id="detCard">
-            @if (!string.IsNullOrEmpty(Model.ImagenUrl))
-            {
-                <img src="@Model.ImagenUrl" class="det-img" alt="@Model.Nombre" />
-            }
-            <div class="det-body">
-                <div class="det-nombre">@Model.Nombre</div>
-                <div class="det-desc">@Model.Descripcion</div>
-                <hr class="det-divider" />
-                <div class="det-row">
-                    <span class="det-label">CATEGORÍA</span>
-                    <span class="det-value">@Model.Categoria</span>
-                </div>
-                <div class="det-row">
-                    <span class="det-label">PRECIO</span>
-                    <span class="det-precio">₡@Model.Precio.ToString("N2")</span>
-                </div>
-                <hr class="det-divider" />
-                <div class="det-label" style="margin-bottom:8px">INGREDIENTES</div>
-                <ul class="ing-list">
-                    @foreach (var ingrediente in Model.Ingredientes)
-                    {
-                        <li>@ingrediente</li>
-                    }
-                </ul>
+    <!-- HEADER -->
+
+    <div class="det-header"
+         id="detHeader">
+
+        <h1 class="det-title">
+            @Model.Nombre
+        </h1>
+
+        <span class="det-sub">
+            DETALLE DEL PRODUCTO
+        </span>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="det-card"
+         id="detCard">
+
+        @if (!string.IsNullOrEmpty(Model.ImagenUrl))
+        {
+            <img src="@Model.ImagenUrl"
+                 class="det-img"
+                 alt="@Model.Nombre" />
+        }
+
+        <div class="det-body">
+
+            <div class="det-nombre">
+                @Model.Nombre
             </div>
+
+            <div class="det-desc">
+                @Model.Descripcion
+            </div>
+
+            <hr class="det-divider" />
+
+            <!-- CATEGORÍA -->
+
+            <div class="det-row">
+
+                <span class="det-label">
+                    CATEGORÍA
+                </span>
+
+                <span class="det-value">
+                    @Model.Categoria
+                </span>
+
+            </div>
+
+            <!-- PRECIO -->
+
+            <div class="det-row">
+
+                <span class="det-label">
+                    PRECIO
+                </span>
+
+                <span class="det-precio">
+                    ₡@Model.Precio.ToString("N2")
+                </span>
+
+            </div>
+
+            <hr class="det-divider" />
+
+            <!-- INGREDIENTES -->
+
+            <div class="det-label det-ingredientes-label">
+                INGREDIENTES
+            </div>
+
+            <ul class="ing-list">
+
+                @foreach (var ingrediente in Model.Ingredientes)
+                {
+                    <li>
+                        @ingrediente
+                    </li>
+                }
+
+            </ul>
+
         </div>
-        <a asp-controller="Producto" asp-action="Index" class="btn-volver">← Volver al listado</a>
+
+    </div>
+
+    <!-- ACCIONES -->
+
+    <div class="det-actions">
+
+        <a asp-controller="Producto"
+           asp-action="Index"
+           class="btn-volver">
+
+            ← Volver al listado
+
+        </a>
+
         @if (User.IsInRole("Administrador"))
         {
             <a asp-controller="Producto"
                asp-action="Editar"
                asp-route-id="@Model.IdProducto"
-               class="btn-volver"
-               style="margin-left:8px; background:#1a3a6e; color:#fff !important;">
+               class="btn-editar">
+
                 ✎ Editar
+
             </a>
         }
+
     </div>
+
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script>
-    anime({ targets: '#detHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
-    anime({ targets: '#detCard', translateY: [20, 0], opacity: [0, 1], duration: 600, delay: 150, easing: 'easeOutExpo' });
-    anime({ targets: '.ing-list li', scale: [0.8, 1], opacity: [0, 1], duration: 400, delay: anime.stagger(60, { start: 500 }), easing: 'easeOutBack' });
+
+    if (
+        typeof anime !== 'undefined' &&
+        !window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches
+    ) {
+
+        anime({
+            targets: '#detHeader',
+            translateY: [-20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '#detCard',
+            translateY: [20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            delay: 150,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '.ing-list li',
+            scale: [0.8, 1],
+            opacity: [0, 1],
+            duration: 400,
+            delay: anime.stagger(
+                60,
+                {
+                    start: 500
+                }
+            ),
+            easing: 'easeOutBack'
+        });
+    }
+
 </script>

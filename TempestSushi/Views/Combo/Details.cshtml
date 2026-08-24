@@ -5,6 +5,17 @@
 }
 
 <style>
+    .combo-detail-page {
+        width: 100%;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .det-header {
         margin-bottom: 2rem;
         padding-bottom: 1rem;
@@ -12,82 +23,126 @@
     }
 
     .det-title {
+        margin: 0 0 4px 0;
         font-family: 'Rajdhani', sans-serif;
-        font-size: 1.9rem;
+        font-size: clamp(1.65rem, 4vw, 1.9rem);
         font-weight: 700;
         color: #1a3a6e;
-        margin: 0 0 4px 0;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
     }
 
     .det-sub {
+        display: block;
         color: #4fa8e8;
-        font-size: .85rem;
+        font-size: 0.82rem;
+        font-weight: 600;
         letter-spacing: 2px;
     }
 
+    /* ═══════════════════════════════════════
+           CONTENEDOR
+           ═══════════════════════════════════════ */
+
+    .det-content {
+        width: 100%;
+        max-width: 780px;
+        margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════
+           CARD
+           ═══════════════════════════════════════ */
+
     .det-card {
-        background: #fff;
+        width: 100%;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        background: #ffffff;
         border: 1.5px solid #d0e8f8;
         border-radius: 14px;
-        overflow: hidden;
-        box-shadow: 0 2px 16px rgba(26,58,110,0.07);
-        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 16px rgba(26, 58, 110, 0.07);
     }
+
+    /* ═══════════════════════════════════════
+           BANNER
+           ═══════════════════════════════════════ */
 
     .det-icon-banner {
         width: 100%;
         height: 220px;
-        background: linear-gradient(135deg, #e8f4fd 60%, #d0e8f8 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 5rem;
+        background: linear-gradient( 135deg, #e8f4fd 60%, #d0e8f8 100% );
+        user-select: none;
     }
+
+    /* ═══════════════════════════════════════
+           BODY
+           ═══════════════════════════════════════ */
 
     .det-body {
         padding: 1.75rem 2rem;
     }
 
     .det-nombre {
+        margin-bottom: 6px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.6rem;
         font-weight: 700;
         color: #1a3a6e;
-        margin-bottom: 6px;
+        overflow-wrap: anywhere;
     }
 
     .det-desc {
-        color: #5a7fa0;
-        font-size: .95rem;
         margin-bottom: 1.25rem;
+        color: #5a7fa0;
+        font-size: 0.95rem;
         line-height: 1.6;
+        overflow-wrap: anywhere;
     }
 
     .det-divider {
+        margin: 1.25rem 0;
         border: none;
         border-top: 1px solid #d0e8f8;
-        margin: 1.25rem 0;
+        opacity: 1;
     }
+
+    /* ═══════════════════════════════════════
+           FILAS DE DETALLE
+           ═══════════════════════════════════════ */
 
     .det-row {
         display: flex;
         align-items: baseline;
-        gap: 8px;
-        margin-bottom: 10px;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+        min-width: 0;
     }
 
+        .det-row:last-of-type {
+            margin-bottom: 0;
+        }
+
     .det-label {
-        font-size: .78rem;
+        flex-shrink: 0;
+        min-width: 105px;
+        font-size: 0.76rem;
+        font-weight: 700;
         color: #4fa8e8;
-        letter-spacing: 2px;
-        font-weight: 600;
-        min-width: 100px;
+        letter-spacing: 1.6px;
+        text-transform: uppercase;
     }
 
     .det-value {
+        min-width: 0;
         color: #1a3a6e;
-        font-size: .95rem;
+        font-size: 0.95rem;
         font-weight: 500;
+        overflow-wrap: anywhere;
     }
 
     .det-precio {
@@ -95,15 +150,23 @@
         font-size: 1.4rem;
         font-weight: 700;
         color: #c0392b;
+        white-space: nowrap;
     }
 
+    /* ═══════════════════════════════════════
+           ESTADO
+           ═══════════════════════════════════════ */
+
     .estado-badge {
-        display: inline-block;
-        padding: 3px 14px;
-        border-radius: 20px;
-        font-size: .8rem;
-        font-weight: 600;
-        letter-spacing: 1px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 14px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        white-space: nowrap;
     }
 
     .estado-activo {
@@ -116,83 +179,414 @@
         color: #c0392b;
     }
 
-    .btn-volver {
+    /* ═══════════════════════════════════════
+           PRODUCTOS
+           ═══════════════════════════════════════ */
+
+    .productos-title {
+        margin-bottom: 0.75rem;
+    }
+
+    .ing-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .ing-item {
+        max-width: 100%;
+        padding: 0.4rem 0.85rem;
+        border-radius: 999px;
+        background: #e8f4fd;
+        color: #1a3a6e;
+        font-size: 0.84rem;
+        font-weight: 500;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+    }
+
+    /* ═══════════════════════════════════════
+           ACCIONES
+           ═══════════════════════════════════════ */
+
+    .det-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-volver,
+    .btn-editar {
+        min-height: 42px;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 6px;
+        padding: 7px 20px;
+        border-radius: 8px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-volver {
+        border: 1.5px solid #1a3a6e;
         background: transparent;
         color: #1a3a6e;
-        border: 1.5px solid #1a3a6e;
-        border-radius: 8px;
-        padding: 7px 20px;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
-        letter-spacing: 1px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all .2s;
     }
 
         .btn-volver:hover {
             background: #1a3a6e;
-            color: #fff !important;
+            color: #ffffff !important;
+            transform: translateY(-1px);
         }
+
+    .btn-editar {
+        border: 1.5px solid #1a3a6e;
+        background: #1a3a6e;
+        color: #ffffff;
+    }
+
+        .btn-editar:hover {
+            background: #c0392b;
+            border-color: #c0392b;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(192, 57, 43, 0.18);
+        }
+
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .combo-detail-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
+        .det-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .det-icon-banner {
+            height: 190px;
+            font-size: 4.5rem;
+        }
+
+        .det-body {
+            padding: 1.5rem 1.6rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .combo-detail-page {
+            padding-top: 0.5rem;
+        }
+
+        .det-header {
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.8rem;
+        }
+
+        .det-title {
+            font-size: 1.6rem;
+        }
+
+        .det-sub {
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .det-card {
+            border-radius: 12px;
+        }
+
+        .det-icon-banner {
+            height: 150px;
+            font-size: 3.8rem;
+        }
+
+        .det-body {
+            padding: 1.3rem 1.15rem;
+        }
+
+        .det-nombre {
+            font-size: 1.4rem;
+        }
+
+        .det-desc {
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+
+        .det-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .det-label {
+            min-width: 0;
+            font-size: 0.7rem;
+            letter-spacing: 1.4px;
+        }
+
+        .det-value {
+            font-size: 0.92rem;
+        }
+
+        .det-precio {
+            font-size: 1.3rem;
+        }
+
+        .ing-list {
+            gap: 7px;
+        }
+
+        .ing-item {
+            border-radius: 12px;
+            padding: 0.45rem 0.7rem;
+            font-size: 0.82rem;
+        }
+
+        .det-actions {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.6rem;
+        }
+
+        .btn-volver,
+        .btn-editar {
+            width: 100%;
+            min-height: 45px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .det-body {
+            padding: 1.1rem 0.95rem;
+        }
+
+        .det-icon-banner {
+            height: 135px;
+            font-size: 3.4rem;
+        }
+
+        .det-title {
+            font-size: 1.5rem;
+        }
+
+        .det-nombre {
+            font-size: 1.3rem;
+        }
+
+        .ing-item {
+            width: 100%;
+            border-radius: 10px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .btn-volver,
+        .btn-editar {
+            transition: none;
+        }
+    }
 </style>
 
-<div class="det-header" id="detHeader">
-    <h1 class="det-title">@Model.Nombre</h1>
-    <span class="det-sub">DETALLE DEL COMBO</span>
-</div>
+<div class="combo-detail-page">
 
-<div class="row justify-content-center">
-    <div class="col-12 col-lg-8">
-        <div class="det-card" id="detCard">
-            <div class="det-icon-banner">🍱</div>
+    <!-- HEADER -->
+
+    <div class="det-header"
+         id="detHeader">
+
+        <h1 class="det-title">
+            @Model.Nombre
+        </h1>
+
+        <span class="det-sub">
+            DETALLE DEL COMBO
+        </span>
+
+    </div>
+
+    <div class="det-content">
+
+        <!-- CARD -->
+
+        <div class="det-card"
+             id="detCard">
+
+            <div class="det-icon-banner"
+                 aria-hidden="true">
+
+                🍱
+
+            </div>
+
             <div class="det-body">
-                <div class="det-nombre">@Model.Nombre</div>
-                <div class="det-desc">@Model.Descripcion</div>
+
+                <div class="det-nombre">
+                    @Model.Nombre
+                </div>
+
+                <div class="det-desc">
+                    @Model.Descripcion
+                </div>
+
                 <hr class="det-divider" />
+
+                <!-- CATEGORÍA -->
+
                 <div class="det-row">
-                    <span class="det-label">CATEGORÍA</span>
-                    <span class="det-value">@Model.NombreCategoria</span>
-                </div>
-                <div class="det-row">
-                    <span class="det-label">PRECIO</span>
-                    <span class="det-precio">₡@Model.Precio.ToString("N2")</span>
-                </div>
-                <div class="det-row">
-                    <span class="det-label">ESTADO</span>
-                    <span class="estado-badge @(Model.Activo ? "estado-activo" : "estado-inactivo")">
-                        @(Model.Activo ? "Activo" : "Inactivo")
+
+                    <span class="det-label">
+                        Categoría
                     </span>
+
+                    <span class="det-value">
+                        @Model.NombreCategoria
+                    </span>
+
                 </div>
+
+                <!-- PRECIO -->
+
+                <div class="det-row">
+
+                    <span class="det-label">
+                        Precio
+                    </span>
+
+                    <span class="det-precio">
+                        ₡@Model.Precio.ToString("N2")
+                    </span>
+
+                </div>
+
+                <!-- ESTADO -->
+
+                <div class="det-row">
+
+                    <span class="det-label">
+                        Estado
+                    </span>
+
+                    <span class="estado-badge @(Model.Activo ? "estado-activo" : "estado-inactivo")">
+
+                        @(Model.Activo
+                                                ? "Activo"
+                                                : "Inactivo")
+
+                    </span>
+
+                </div>
+
                 <hr class="det-divider" />
-                <div class="det-label" style="margin-bottom:8px">PRODUCTOS INCLUIDOS</div>
-                <ul class="ing-list" style="list-style:none; padding:0; display:flex; flex-wrap:wrap; gap:8px;">
+
+                <!-- PRODUCTOS -->
+
+                <div class="det-label productos-title">
+                    Productos incluidos
+                </div>
+
+                <ul class="ing-list">
+
                     @foreach (var p in Model.Productos)
                     {
-                        <li style="background:#e8f4fd; color:#1a3a6e; border-radius:20px; padding:4px 14px; font-size:.85rem; font-weight:500;">
-                            @p.NombreProducto (x@(p.Cantidad)) 
+                        <li class="ing-item">
+
+                            @p.NombreProducto
+                            (x@(p.Cantidad))
+
                         </li>
                     }
+
                 </ul>
+
             </div>
+
         </div>
-        <a asp-action="Index" class="btn-volver">← Volver al listado</a>
-        @if (User.IsInRole("Administrador"))
-        {
-            <a asp-action="Editar"
-               asp-route-id="@Model.IdCombo"
-               class="btn-volver"
-               style="margin-left:8px; background:#1a3a6e; color:#fff !important;">
-                ✎ Editar
+
+        <!-- ACCIONES -->
+
+        <div class="det-actions">
+
+            <a asp-action="Index"
+               class="btn-volver">
+
+                ← Volver al listado
+
             </a>
-        }
+
+            @if (User.IsInRole("Administrador"))
+            {
+                <a asp-action="Editar"
+                   asp-route-id="@Model.IdCombo"
+                   class="btn-editar">
+
+                    ✎ Editar
+
+                </a>
+            }
+
+        </div>
+
     </div>
+
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script>
-    anime({ targets: '#detHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
-    anime({ targets: '#detCard', translateY: [20, 0], opacity: [0, 1], duration: 600, delay: 150, easing: 'easeOutExpo' });
+
+    if (
+        typeof anime !== 'undefined' &&
+        !window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches
+    ) {
+
+        anime({
+            targets: '#detHeader',
+            translateY: [-20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '#detCard',
+            translateY: [20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            delay: 150,
+            easing: 'easeOutExpo'
+        });
+    }
+
 </script>

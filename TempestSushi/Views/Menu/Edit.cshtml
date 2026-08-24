@@ -5,6 +5,17 @@
 }
 
 <style>
+    .menu-page {
+        width: 100%;
+        max-width: 1050px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .menu-header {
         display: flex;
         align-items: center;
@@ -12,323 +23,678 @@
         margin-bottom: 2rem;
         padding-bottom: 1rem;
         border-bottom: 2px solid #d0e8f8;
-        opacity: 0;
     }
 
     .menu-title {
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1a3a6e;
-        letter-spacing: 1px;
         margin: 0;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: clamp(1.7rem, 4vw, 2rem);
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 1px;
+        color: #1a3a6e;
     }
 
     .menu-badge {
+        flex-shrink: 0;
+        padding: 4px 12px;
+        border-radius: 999px;
         background: #1a3a6e;
         color: #4fa8e8;
-        font-size: .7rem;
-        letter-spacing: 2px;
-        padding: 4px 12px;
-        border-radius: 20px;
+        font-size: 0.7rem;
         font-weight: 600;
+        letter-spacing: 2px;
+        white-space: nowrap;
     }
+
+    /* ═══════════════════════════════════════
+           CARD
+           ═══════════════════════════════════════ */
 
     .menu-form-card {
-        background: #fff;
+        width: 100%;
+        padding: 2rem;
+        background: #ffffff;
         border: 1.5px solid #d0e8f8;
         border-radius: 14px;
-        padding: 2rem;
         box-shadow: 0 4px 18px rgba(26, 58, 110, 0.09);
-        opacity: 0;
     }
 
+        .menu-form-card form {
+            width: 100%;
+            min-width: 0;
+        }
+
+    /* ═══════════════════════════════════════
+           SECCIONES
+           ═══════════════════════════════════════ */
+
     .form-section-title {
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #d0e8f8;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.2rem;
         font-weight: 700;
         color: #1a3a6e;
-        margin-bottom: 1rem;
-        padding-bottom: .5rem;
-        border-bottom: 1px solid #d0e8f8;
     }
 
+    /* ═══════════════════════════════════════
+           CAMPOS
+           ═══════════════════════════════════════ */
+
     .form-label {
+        margin-bottom: 0.4rem;
         color: #1a3a6e;
+        font-size: 0.9rem;
         font-weight: 600;
-        font-size: .9rem;
     }
 
     .form-control,
     .form-select {
+        width: 100%;
+        min-width: 0;
         border: 1.5px solid #d0e8f8;
         border-radius: 8px;
         color: #1a3a6e;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
         .form-control:focus,
         .form-select:focus {
             border-color: #4fa8e8;
-            box-shadow: 0 0 0 .2rem rgba(79, 168, 232, .18);
+            box-shadow: 0 0 0 0.2rem rgba(79, 168, 232, 0.18);
         }
 
+    input[type="date"],
+    input[type="time"] {
+        max-width: 100%;
+    }
+
+    /* ═══════════════════════════════════════
+           CHECK
+           ═══════════════════════════════════════ */
+
+    .form-check {
+        min-height: 1.5rem;
+    }
+
+    .form-check-input {
+        cursor: pointer;
+    }
+
+        .form-check-input:checked {
+            background-color: #1a3a6e;
+            border-color: #1a3a6e;
+        }
+
+    .form-check-label {
+        cursor: pointer;
+    }
+
+    /* ═══════════════════════════════════════
+           SELECCIONES
+           ═══════════════════════════════════════ */
+
     .selection-box {
+        width: 100%;
+        max-height: 280px;
+        padding: 0.75rem;
+        overflow-y: auto;
+        overflow-x: hidden;
         border: 1.5px solid #d0e8f8;
         border-radius: 10px;
-        padding: 1rem;
-        max-height: 260px;
-        overflow-y: auto;
         background: #f8fcff;
+        scrollbar-width: thin;
     }
 
     .selection-item {
+        width: 100%;
+        min-width: 0;
         display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 7px 4px;
+        align-items: flex-start;
+        gap: 9px;
+        margin: 0;
+        padding: 0.6rem 0.45rem;
+        border-radius: 7px;
         color: #1a3a6e;
+        cursor: pointer;
+        line-height: 1.35;
+        transition: background 0.18s ease;
     }
+
+        .selection-item:hover {
+            background: rgba(79, 168, 232, 0.08);
+        }
 
         .selection-item:not(:last-child) {
             border-bottom: 1px solid #e8f4fd;
         }
 
-    .form-check-input:checked {
-        background-color: #1a3a6e;
-        border-color: #1a3a6e;
+        .selection-item .form-check-input {
+            flex-shrink: 0;
+            margin-top: 0.18rem;
+        }
+
+        .selection-item span {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+    /* ═══════════════════════════════════════
+           VALIDACIÓN
+           ═══════════════════════════════════════ */
+
+    .text-danger {
+        display: block;
+        margin-top: 0.35rem;
+        font-size: 0.82rem;
+        line-height: 1.4;
     }
 
-    .btn-guardar {
+    .validation-summary-valid {
+        display: none;
+    }
+
+    /* ═══════════════════════════════════════
+           ACCIONES
+           ═══════════════════════════════════════ */
+
+    .menu-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-top: 1.5rem;
+    }
+
+    .btn-guardar,
+    .btn-cancelar {
+        min-height: 44px;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
-        background: #1a3a6e;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
         padding: 10px 24px;
+        border-radius: 8px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1rem;
         font-weight: 600;
         letter-spacing: 1px;
-        transition: background .2s, transform .2s;
+        text-align: center;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-guardar {
+        border: none;
+        background: #1a3a6e;
+        color: #ffffff;
     }
 
         .btn-guardar:hover {
             background: #244f91;
+            color: #ffffff;
             transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(26, 58, 110, 0.15);
         }
 
     .btn-cancelar {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: #fff;
-        color: #1a3a6e;
         border: 1.5px solid #1a3a6e;
-        border-radius: 8px;
-        padding: 9px 24px;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 1rem;
-        font-weight: 600;
-        letter-spacing: 1px;
-        text-decoration: none;
-        transition: background .2s, color .2s;
+        background: #ffffff;
+        color: #1a3a6e;
     }
 
         .btn-cancelar:hover {
             background: #1a3a6e;
-            color: #fff;
+            color: #ffffff;
+            transform: translateY(-1px);
         }
 
-    .text-danger {
-        font-size: .82rem;
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .menu-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
+        .menu-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-form-card {
+            padding: 1.5rem;
+        }
+
+        .selection-box {
+            max-height: 300px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .menu-page {
+            padding-top: 0.5rem;
+        }
+
+        .menu-header {
+            gap: 8px;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.8rem;
+        }
+
+        .menu-title {
+            font-size: 1.6rem;
+        }
+
+        .menu-badge {
+            padding: 3px 9px;
+            font-size: 0.62rem;
+            letter-spacing: 1.4px;
+        }
+
+        .menu-form-card {
+            padding: 1.2rem;
+            border-radius: 12px;
+        }
+
+        .form-section-title {
+            font-size: 1.1rem;
+        }
+
+        .form-control,
+        .form-select {
+            font-size: 0.95rem;
+        }
+
+        .selection-box {
+            max-height: 320px;
+            padding: 0.6rem;
+        }
+
+        .selection-item {
+            padding: 0.6rem 0.35rem;
+            font-size: 0.9rem;
+        }
+
+        .menu-actions {
+            width: 100%;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .btn-guardar,
+        .btn-cancelar {
+            width: 100%;
+            min-height: 46px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .menu-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .menu-title {
+            font-size: 1.5rem;
+        }
+
+        .menu-form-card {
+            padding: 1rem 0.9rem;
+        }
+
+        .selection-item {
+            font-size: 0.86rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .form-control,
+        .form-select,
+        .selection-item,
+        .btn-guardar,
+        .btn-cancelar {
+            transition: none;
+        }
     }
 </style>
 
-<h1 class="menu-title">Editar Menú</h1>
-<span class="menu-badge">EDICIÓN</span>
+<div class="menu-page">
 
-<div class="menu-form-card" id="menuFormCard">
-    <form asp-controller="Menu" asp-action="Edit" method="post">
-        <input asp-for="IdMenu" type="hidden" />
-        <div asp-validation-summary="ModelOnly"
-             class="alert alert-danger"
-             role="alert">
-        </div>
+    <!-- HEADER -->
 
-        <div class="form-section-title">Información general</div>
+    <div class="menu-header"
+         id="menuHeader">
 
-        <div class="row g-3">
-            <div class="col-12">
-                <label asp-for="Nombre" class="form-label"></label>
-                <input asp-for="Nombre"
-                       class="form-control"
-                       placeholder="Ejemplo: Menú de temporada" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+        <h1 class="menu-title">
+            Editar Menú
+        </h1>
+
+        <span class="menu-badge">
+            EDICIÓN
+        </span>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="menu-form-card"
+         id="menuFormCard">
+
+        <form asp-controller="Menu"
+              asp-action="Edit"
+              method="post">
+
+            <input asp-for="IdMenu"
+                   type="hidden" />
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger"
+                 role="alert">
             </div>
 
-            <div class="col-md-6">
-                <label asp-for="FechaInicio" class="form-label"></label>
-                <input asp-for="FechaInicio"
-                       type="date"
-                       class="form-control" />
-                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+            <!-- INFORMACIÓN GENERAL -->
+
+            <div class="form-section-title">
+                Información general
             </div>
 
-            <div class="col-md-6">
-                <label asp-for="FechaFin" class="form-label"></label>
-                <input asp-for="FechaFin"
-                       type="date"
-                       class="form-control" />
-                <span asp-validation-for="FechaFin" class="text-danger"></span>
-            </div>
+            <div class="row g-3">
 
-            <div class="col-md-6">
-                <label asp-for="HoraInicio" class="form-label"></label>
-                <input asp-for="HoraInicio"
-                       type="time"
-                       class="form-control" />
-                <span asp-validation-for="HoraInicio" class="text-danger"></span>
-            </div>
+                <div class="col-12">
 
-            <div class="col-md-6">
-                <label asp-for="HoraFin" class="form-label"></label>
-                <input asp-for="HoraFin"
-                       type="time"
-                       class="form-control" />
-                <span asp-validation-for="HoraFin" class="text-danger"></span>
-            </div>
-
-            <div class="col-12">
-                <label asp-for="DiasDisponibles" class="form-label"></label>
-
-                <select asp-for="DiasDisponibles" class="form-select">
-
-                    @foreach (var opcion in Model.OpcionesDiasDisponibles)
-                    {
-                        <option value="@opcion">@opcion</option>
-                    }
-                </select>
-
-                <span asp-validation-for="DiasDisponibles"
-                      class="text-danger"></span>
-            </div>
-
-            <div class="col-12">
-                <div class="form-check">
-                    <input asp-for="Activo"
-                           class="form-check-input" />
-                    <label asp-for="Activo"
-                           class="form-check-label form-label">
+                    <label asp-for="Nombre"
+                           class="form-label">
                     </label>
+
+                    <input asp-for="Nombre"
+                           class="form-control"
+                           placeholder="Ejemplo: Menú de temporada" />
+
+                    <span asp-validation-for="Nombre"
+                          class="text-danger">
+                    </span>
+
                 </div>
-            </div>
-        </div>
 
-        <div class="form-section-title mt-4">Elementos del menú</div>
+                <div class="col-12 col-md-6">
 
-        <div class="row g-4">
-            <div class="col-md-6">
-                <label class="form-label">Productos</label>
+                    <label asp-for="FechaInicio"
+                           class="form-label">
+                    </label>
 
-                <div class="selection-box">
-                    @if (Model.ProductosDisponibles.Any())
-                    {
-                        @foreach (var producto in Model.ProductosDisponibles)
+                    <input asp-for="FechaInicio"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="FechaInicio"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="col-12 col-md-6">
+
+                    <label asp-for="FechaFin"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="FechaFin"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="FechaFin"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="col-12 col-md-6">
+
+                    <label asp-for="HoraInicio"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="HoraInicio"
+                           type="time"
+                           class="form-control" />
+
+                    <span asp-validation-for="HoraInicio"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="col-12 col-md-6">
+
+                    <label asp-for="HoraFin"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="HoraFin"
+                           type="time"
+                           class="form-control" />
+
+                    <span asp-validation-for="HoraFin"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="col-12">
+
+                    <label asp-for="DiasDisponibles"
+                           class="form-label">
+                    </label>
+
+                    <select asp-for="DiasDisponibles"
+                            class="form-select">
+
+                        @foreach (var opcion in Model.OpcionesDiasDisponibles)
                         {
-                            <label class="selection-item">
-                                <input type="checkbox"
-                                       name="ProductosSeleccionados"
-                                       value="@producto.Id"
-                                       class="form-check-input"
-                                       checked="@Model.ProductosSeleccionados.Contains(producto.Id)" />
-
-                                <span>@producto.Nombre</span>
-                            </label>
+                            <option value="@opcion">
+                                @opcion
+                            </option>
                         }
-                    }
-                    else
-                    {
-                        <span class="text-muted">
-                            No hay productos disponibles.
-                        </span>
-                    }
+
+                    </select>
+
+                    <span asp-validation-for="DiasDisponibles"
+                          class="text-danger">
+                    </span>
+
                 </div>
 
-                <span asp-validation-for="ProductosSeleccionados"
-                      class="text-danger"></span>
+                <div class="col-12">
+
+                    <div class="form-check">
+
+                        <input asp-for="Activo"
+                               class="form-check-input" />
+
+                        <label asp-for="Activo"
+                               class="form-check-label form-label">
+                        </label>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="col-md-6">
-                <label class="form-label">Combos</label>
+            <!-- ELEMENTOS -->
 
-                <div class="selection-box">
-                    @if (Model.CombosDisponibles.Any())
-                    {
-                        @foreach (var combo in Model.CombosDisponibles)
+            <div class="form-section-title mt-4">
+                Elementos del menú
+            </div>
+
+            <div class="row g-4">
+
+                <!-- PRODUCTOS -->
+
+                <div class="col-12 col-md-6">
+
+                    <label class="form-label">
+                        Productos
+                    </label>
+
+                    <div class="selection-box">
+
+                        @if (Model.ProductosDisponibles.Any())
                         {
-                            <label class="selection-item">
-                                <input type="checkbox"
-                                       name="CombosSeleccionados"
-                                       value="@combo.Id"
-                                       class="form-check-input"
-                                       checked="@Model.CombosSeleccionados.Contains(combo.Id)" />
+                            @foreach (var producto in Model.ProductosDisponibles)
+                            {
+                                <label class="selection-item">
 
-                                <span>@combo.Nombre</span>
-                            </label>
+                                    <input type="checkbox"
+                                           name="ProductosSeleccionados"
+                                           value="@producto.Id"
+                                           class="form-check-input"
+                                           checked="@Model.ProductosSeleccionados.Contains(producto.Id)" />
+
+                                    <span>
+                                        @producto.Nombre
+                                    </span>
+
+                                </label>
+                            }
                         }
-                    }
-                    else
-                    {
-                        <span class="text-muted">
-                            No hay combos disponibles.
-                        </span>
-                    }
+                        else
+                        {
+                            <span class="text-muted">
+                                No hay productos disponibles.
+                            </span>
+                        }
+
+                    </div>
+
+                    <span asp-validation-for="ProductosSeleccionados"
+                          class="text-danger">
+                    </span>
+
                 </div>
 
-                <span asp-validation-for="CombosSeleccionados"
-                      class="text-danger"></span>
+                <!-- COMBOS -->
+
+                <div class="col-12 col-md-6">
+
+                    <label class="form-label">
+                        Combos
+                    </label>
+
+                    <div class="selection-box">
+
+                        @if (Model.CombosDisponibles.Any())
+                        {
+                            @foreach (var combo in Model.CombosDisponibles)
+                            {
+                                <label class="selection-item">
+
+                                    <input type="checkbox"
+                                           name="CombosSeleccionados"
+                                           value="@combo.Id"
+                                           class="form-check-input"
+                                           checked="@Model.CombosSeleccionados.Contains(combo.Id)" />
+
+                                    <span>
+                                        @combo.Nombre
+                                    </span>
+
+                                </label>
+                            }
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                No hay combos disponibles.
+                            </span>
+                        }
+
+                    </div>
+
+                    <span asp-validation-for="CombosSeleccionados"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
             </div>
-        </div>
 
+            <!-- ACCIONES -->
 
+            <div class="menu-actions">
 
-        <div class="d-flex flex-wrap gap-2 mt-4">
-            <button type="submit" class="btn-guardar">
-                💾 Guardar cambios
-            </button>
+                <button type="submit"
+                        class="btn-guardar">
 
-            <a asp-controller="Menu"
-               asp-action="Index"
-               class="btn-cancelar">
-                ↩ Cancelar
-            </a>
-        </div>
-    </form>
+                    💾 Guardar cambios
+
+                </button>
+
+                <a asp-controller="Menu"
+                   asp-action="Index"
+                   class="btn-cancelar">
+
+                    ↩ Cancelar
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
 
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-
     <script>
-        anime({
-            targets: '#menuHeader',
-            translateY: [-20, 0],
-            opacity: [0, 1],
-            duration: 600,
-            easing: 'easeOutExpo'
-        });
 
-        anime({
-            targets: '#menuFormCard',
-            translateY: [30, 0],
-            opacity: [0, 1],
-            duration: 600,
-            delay: 150,
-            easing: 'easeOutExpo'
-        });
+        if (
+            typeof anime !== 'undefined' &&
+            !window.matchMedia(
+                '(prefers-reduced-motion: reduce)'
+            ).matches
+        ) {
+
+            anime({
+                targets: '#menuHeader',
+                translateY: [-20, 0],
+                opacity: [0, 1],
+                duration: 600,
+                easing: 'easeOutExpo'
+            });
+
+            anime({
+                targets: '#menuFormCard',
+                translateY: [30, 0],
+                opacity: [0, 1],
+                duration: 600,
+                delay: 150,
+                easing: 'easeOutExpo'
+            });
+        }
+
     </script>
+
 }

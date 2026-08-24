@@ -5,6 +5,17 @@
 }
 
 <style>
+    .menu-page {
+        width: 100%;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .menu-header {
         display: flex;
         align-items: center;
@@ -15,125 +26,190 @@
     }
 
     .menu-title {
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1a3a6e;
-        letter-spacing: 1px;
         margin: 0;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: clamp(1.7rem, 4vw, 2rem);
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 1px;
+        color: #1a3a6e;
     }
 
     .menu-badge {
+        flex-shrink: 0;
+        padding: 4px 12px;
+        border-radius: 999px;
         background: #1a3a6e;
         color: #4fa8e8;
-        font-size: .7rem;
-        letter-spacing: 2px;
-        padding: 4px 12px;
-        border-radius: 20px;
+        font-size: 0.7rem;
         font-weight: 600;
+        letter-spacing: 2px;
+        white-space: nowrap;
     }
 
+    /* ═══════════════════════════════════════
+           ACCIONES SUPERIORES
+           ═══════════════════════════════════════ */
+
+    .menu-actions-top {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-disponible {
+        min-height: 43px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 9px 22px;
+        border-radius: 8px;
+        background: #1a3a6e;
+        color: #ffffff !important;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-align: center;
+        text-decoration: none;
+        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .btn-disponible:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(192, 57, 43, 0.16);
+        }
+
+    /* ═══════════════════════════════════════
+           TARJETAS
+           ═══════════════════════════════════════ */
+
     .menu-card {
-        background: #fff;
-        border: 1.5px solid #d0e8f8;
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: 0 2px 12px rgba(26,58,110,0.07);
-        transition: transform .2s, box-shadow .2s;
         height: 100%;
         display: flex;
         flex-direction: column;
-        opacity: 0;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1.5px solid #d0e8f8;
+        border-radius: 14px;
+        box-shadow: 0 2px 12px rgba(26, 58, 110, 0.07);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
         .menu-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(26,58,110,0.13);
+            border-color: rgba(26, 58, 110, 0.22);
+            box-shadow: 0 8px 24px rgba(26, 58, 110, 0.13);
         }
 
     .menu-icon {
         width: 100%;
         height: 130px;
-        background: linear-gradient(135deg, #e8f4fd 60%, #d0e8f8 100%);
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        background: linear-gradient( 135deg, #e8f4fd 60%, #d0e8f8 100% );
         font-size: 3.2rem;
+        user-select: none;
     }
 
     .menu-body {
-        padding: 1.25rem;
+        min-width: 0;
         flex: 1;
         display: flex;
         flex-direction: column;
         gap: 4px;
+        padding: 1.25rem;
     }
 
     .menu-nombre {
+        margin-bottom: 8px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.2rem;
         font-weight: 700;
+        line-height: 1.25;
         color: #1a3a6e;
-        margin-bottom: 8px;
+        overflow-wrap: anywhere;
     }
 
     .menu-info-label {
-        font-size: .72rem;
+        font-size: 0.72rem;
+        font-weight: 600;
         color: #4fa8e8;
         letter-spacing: 2px;
-        font-weight: 600;
     }
 
     .menu-info-value {
-        color: #1a3a6e;
-        font-size: .9rem;
-        font-weight: 500;
         margin-bottom: 6px;
+        color: #1a3a6e;
+        font-size: 0.9rem;
+        font-weight: 500;
+        overflow-wrap: anywhere;
     }
 
-    .btn-disponible {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: #1a3a6e;
-        color: #fff !important;
-        border-radius: 8px;
-        padding: 9px 22px;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
-        letter-spacing: 1px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: background .2s;
-    }
-
-        .btn-disponible:hover {
-            background: #c0392b;
-        }
+    /* ═══════════════════════════════════════
+           ACCIONES DE CARD
+           ═══════════════════════════════════════ */
 
     .btn-eliminar,
     .btn-editar {
         width: 100%;
+        min-height: 42px;
         border-radius: 8px;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 600;
         letter-spacing: 1px;
     }
 
+    /* ═══════════════════════════════════════
+           ESTADO VACÍO
+           ═══════════════════════════════════════ */
+
+    .menu-empty {
+        padding: 3rem 1.5rem;
+        border: 1.5px dashed #d0e8f8;
+        border-radius: 14px;
+        background: #ffffff;
+        text-align: center;
+        color: #7895ad;
+    }
+
+    .menu-empty-title {
+        margin-bottom: 0.35rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #1a3a6e;
+    }
+
+    .menu-empty p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    /* ═══════════════════════════════════════
+           MODAL
+           ═══════════════════════════════════════ */
+
     .modal-eliminar-content {
+        overflow: hidden;
         border: none;
         border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 18px 50px rgba(26, 58, 110, .22);
+        box-shadow: 0 18px 50px rgba(26, 58, 110, 0.22);
     }
 
     .modal-eliminar-header {
-        background: #f8fcff;
-        border-bottom: 1px solid #d0e8f8;
         padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid #d0e8f8;
+        background: #f8fcff;
     }
 
         .modal-eliminar-header > div {
+            min-width: 0;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -142,20 +218,23 @@
     .modal-eliminar-icono {
         width: 38px;
         height: 38px;
-        border-radius: 50%;
-        background: #fdecea;
+        flex-shrink: 0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        border-radius: 50%;
+        background: #fdecea;
         font-size: 1.15rem;
     }
 
     .modal-eliminar-header .modal-title {
+        margin: 0;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 0.5px;
         color: #1a3a6e;
-        letter-spacing: .5px;
-        margin: 0;
+        overflow-wrap: anywhere;
     }
 
     .modal-eliminar-body {
@@ -164,34 +243,42 @@
     }
 
     .modal-eliminar-advertencia {
-        color: #8a3b34;
-        font-size: .9rem;
-        background: #fff5f4;
+        padding: 0.8rem 1rem;
         border-left: 4px solid #c0392b;
         border-radius: 6px;
-        padding: .8rem 1rem;
+        background: #fff5f4;
+        color: #8a3b34;
+        font-size: 0.9rem;
+        line-height: 1.5;
     }
 
     .modal-eliminar-footer {
-        border-top: 1px solid #d0e8f8;
-        padding: 1rem 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
         gap: 10px;
+        padding: 1rem 1.5rem;
+        border-top: 1px solid #d0e8f8;
     }
+
+        .modal-eliminar-footer form {
+            margin: 0;
+        }
 
     .btn-modal-cancelar,
     .btn-modal-eliminar {
-        border-radius: 8px;
+        min-height: 42px;
         padding: 9px 20px;
+        border-radius: 8px;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 600;
         letter-spacing: 1px;
-        transition: transform .2s, background .2s;
+        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     }
 
     .btn-modal-cancelar {
-        background: #fff;
-        color: #1a3a6e;
         border: 1.5px solid #1a3a6e;
+        background: #ffffff;
+        color: #1a3a6e;
     }
 
         .btn-modal-cancelar:hover {
@@ -199,94 +286,320 @@
         }
 
     .btn-modal-eliminar {
-        background: #c0392b;
-        color: #fff;
         border: 1.5px solid #c0392b;
+        background: #c0392b;
+        color: #ffffff;
     }
 
         .btn-modal-eliminar:hover {
-            background: #a93226;
-            border-color: #a93226;
             transform: translateY(-1px);
+            border-color: #a93226;
+            background: #a93226;
         }
 
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .menu-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
+        .menu-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-icon {
+            height: 120px;
+            font-size: 3rem;
+        }
+
+        .menu-body {
+            padding: 1.15rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .menu-page {
+            padding-top: 0.5rem;
+        }
+
+        .menu-header {
+            gap: 8px;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.8rem;
+        }
+
+        .menu-title {
+            font-size: 1.6rem;
+        }
+
+        .menu-badge {
+            padding: 3px 9px;
+            font-size: 0.62rem;
+            letter-spacing: 1.4px;
+        }
+
+        .menu-actions-top {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .btn-disponible {
+            width: 100%;
+            min-height: 46px;
+        }
+
+        .menu-icon {
+            height: 110px;
+            font-size: 2.8rem;
+        }
+
+        .menu-body {
+            padding: 1.1rem;
+        }
+
+        .menu-info-value {
+            font-size: 0.87rem;
+        }
+
+        .modal-dialog {
+            margin: 0.75rem;
+        }
+
+        .modal-eliminar-header {
+            padding: 1rem 1.1rem;
+        }
+
+        .modal-eliminar-body {
+            padding: 1.2rem 1.1rem;
+        }
+
+        .modal-eliminar-footer {
+            flex-direction: column;
+            padding: 1rem 1.1rem;
+        }
+
+            .modal-eliminar-footer form {
+                width: 100%;
+            }
+
+        .btn-modal-cancelar,
+        .btn-modal-eliminar {
+            width: 100%;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .menu-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .menu-title {
+            font-size: 1.5rem;
+        }
+
+        .menu-icon {
+            height: 100px;
+            font-size: 2.6rem;
+        }
+
+        .menu-body {
+            padding: 1rem 0.95rem;
+        }
+
+        .modal-eliminar-icono {
+            width: 34px;
+            height: 34px;
+            font-size: 1rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .menu-card,
+        .btn-disponible,
+        .btn-modal-cancelar,
+        .btn-modal-eliminar {
+            transition: none;
+        }
+    }
 </style>
 
-<div class="menu-header" id="menuHeader">
-    <h1 class="menu-title">Menús Registrados</h1>
-    <span class="menu-badge">MENÚ</span>
-</div>
+<div class="menu-page">
 
+    <!-- HEADER -->
 
+    <div class="menu-header"
+         id="menuHeader">
 
-<div class="mb-4 d-flex gap-2">
+        <h1 class="menu-title">
+            Menús Registrados
+        </h1>
 
-    @if (User.IsInRole("Administrador"))
-    {
-        <a asp-controller="Menu"
-           asp-action="Create"
-           class="btn-disponible">
-            ➕ Crear menú
-        </a>
-    }
+        <span class="menu-badge">
+            MENÚ
+        </span>
 
-    <a asp-controller="Menu"
-       asp-action="Disponible"
-       class="btn-disponible">
-        📅 Ver menú disponible ahora
-    </a>
-
-</div>
-
-@if (TempData["MensajeExito"] is string mensaje)
-{
-    <div class="alert alert-success" role="alert">
-        @mensaje
     </div>
-}
 
-<div class="row g-4" id="menuGrid">
-    @foreach (var menu in Model)
+    <!-- ACCIONES -->
+
+    <div class="menu-actions-top">
+
+        @if (User.IsInRole("Administrador"))
+        {
+            <a asp-controller="Menu"
+               asp-action="Create"
+               class="btn-disponible">
+
+                ➕ Crear menú
+
+            </a>
+        }
+
+        <a asp-controller="Menu"
+           asp-action="Disponible"
+           class="btn-disponible">
+
+            📅 Ver menú disponible ahora
+
+        </a>
+
+    </div>
+
+    <!-- MENSAJE -->
+    @if (TempData["MensajeExito"] is string mensaje)
     {
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="menu-card">
-                <div class="menu-icon">🗓️</div>
-                <div class="menu-body">
-                    <div class="menu-nombre">@menu.Nombre</div>
-                    <div class="menu-info-label">DÍAS</div>
-                    <div class="menu-info-value">@menu.Dias</div>
-                    <div class="menu-info-label">HORARIO</div>
-                    <div class="menu-info-value">@menu.Horario</div>
-                    <div class="menu-info-label">VIGENCIA</div>
-                    <div class="menu-info-value">@menu.Vigencia</div>
+        <div class="alert alert-success"
+             role="status">
 
-                    @if (User.IsInRole("Administrador"))
-                    {
-                        <div class="d-grid gap-2 mt-auto pt-3">
-                            <a asp-controller="Menu"
-                               asp-action="Edit"
-                               asp-route-id="@menu.IdMenu"
-                               class="btn btn-outline-primary btn-editar">
-                                ✏️ Editar
-                            </a>
+            @mensaje
 
-                            <button type="button"
-                                    class="btn btn-outline-danger btn-eliminar"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#modalEliminar"
-                                    data-id="@menu.IdMenu"
-                                    data-nombre="@menu.Nombre">
-                                🗑️ Eliminar
-                            </button>
-                        </div>
-                    }
-                </div>
-            </div>
         </div>
     }
+
+    <!-- LISTADO -->
+    @if (Model.Any())
+    {
+        <div class="row g-4"
+             id="menuGrid">
+
+            @foreach (var menu in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <div class="menu-card">
+
+                        <div class="menu-icon"
+                             aria-hidden="true">
+
+                            🗓️
+
+                        </div>
+
+                        <div class="menu-body">
+
+                            <div class="menu-nombre">
+                                @menu.Nombre
+                            </div>
+
+                            <div class="menu-info-label">
+                                DÍAS
+                            </div>
+
+                            <div class="menu-info-value">
+                                @menu.Dias
+                            </div>
+
+                            <div class="menu-info-label">
+                                HORARIO
+                            </div>
+
+                            <div class="menu-info-value">
+                                @menu.Horario
+                            </div>
+
+                            <div class="menu-info-label">
+                                VIGENCIA
+                            </div>
+
+                            <div class="menu-info-value">
+                                @menu.Vigencia
+                            </div>
+
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <div class="d-grid gap-2 mt-auto pt-3">
+
+                                    <a asp-controller="Menu"
+                                       asp-action="Edit"
+                                       asp-route-id="@menu.IdMenu"
+                                       class="btn btn-outline-primary btn-editar">
+
+                                        ✏️ Editar
+
+                                    </a>
+
+                                    <button type="button"
+                                            class="btn btn-outline-danger btn-eliminar"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEliminar"
+                                            data-id="@menu.IdMenu"
+                                            data-nombre="@menu.Nombre">
+
+                                        🗑️ Eliminar
+
+                                    </button>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="menu-empty">
+
+            <div class="menu-empty-title">
+                No hay menús registrados
+            </div>
+
+            <p>
+                Todavía no existen menús en el sistema.
+            </p>
+
+        </div>
+    }
+
 </div>
 
 @section Modals {
+
     @if (User.IsInRole("Administrador"))
     {
         <div class="modal fade"
@@ -296,16 +609,29 @@
              aria-hidden="true">
 
             <div class="modal-dialog modal-dialog-centered">
+
                 <div class="modal-content modal-eliminar-content">
 
+                    <!-- HEADER MODAL -->
+
                     <div class="modal-header modal-eliminar-header">
+
                         <div>
-                            <span class="modal-eliminar-icono">⚠️</span>
+
+                            <span class="modal-eliminar-icono"
+                                  aria-hidden="true">
+
+                                ⚠️
+
+                            </span>
 
                             <h2 class="modal-title fs-5"
                                 id="modalEliminarLabel">
+
                                 Confirmar eliminación
+
                             </h2>
+
                         </div>
 
                         <button type="button"
@@ -313,25 +639,41 @@
                                 data-bs-dismiss="modal"
                                 aria-label="Cerrar">
                         </button>
+
                     </div>
 
+                    <!-- BODY MODAL -->
+
                     <div class="modal-body modal-eliminar-body">
+
                         <p class="mb-2">
+
                             ¿Está seguro de que desea eliminar el menú
-                            <strong id="nombreMenuEliminar"></strong>?
+
+                            <strong id="nombreMenuEliminar">
+                            </strong>?
+
                         </p>
 
                         <p class="modal-eliminar-advertencia mb-0">
+
                             Esta acción eliminará también sus relaciones con
                             productos y combos, y no se puede deshacer.
+
                         </p>
+
                     </div>
 
+                    <!-- FOOTER MODAL -->
+
                     <div class="modal-footer modal-eliminar-footer">
+
                         <button type="button"
                                 class="btn-modal-cancelar"
                                 data-bs-dismiss="modal">
+
                             Cancelar
+
                         </button>
 
                         <form id="formEliminarMenu"
@@ -345,49 +687,117 @@
 
                             <button type="submit"
                                     class="btn-modal-eliminar">
+
                                 🗑️ Eliminar menú
+
                             </button>
+
                         </form>
+
                     </div>
 
                 </div>
+
             </div>
+
         </div>
     }
+
 }
+
 @section Scripts {
+
     <script>
-        anime({
-            targets: '#menuHeader',
-            translateY: [-20, 0],
-            opacity: [0, 1],
-            duration: 600,
-            easing: 'easeOutExpo'
-        });
 
-        anime({
-            targets: '.menu-card',
-            translateY: [30, 0],
-            opacity: [0, 1],
-            duration: 500,
-            delay: anime.stagger(100, { start: 200 }),
-            easing: 'easeOutExpo'
-        });
+        /* ═══════════════════════════════════
+           ANIMACIONES
+           ═══════════════════════════════════ */
 
-        const modalEliminar = document.getElementById('modalEliminar');
+        if (
+            typeof anime !== 'undefined' &&
+            !window.matchMedia(
+                '(prefers-reduced-motion: reduce)'
+            ).matches
+        ) {
 
-        if (modalEliminar) {
-            modalEliminar.addEventListener('show.bs.modal', function (event) {
-                const boton = event.relatedTarget;
+            anime({
+                targets: '#menuHeader',
+                translateY: [-20, 0],
+                opacity: [0, 1],
+                duration: 600,
+                easing: 'easeOutExpo'
+            });
 
-                const idMenu = boton.dataset.id;
-                const nombreMenu = boton.dataset.nombre;
+            anime({
+                targets: '.menu-card',
 
-                document.getElementById('idMenuEliminar').value = idMenu;
+                translateY: [30, 0],
+                opacity: [0, 1],
 
-                document.getElementById('nombreMenuEliminar').textContent =
-                    `"${nombreMenu}"`;
+                duration: 500,
+
+                delay:
+                    anime.stagger(
+                        100,
+                        {
+                            start: 200
+                        }
+                    ),
+
+                easing: 'easeOutExpo'
             });
         }
+
+        /* ═══════════════════════════════════
+           MODAL ELIMINAR
+           ═══════════════════════════════════ */
+
+        const modalEliminar =
+            document.getElementById(
+                'modalEliminar'
+            );
+
+        if (modalEliminar) {
+
+            modalEliminar.addEventListener(
+                'show.bs.modal',
+                function (event) {
+
+                    const boton =
+                        event.relatedTarget;
+
+                    if (!boton) {
+                        return;
+                    }
+
+                    const idMenu =
+                        boton.dataset.id;
+
+                    const nombreMenu =
+                        boton.dataset.nombre;
+
+                    const idInput =
+                        document.getElementById(
+                            'idMenuEliminar'
+                        );
+
+                    const nombreTexto =
+                        document.getElementById(
+                            'nombreMenuEliminar'
+                        );
+
+                    if (idInput) {
+                        idInput.value = idMenu;
+                    }
+
+                    if (nombreTexto) {
+                        nombreTexto.textContent =
+                            `"${nombreMenu}"`;
+                    }
+                }
+            );
+        }
+
     </script>
+
 }

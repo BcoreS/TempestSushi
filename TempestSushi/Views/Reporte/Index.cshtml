@@ -31,125 +31,186 @@
 }
 
 <style>
+    .reporte-page {
+        width: 100%;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .reporte-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 16px;
-        margin-bottom: 2rem;
+        margin-bottom: 1.25rem;
         padding-bottom: 1rem;
         border-bottom: 2px solid #d0e8f8;
     }
 
     .reporte-header-info {
+        min-width: 0;
         display: flex;
         align-items: center;
         gap: 12px;
     }
 
     .reporte-title {
+        margin: 0;
         font-family: 'Rajdhani', sans-serif;
-        font-size: 2rem;
+        font-size: clamp(1.7rem, 4vw, 2rem);
         font-weight: 700;
+        line-height: 1.2;
         color: #1a3a6e;
         letter-spacing: 1px;
-        margin: 0;
     }
 
     .reporte-badge {
+        flex-shrink: 0;
+        padding: 4px 12px;
+        border-radius: 999px;
         background: #1a3a6e;
         color: #4fa8e8;
-        font-size: .7rem;
-        letter-spacing: 2px;
-        padding: 4px 12px;
-        border-radius: 20px;
+        font-size: 0.7rem;
         font-weight: 600;
+        letter-spacing: 2px;
+        white-space: nowrap;
     }
 
     .btn-exportar {
+        flex-shrink: 0;
+        min-height: 43px;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
-        background: #1a3a6e;
-        color: #fff !important;
-        border-radius: 8px;
         padding: 9px 20px;
+        border-radius: 8px;
+        background: #1a3a6e;
+        color: #ffffff !important;
         font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
-        letter-spacing: 1px;
+        font-size: 0.95rem;
         font-weight: 600;
+        letter-spacing: 1px;
         text-decoration: none;
-        transition: background .2s, transform .15s;
         white-space: nowrap;
+        transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
     }
 
         .btn-exportar:hover {
             background: #c0392b;
             transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(192, 57, 43, 0.16);
         }
 
+    /* ═══════════════════════════════════════
+           DESCRIPCIÓN
+           ═══════════════════════════════════════ */
+
     .reporte-descripcion {
-        color: #6489a3;
         margin-bottom: 2rem;
-        font-size: .95rem;
+        color: #6489a3;
+        font-size: 0.95rem;
+        line-height: 1.5;
     }
 
+    /* ═══════════════════════════════════════
+           CARDS
+           ═══════════════════════════════════════ */
+
     .reporte-card {
-        background: #fff;
+        width: 100%;
+        height: 100%;
+        padding: 1.5rem;
+        background: #ffffff;
         border: 1.5px solid #d0e8f8;
         border-radius: 14px;
-        box-shadow: 0 2px 16px rgba(26, 58, 110, .07);
-        padding: 1.5rem;
-        height: 100%;
-        opacity: 0;
+        box-shadow: 0 2px 16px rgba(26, 58, 110, 0.07);
     }
 
     .reporte-card-title {
+        margin-bottom: 4px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.25rem;
         font-weight: 700;
         color: #1a3a6e;
-        margin-bottom: 4px;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
     }
 
     .reporte-card-subtitle {
-        color: #6489a3;
-        font-size: .85rem;
         margin-bottom: 1.3rem;
+        color: #6489a3;
+        font-size: 0.85rem;
+        line-height: 1.45;
     }
+
+    /* ═══════════════════════════════════════
+           GRÁFICOS
+           ═══════════════════════════════════════ */
 
     .grafico-contenedor {
         position: relative;
         width: 100%;
+        min-width: 0;
         min-height: 320px;
     }
 
         .grafico-contenedor canvas {
+            display: block;
             width: 100% !important;
             height: 320px !important;
+            max-width: 100%;
         }
 
+    /* ═══════════════════════════════════════
+           VACÍO
+           ═══════════════════════════════════════ */
+
     .reporte-vacio {
+        min-height: 250px;
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: 250px;
-        color: #6489a3;
-        text-align: center;
+        padding: 1.5rem;
         border: 1.5px dashed #b9d8ec;
         border-radius: 10px;
         background: #fafdff;
+        color: #6489a3;
+        line-height: 1.45;
+        text-align: center;
     }
 
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
     @@media (max-width: 768px) {
+
+        .reporte-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
         .reporte-header {
-            align-items: flex-start;
+            align-items: stretch;
             flex-direction: column;
+            gap: 0.85rem;
         }
 
         .btn-exportar {
-            width: 100%;
-            justify-content: center;
+            align-self: flex-start;
+        }
+
+        .reporte-descripcion {
+            margin-bottom: 1.5rem;
+        }
+
+        .reporte-card {
+            padding: 1.3rem;
         }
 
         .grafico-contenedor {
@@ -160,318 +221,664 @@
                 height: 280px !important;
             }
     }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .reporte-page {
+            padding-top: 0.5rem;
+        }
+
+        .reporte-header {
+            margin-bottom: 1rem;
+            padding-bottom: 0.9rem;
+        }
+
+        .reporte-header-info {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .reporte-title {
+            font-size: 1.6rem;
+        }
+
+        .reporte-badge {
+            padding: 3px 9px;
+            font-size: 0.62rem;
+            letter-spacing: 1.4px;
+        }
+
+        .btn-exportar {
+            width: 100%;
+            min-height: 46px;
+        }
+
+        .reporte-descripcion {
+            margin-bottom: 1.25rem;
+            font-size: 0.9rem;
+        }
+
+        .reporte-card {
+            padding: 1.1rem;
+            border-radius: 12px;
+        }
+
+        .reporte-card-title {
+            font-size: 1.15rem;
+        }
+
+        .reporte-card-subtitle {
+            margin-bottom: 1rem;
+            font-size: 0.82rem;
+        }
+
+        .grafico-contenedor {
+            min-height: 250px;
+        }
+
+            .grafico-contenedor canvas {
+                height: 250px !important;
+            }
+
+        .reporte-vacio {
+            min-height: 200px;
+            padding: 1.2rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .reporte-header-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.45rem;
+        }
+
+        .reporte-title {
+            font-size: 1.5rem;
+        }
+
+        .reporte-card {
+            padding: 1rem 0.9rem;
+        }
+
+        .grafico-contenedor {
+            min-height: 230px;
+        }
+
+            .grafico-contenedor canvas {
+                height: 230px !important;
+            }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .btn-exportar {
+            transition: none;
+        }
+    }
 </style>
 
-<div class="reporte-header" id="reporteHeader">
+<div class="reporte-page">
 
-    <div class="reporte-header-info">
-        <h1 class="reporte-title">
-            Reportes
-        </h1>
+    <!-- HEADER -->
 
-        <span class="reporte-badge">
-            REPORTES
-        </span>
-    </div>
+    <div class="reporte-header"
+         id="reporteHeader">
 
-    <a asp-controller="Reporte"
-       asp-action="DescargarPdf"
-       class="btn-exportar">
-        📄 Exportar PDF
-    </a>
+        <div class="reporte-header-info">
 
-</div>
+            <h1 class="reporte-title">
+                Reportes
+            </h1>
 
-<p class="reporte-descripcion">
-    Resumen consolidado de la actividad registrada en TempestSushi.
-</p>
-
-<div class="row g-4">
-
-    <div class="col-12 col-lg-8">
-        <div class="reporte-card">
-
-            <div class="reporte-card-title">
-                Pedidos de los últimos 7 días
-            </div>
-
-            <div class="reporte-card-subtitle">
-                Cantidad de pedidos registrados por día.
-            </div>
-
-            <div class="grafico-contenedor">
-                <canvas id="graficoPedidosDia"></canvas>
-            </div>
+            <span class="reporte-badge">
+                REPORTES
+            </span>
 
         </div>
+
+        <a asp-controller="Reporte"
+           asp-action="DescargarPdf"
+           class="btn-exportar">
+
+            📄 Exportar PDF
+
+        </a>
+
     </div>
 
-    <div class="col-12 col-lg-4">
-        <div class="reporte-card">
+    <p class="reporte-descripcion">
 
-            <div class="reporte-card-title">
-                Pedidos por estado
-            </div>
+        Resumen consolidado de la actividad registrada en TempestSushi.
 
-            <div class="reporte-card-subtitle">
-                Distribución actual de los pedidos según su estado.
-            </div>
+    </p>
 
-            @if (Model.PedidosPorEstado.Any())
-            {
+    <!-- GRÁFICOS -->
+
+    <div class="row g-4">
+
+        <!-- PEDIDOS POR DÍA -->
+
+        <div class="col-12 col-lg-8">
+
+            <div class="reporte-card">
+
+                <div class="reporte-card-title">
+                    Pedidos de los últimos 7 días
+                </div>
+
+                <div class="reporte-card-subtitle">
+                    Cantidad de pedidos registrados por día.
+                </div>
+
                 <div class="grafico-contenedor">
-                    <canvas id="graficoEstados"></canvas>
+
+                    <canvas id="graficoPedidosDia">
+                    </canvas>
+
                 </div>
-            }
-            else
-            {
-                <div class="reporte-vacio">
-                    No existen pedidos registrados.
-                </div>
-            }
 
-        </div>
-    </div>
-
-    <div class="col-12">
-        <div class="reporte-card">
-
-            <div class="reporte-card-title">
-                Top 5 productos más vendidos
             </div>
 
-            <div class="reporte-card-subtitle">
-                Cantidad total de unidades vendidas,
-                excluyendo pedidos cancelados.
+        </div>
+
+        <!-- PEDIDOS POR ESTADO -->
+
+        <div class="col-12 col-lg-4">
+
+            <div class="reporte-card">
+
+                <div class="reporte-card-title">
+                    Pedidos por estado
+                </div>
+
+                <div class="reporte-card-subtitle">
+                    Distribución actual de los pedidos según su estado.
+                </div>
+
+                @if (Model.PedidosPorEstado.Any())
+                {
+                    <div class="grafico-contenedor">
+
+                        <canvas id="graficoEstados">
+                        </canvas>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="reporte-vacio">
+
+                        No existen pedidos registrados.
+
+                    </div>
+                }
+
             </div>
 
-            @if (Model.ProductosMasVendidos.Any())
-            {
-                <div class="grafico-contenedor">
-                    <canvas id="graficoProductos"></canvas>
+        </div>
+
+        <!-- PRODUCTOS MÁS VENDIDOS -->
+
+        <div class="col-12">
+
+            <div class="reporte-card">
+
+                <div class="reporte-card-title">
+                    Top 5 productos más vendidos
                 </div>
-            }
-            else
-            {
-                <div class="reporte-vacio">
-                    No existen ventas de productos para mostrar.
+
+                <div class="reporte-card-subtitle">
+
+                    Cantidad total de unidades vendidas,
+                    excluyendo pedidos cancelados.
+
                 </div>
-            }
+
+                @if (Model.ProductosMasVendidos.Any())
+                {
+                    <div class="grafico-contenedor">
+
+                        <canvas id="graficoProductos">
+                        </canvas>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="reporte-vacio">
+
+                        No existen ventas de productos para mostrar.
+
+                    </div>
+                }
+
+            </div>
 
         </div>
+
     </div>
 
 </div>
 
 @section Scripts {
 
+    <!-- CHART.JS -->
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+
         if (typeof Chart === 'undefined') {
+
             document.write(
                 '<script src="/lib/chartjs/chart.umd.min.js"><\/script>'
             );
         }
+
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
 
-            const etiquetasDias =
-                @Html.Raw(etiquetasDias);
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
 
-            const valoresDias =
-                @Html.Raw(valoresDias);
+                const etiquetasDias =
+                    @Html.Raw(etiquetasDias);
 
-            const nombresProductos =
-                @Html.Raw(nombresProductos);
+                const valoresDias =
+                    @Html.Raw(valoresDias);
 
-            const cantidadesProductos =
-                @Html.Raw(cantidadesProductos);
+                const nombresProductos =
+                    @Html.Raw(nombresProductos);
 
-            const nombresEstados =
-                @Html.Raw(nombresEstados);
+                const cantidadesProductos =
+                    @Html.Raw(cantidadesProductos);
 
-            const cantidadesEstados =
-                @Html.Raw(cantidadesEstados);
+                const nombresEstados =
+                    @Html.Raw(nombresEstados);
 
-            const colorAzul =
-                'rgba(26, 58, 110, 0.85)';
+                const cantidadesEstados =
+                    @Html.Raw(cantidadesEstados);
 
-            const colorCeleste =
-                'rgba(79, 168, 232, 0.75)';
+                const colorAzul =
+                    'rgba(26, 58, 110, 0.85)';
 
-            const coloresEstados = [
-                '#1a3a6e',
-                '#4fa8e8',
-                '#d68910',
-                '#27ae60',
-                '#c0392b',
-                '#8e44ad'
-            ];
+                const colorCeleste =
+                    'rgba(79, 168, 232, 0.75)';
 
-            const canvasPedidos =
-                document.getElementById(
-                    'graficoPedidosDia');
+                const coloresEstados = [
+                    '#1a3a6e',
+                    '#4fa8e8',
+                    '#d68910',
+                    '#27ae60',
+                    '#c0392b',
+                    '#8e44ad'
+                ];
 
-            if (canvasPedidos) {
-                new Chart(canvasPedidos, {
-                    type: 'bar',
+                const esMovil =
+                    window.matchMedia(
+                        '(max-width: 576px)'
+                    ).matches;
 
-                    data: {
-                        labels: etiquetasDias,
+                /* ═════════════════════════════
+                   PEDIDOS POR DÍA
+                   ═════════════════════════════ */
 
-                        datasets: [{
-                            label: 'Pedidos',
-                            data: valoresDias,
-                            backgroundColor:
-                                colorAzul,
-                            borderColor:
-                                '#1a3a6e',
-                            borderWidth: 1,
-                            borderRadius: 6
-                        }]
-                    },
+                const canvasPedidos =
+                    document.getElementById(
+                        'graficoPedidosDia'
+                    );
 
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
+                if (
+                    canvasPedidos &&
+                    typeof Chart !== 'undefined'
+                )
+                {
+                    new Chart(
+                        canvasPedidos,
+                        {
+                            type: 'bar',
 
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
+                            data: {
 
-                        scales: {
-                            y: {
-                                beginAtZero: true,
+                                labels: etiquetasDias,
 
-                                ticks: {
-                                    precision: 0
-                                },
+                                datasets: [{
+                                    label: 'Pedidos',
+                                    data: valoresDias,
 
-                                title: {
-                                    display: true,
-                                    text: 'Cantidad de pedidos'
-                                }
+                                    backgroundColor:
+                                        colorAzul,
+
+                                    borderColor:
+                                        '#1a3a6e',
+
+                                    borderWidth: 1,
+
+                                    borderRadius: 6
+                                }]
                             },
 
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Fecha'
-                                }
-                            }
-                        }
-                    }
-                });
-            }
+                            options: {
 
-            const canvasProductos =
-                document.getElementById(
-                    'graficoProductos');
+                                responsive: true,
 
-            if (canvasProductos) {
-                new Chart(canvasProductos, {
-                    type: 'bar',
+                                maintainAspectRatio:
+                                    false,
 
-                    data: {
-                        labels: nombresProductos,
+                                plugins: {
 
-                        datasets: [{
-                            label: 'Unidades vendidas',
-                            data: cantidadesProductos,
-                            backgroundColor:
-                                colorCeleste,
-                            borderColor:
-                                '#1a3a6e',
-                            borderWidth: 1,
-                            borderRadius: 6
-                        }]
-                    },
-
-                    options: {
-                        indexAxis: 'y',
-                        responsive: true,
-                        maintainAspectRatio: false,
-
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-
-                        scales: {
-                            x: {
-                                beginAtZero: true,
-
-                                ticks: {
-                                    precision: 0
+                                    legend: {
+                                        display: false
+                                    }
                                 },
 
-                                title: {
-                                    display: true,
-                                    text: 'Unidades vendidas'
+                                scales: {
+
+                                    y: {
+
+                                        beginAtZero: true,
+
+                                        ticks: {
+                                            precision: 0
+                                        },
+
+                                        title: {
+                                            display: !esMovil,
+                                            text:
+                                                'Cantidad de pedidos'
+                                        }
+                                    },
+
+                                    x: {
+
+                                        ticks: {
+                                            maxRotation:
+                                                esMovil
+                                                    ? 45
+                                                    : 0,
+
+                                            minRotation:
+                                                esMovil
+                                                    ? 45
+                                                    : 0
+                                        },
+
+                                        title: {
+                                            display: !esMovil,
+                                            text: 'Fecha'
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
-                });
-            }
+                    );
+                }
 
-            const canvasEstados =
-                document.getElementById(
-                    'graficoEstados');
+                /* ═════════════════════════════
+                   PRODUCTOS MÁS VENDIDOS
+                   ═════════════════════════════ */
 
-            if (canvasEstados) {
-                new Chart(canvasEstados, {
-                    type: 'doughnut',
+                const canvasProductos =
+                    document.getElementById(
+                        'graficoProductos'
+                    );
 
-                    data: {
-                        labels: nombresEstados,
+                if (
+                    canvasProductos &&
+                    typeof Chart !== 'undefined'
+                )
+                {
+                    new Chart(
+                        canvasProductos,
+                        {
+                            type: 'bar',
 
-                        datasets: [{
-                            data: cantidadesEstados,
-                            backgroundColor:
-                                coloresEstados,
-                            borderWidth: 2,
-                            borderColor: '#ffffff'
-                        }]
-                    },
+                            data: {
 
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
+                                labels:
+                                    nombresProductos,
 
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
+                                datasets: [{
+                                    label:
+                                        'Unidades vendidas',
+
+                                    data:
+                                        cantidadesProductos,
+
+                                    backgroundColor:
+                                        colorCeleste,
+
+                                    borderColor:
+                                        '#1a3a6e',
+
+                                    borderWidth: 1,
+
+                                    borderRadius: 6
+                                }]
+                            },
+
+                            options: {
+
+                                indexAxis: 'y',
+
+                                responsive: true,
+
+                                maintainAspectRatio:
+                                    false,
+
+                                plugins: {
+
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+
+                                scales: {
+
+                                    x: {
+
+                                        beginAtZero: true,
+
+                                        ticks: {
+                                            precision: 0
+                                        },
+
+                                        title: {
+                                            display: !esMovil,
+                                            text:
+                                                'Unidades vendidas'
+                                        }
+                                    },
+
+                                    y: {
+
+                                        ticks: {
+
+                                            autoSkip: false,
+
+                                            callback:
+                                                function (
+                                                    value
+                                                ) {
+
+                                                    const label =
+                                                        this.getLabelForValue(
+                                                            value
+                                                        );
+
+                                                    if (
+                                                        esMovil &&
+                                                        label.length > 18
+                                                    )
+                                                    {
+                                                        return (
+                                                            label.substring(
+                                                                0,
+                                                                18
+                                                            )
+                                                            + '…'
+                                                        );
+                                                    }
+
+                                                    return label;
+                                                }
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
-                });
+                    );
+                }
+
+                /* ═════════════════════════════
+                   PEDIDOS POR ESTADO
+                   ═════════════════════════════ */
+
+                const canvasEstados =
+                    document.getElementById(
+                        'graficoEstados'
+                    );
+
+                if (
+                    canvasEstados &&
+                    typeof Chart !== 'undefined'
+                )
+                {
+                    new Chart(
+                        canvasEstados,
+                        {
+                            type: 'doughnut',
+
+                            data: {
+
+                                labels:
+                                    nombresEstados,
+
+                                datasets: [{
+
+                                    data:
+                                        cantidadesEstados,
+
+                                    backgroundColor:
+                                        coloresEstados,
+
+                                    borderWidth: 2,
+
+                                    borderColor:
+                                        '#ffffff'
+                                }]
+                            },
+
+                            options: {
+
+                                responsive: true,
+
+                                maintainAspectRatio:
+                                    false,
+
+                                plugins: {
+
+                                    legend: {
+
+                                        position:
+                                            'bottom',
+
+                                        labels: {
+
+                                            boxWidth:
+                                                esMovil
+                                                    ? 12
+                                                    : 16,
+
+                                            padding:
+                                                esMovil
+                                                    ? 10
+                                                    : 14,
+
+                                            font: {
+                                                size:
+                                                    esMovil
+                                                        ? 11
+                                                        : 12
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    );
+                }
+
+                /* ═════════════════════════════
+                   ANIMACIONES
+                   ═════════════════════════════ */
+
+                if (
+                    typeof anime !== 'undefined' &&
+                    !window.matchMedia(
+                        '(prefers-reduced-motion: reduce)'
+                    ).matches
+                )
+                {
+                    anime({
+                        targets:
+                            '#reporteHeader',
+
+                        translateY:
+                            [-20, 0],
+
+                        opacity:
+                            [0, 1],
+
+                        duration: 600,
+
+                        easing:
+                            'easeOutExpo'
+                    });
+
+                    anime({
+                        targets:
+                            '.reporte-card',
+
+                        translateY:
+                            [25, 0],
+
+                        opacity:
+                            [0, 1],
+
+                        duration: 550,
+
+                        delay:
+                            anime.stagger(
+                                120,
+                                {
+                                    start: 150
+                                }
+                            ),
+
+                        easing:
+                            'easeOutExpo'
+                    });
+                }
             }
+        );
 
-            anime({
-                targets: '#reporteHeader',
-                translateY: [-20, 0],
-                opacity: [0, 1],
-                duration: 600,
-                easing: 'easeOutExpo'
-            });
-
-            anime({
-                targets: '.reporte-card',
-                translateY: [25, 0],
-                opacity: [0, 1],
-                duration: 550,
-                delay: anime.stagger(
-                    120,
-                    { start: 150 }),
-                easing: 'easeOutExpo'
-            });
-        });
     </script>
+
 }

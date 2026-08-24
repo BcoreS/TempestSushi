@@ -1,229 +1,368 @@
 ﻿@model TempestSushi.Application.DTOs.PedidoDTO
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
 @{
     ViewData["Title"] = "Detalle de Pedido";
-    var culturaCR = new System.Globalization.CultureInfo("es-CR");
-    var tokens = Antiforgery.GetAndStoreTokens(Context);
-    bool esEmpleado = (bool)ViewBag.EsEmpleado;
+
+    var culturaCR =
+        new System.Globalization.CultureInfo("es-CR");
+
+    var tokens =
+        Antiforgery.GetAndStoreTokens(Context);
+
+    bool esEmpleado =
+        (bool)ViewBag.EsEmpleado;
 }
 
-<meta name="csrf-token" content="@tokens.RequestToken" />
+<meta name="csrf-token"
+      content="@tokens.RequestToken" />
 
 <style>
+    .pedido-detail-page {
+        width: 100%;
+        max-width: 950px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           FACTURA
+           ═══════════════════════════════════════ */
+
     .ts-factura {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        overflow: hidden;
         background: #ffffff;
         border-radius: 14px;
         box-shadow: 0 4px 18px rgba(26, 58, 110, 0.10);
-        overflow: hidden;
-        max-width: 900px;
-        margin: 0 auto;
     }
 
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .ts-factura-header {
-        background: #1a3a6e;
-        color: #fff;
-        padding: 1.5rem 2rem;
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.5rem 2rem;
+        background: #1a3a6e;
+        color: #ffffff;
     }
 
     .ts-factura-titulo {
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
-        font-size: 1.5rem;
-        letter-spacing: 1px;
         margin: 0;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: clamp( 1.3rem, 4vw, 1.5rem );
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 1px;
     }
 
     .ts-factura-numero {
+        flex-shrink: 0;
         font-family: 'Rajdhani', sans-serif;
         font-size: 0.95rem;
         opacity: 0.85;
+        white-space: nowrap;
     }
+
+    /* ═══════════════════════════════════════
+           BODY
+           ═══════════════════════════════════════ */
 
     .ts-factura-body {
         padding: 2rem;
     }
 
+    /* ═══════════════════════════════════════
+           DATOS GENERALES
+           ═══════════════════════════════════════ */
+
     .ts-encabezado-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1.25rem 2rem;
         margin-bottom: 2rem;
         padding-bottom: 1.5rem;
         border-bottom: 2px dashed #d0e8f8;
     }
 
+        .ts-encabezado-grid > div {
+            min-width: 0;
+        }
+
     .ts-campo-label {
+        margin-bottom: 2px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 0.75rem;
         font-weight: 700;
         color: #4fa8e8;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        margin-bottom: 2px;
     }
 
     .ts-campo-valor {
-        font-size: 1rem;
+        min-width: 0;
         color: #1a3a6e;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+    }
+
+    .ts-campo-secundario {
+        margin-top: 2px;
+        color: #8ab2cc;
+        font-size: 0.85rem;
+        font-weight: 400;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+    }
+
+    /* ═══════════════════════════════════════
+           ESTADO
+           ═══════════════════════════════════════ */
+
+    .ts-estado-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 100%;
+        padding: 4px 14px;
+        border-radius: 999px;
+        background: #4fa8e8;
+        color: #ffffff;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        overflow-wrap: anywhere;
+    }
+
+    .ts-cambiar-estado {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        margin-top: 0.65rem;
+    }
+
+    .ts-select-estado {
+        min-height: 39px;
+        max-width: 220px;
+        padding: 0.35rem 0.6rem;
+        border: 1px solid #c7dcf0;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #1a3a6e;
+        font-family: 'Rajdhani', sans-serif;
         font-weight: 600;
     }
 
-    .ts-estado-badge {
-        display: inline-block;
-        padding: 4px 14px;
+    .ts-btn-estado {
+        min-height: 39px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.4rem 1rem;
+        border: none;
         border-radius: 999px;
+        background: #1a3a6e;
+        color: #ffffff;
         font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
         font-size: 0.82rem;
-        letter-spacing: 0.05em;
-        color: #fff;
-        background: #4fa8e8;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+        .ts-btn-estado:hover {
+            background: #142f58;
+            transform: translateY(-1px);
+        }
+
+        .ts-btn-estado:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+    /* ═══════════════════════════════════════
+           CLIMA
+           ═══════════════════════════════════════ */
+
+    .ts-clima-franja {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: -1rem 0 2rem 0;
+        padding: 0.75rem 1rem;
+        border: 1px solid #d0e8f8;
+        border-radius: 10px;
+        background: #f0f6fc;
+    }
+
+    .ts-clima-icono {
+        flex-shrink: 0;
+        font-size: 1.6rem;
+    }
+
+    .ts-clima-info {
+        min-width: 0;
+    }
+
+        .ts-clima-info .ts-campo-label {
+            margin-bottom: 0;
+        }
+
+    /* ═══════════════════════════════════════
+           TABLA
+           ═══════════════════════════════════════ */
+
+    .ts-tabla-wrapper {
+        width: 100%;
+        margin-bottom: 1.5rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
     }
 
     .ts-tabla-detalle {
         width: 100%;
+        min-width: 760px;
+        margin-bottom: 0;
         border-collapse: collapse;
-        margin-bottom: 1.5rem;
     }
 
         .ts-tabla-detalle thead th {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 0.8rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: #1a3a6e;
-            border-bottom: 2px solid #1a3a6e;
             padding: 0.6rem 0.75rem;
+            border-bottom: 2px solid #1a3a6e;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #1a3a6e;
+            letter-spacing: 0.05em;
             text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .ts-tabla-detalle tbody td {
             padding: 0.7rem 0.75rem;
             border-bottom: 1px solid #eef4fa;
-            font-size: 0.92rem;
             color: #294869;
+            font-size: 0.92rem;
+            vertical-align: middle;
         }
 
         .ts-tabla-detalle .ts-col-num {
             text-align: right;
+            white-space: nowrap;
         }
 
     .ts-tipo-tag {
-        font-size: 0.68rem;
+        margin-top: 2px;
+        color: #8ab2cc;
         font-family: 'Rajdhani', sans-serif;
+        font-size: 0.68rem;
         font-weight: 700;
         letter-spacing: 0.05em;
         text-transform: uppercase;
-        color: #8ab2cc;
     }
 
+    /* ═══════════════════════════════════════
+           TOTALES
+           ═══════════════════════════════════════ */
+
     .ts-totales {
-        margin-left: auto;
+        width: 100%;
         max-width: 320px;
+        margin-left: auto;
     }
 
     .ts-totales-fila {
         display: flex;
         justify-content: space-between;
+        gap: 1rem;
         padding: 0.4rem 0;
-        font-size: 0.95rem;
         color: #294869;
+        font-size: 0.95rem;
     }
+
+        .ts-totales-fila span:last-child {
+            flex-shrink: 0;
+            white-space: nowrap;
+            font-weight: 600;
+        }
 
         .ts-totales-fila.ts-envio {
             color: #8ab2cc;
         }
 
         .ts-totales-fila.ts-total-final {
-            border-top: 2px solid #1a3a6e;
             margin-top: 0.5rem;
             padding-top: 0.75rem;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 1.25rem;
+            border-top: 2px solid #1a3a6e;
             color: #1a3a6e;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
         }
 
+    /* ═══════════════════════════════════════
+           VOLVER
+           ═══════════════════════════════════════ */
+
     .ts-volver {
-        display: inline-block;
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         margin-top: 1.5rem;
+        padding: 0.55rem 1rem;
+        border: 1.5px solid transparent;
+        border-radius: 8px;
         color: #1a3a6e;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 700;
         text-decoration: none;
+        transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     }
 
         .ts-volver:hover {
+            border-color: #d0e8f8;
+            background: #f5faff;
             color: #c0392b;
         }
 
-    .ts-cambiar-estado {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        margin-top: 0.5rem;
-    }
-
-    .ts-select-estado {
-        border-radius: 8px;
-        border: 1px solid #c7dcf0;
-        padding: 0.35rem 0.6rem;
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 600;
-        color: #1a3a6e;
-    }
-
-    .ts-btn-estado {
-        background: #1a3a6e;
-        color: #fff;
-        border: none;
-        border-radius: 999px;
-        padding: 0.4rem 1rem;
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
-        font-size: 0.82rem;
-        cursor: pointer;
-    }
-
-        .ts-btn-estado:hover {
-            background: #142f58;
-        }
-
-    .ts-clima-franja {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        background: #f0f6fc;
-        border: 1px solid #d0e8f8;
-        border-radius: 10px;
-        padding: 0.75rem 1rem;
-        margin: -1rem 0 2rem 0;
-    }
-
-    .ts-clima-icono {
-        font-size: 1.6rem;
-    }
+    /* ═══════════════════════════════════════
+           TOAST
+           ═══════════════════════════════════════ */
 
     .ts-toast-detalle {
         position: fixed;
-        bottom: 24px;
         right: 24px;
-        min-width: 260px;
+        bottom: 24px;
+        width: calc(100% - 48px);
+        min-width: 0;
+        max-width: 360px;
         padding: 1rem 1.25rem;
         border-radius: 10px;
-        color: #fff;
+        color: #ffffff;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 600;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+        line-height: 1.4;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
         z-index: 2000;
         transform: translateY(20px);
         opacity: 0;
-        transition: all .25s ease;
         pointer-events: none;
+        transition: transform 0.25s ease, opacity 0.25s ease;
     }
 
         .ts-toast-detalle.ts-show {
@@ -238,173 +377,734 @@
         .ts-toast-detalle.ts-error {
             background: #c0392b;
         }
-</style>
 
-<div class="ts-factura">
-    <div class="ts-factura-header">
-        <h2 class="ts-factura-titulo">Detalle de Pedido</h2>
-        <span class="ts-factura-numero">Pedido N.º @Model.IdPedido</span>
-    </div>
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
 
-    <div class="ts-factura-body">
-        <div class="ts-encabezado-grid">
-            <div>
-                <div class="ts-campo-label">Fecha</div>
-                <div class="ts-campo-valor">@Model.FechaPedido.ToString("dd/MM/yyyy HH:mm", culturaCR)</div>
-            </div>
-            <div>
-                <div class="ts-campo-label">Estado</div>
-                <div class="ts-campo-valor"><span class="ts-estado-badge" id="estadoBadgeActual">@Model.EstadoNombre</span></div>
+    @@media (max-width: 768px) {
 
-                @if (esEmpleado)
-                {
-                    <div class="ts-cambiar-estado">
-                        <select id="selectEstado" class="ts-select-estado">
-                            @foreach (var estado in (List<TempestSushi.Application.DTOs.PedidoMetodoOpcionDto>)ViewBag.Estados)
-                            {
-                                <option value="@estado.Id" selected="@(estado.Nombre == Model.EstadoNombre)">@estado.Nombre</option>
-                            }
-                        </select>
-                        <button type="button" id="btnActualizarEstado" class="ts-btn-estado">Actualizar</button>
-                    </div>
-                }
-            </div>
-            <div>
-                <div class="ts-campo-label">Cliente</div>
-                <div class="ts-campo-valor">@Model.ClienteNombre</div>
-                <div class="ts-campo-valor" style="font-weight:400; font-size:0.85rem; color:#8ab2cc;">@Model.ClienteIdentificador</div>
-            </div>
-            <div>
-                <div class="ts-campo-label">Encargado</div>
-                <div class="ts-campo-valor">@(Model.EncargadoNombre ?? "—")</div>
-            </div>
-            <div>
-                <div class="ts-campo-label">Método de entrega</div>
-                <div class="ts-campo-valor">
-                    @Model.MetodoEntregaNombre
-                    @if (!string.IsNullOrWhiteSpace(Model.DireccionEntrega))
-                    {
-                        <div style="font-weight:400; font-size:0.85rem; color:#8ab2cc;">@Model.DireccionEntrega</div>
-                    }
-                </div>
-            </div>
-            <div>
-                <div class="ts-campo-label">Método de pago</div>
-                <div class="ts-campo-valor">@Model.MetodoPagoNombre</div>
-            </div>
-        </div>
-
-        @if (Model.MetodoEntregaNombre.Contains("domicilio", StringComparison.OrdinalIgnoreCase) && ViewBag.Clima != null)
-        {
-            <div class="ts-clima-franja">
-                <span class="ts-clima-icono">🌤️</span>
-                <div>
-                    <div class="ts-campo-label" style="margin-bottom:0;">Clima actual para la entrega</div>
-                    <div class="ts-campo-valor">
-                        @(((TempestSushi.Application.DTOs.ClimaDto)ViewBag.Clima).Temperatura)°C — @(((TempestSushi.Application.DTOs.ClimaDto)ViewBag.Clima).Descripcion)
-                    </div>
-                </div>
-            </div>
+        .pedido-detail-page {
+            padding: 0.75rem 0 1.5rem;
         }
 
-        <table class="ts-tabla-detalle">
-            <thead>
-                <tr>
-                    <th>Producto / Combo</th>
-                    <th class="ts-col-num">Precio</th>
-                    <th class="ts-col-num">Cantidad</th>
-                    <th class="ts-col-num">Subtotal</th>
-                    <th class="ts-col-num">Impuesto</th>
-                    <th>Observaciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var linea in Model.Lineas)
-                {
-                    <tr>
-                        <td>
-                            @linea.Nombre
-                            <div class="ts-tipo-tag">@linea.Tipo</div>
-                        </td>
-                        <td class="ts-col-num">@linea.PrecioUnitario.ToString("C", culturaCR)</td>
-                        <td class="ts-col-num">@linea.Cantidad</td>
-                        <td class="ts-col-num">@linea.Subtotal.ToString("C", culturaCR)</td>
-                        <td class="ts-col-num">@linea.Impuesto.ToString("C", culturaCR)</td>
-                        <td>@(string.IsNullOrWhiteSpace(linea.Observaciones) ? "—" : linea.Observaciones)</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        .ts-factura-header {
+            padding: 1.25rem 1.5rem;
+        }
 
-        <div class="ts-totales">
-            <div class="ts-totales-fila">
-                <span>Total sin impuestos</span>
-                <span>@Model.TotalSinImpuestos.ToString("C", culturaCR)</span>
-            </div>
-            @if (Model.CostoEnvio > 0)
-            {
-                <div class="ts-totales-fila ts-envio">
-                    <span>Costo de envío</span>
-                    <span>@Model.CostoEnvio.ToString("C", culturaCR)</span>
-                </div>
+        .ts-factura-body {
+            padding: 1.5rem;
+        }
+
+        .ts-encabezado-grid {
+            gap: 1rem 1.25rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .pedido-detail-page {
+            padding-top: 0.5rem;
+        }
+
+        .ts-factura {
+            border-radius: 12px;
+        }
+
+        .ts-factura-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.3rem;
+            padding: 1.1rem 1.2rem;
+        }
+
+        .ts-factura-titulo {
+            font-size: 1.3rem;
+        }
+
+        .ts-factura-numero {
+            font-size: 0.85rem;
+        }
+
+        .ts-factura-body {
+            padding: 1.25rem 1rem;
+        }
+
+        .ts-encabezado-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.25rem;
+        }
+
+        .ts-campo-valor {
+            font-size: 0.95rem;
+        }
+
+        .ts-cambiar-estado {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .ts-select-estado {
+            width: 100%;
+            max-width: none;
+            min-height: 43px;
+        }
+
+        .ts-btn-estado {
+            width: 100%;
+            min-height: 43px;
+            border-radius: 8px;
+        }
+
+        .ts-clima-franja {
+            align-items: flex-start;
+            margin: -0.5rem 0 1.5rem 0;
+            padding: 0.8rem 0.9rem;
+        }
+
+        .ts-tabla-detalle {
+            min-width: 730px;
+        }
+
+        .ts-totales {
+            max-width: 100%;
+            margin-left: 0;
+        }
+
+        .ts-volver {
+            width: 100%;
+            min-height: 45px;
+            border-color: #d0e8f8;
+        }
+
+        .ts-toast-detalle {
+            right: 12px;
+            bottom: 12px;
+            width: calc(100% - 24px);
+            max-width: none;
+            padding: 0.9rem 1rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .ts-factura-header {
+            padding: 1rem 0.95rem;
+        }
+
+        .ts-factura-body {
+            padding: 1.1rem 0.85rem;
+        }
+
+        .ts-factura-titulo {
+            font-size: 1.2rem;
+        }
+
+        .ts-campo-label {
+            font-size: 0.7rem;
+        }
+
+        .ts-clima-icono {
+            font-size: 1.4rem;
+        }
+
+        .ts-totales-fila {
+            font-size: 0.88rem;
+        }
+
+            .ts-totales-fila.ts-total-final {
+                font-size: 1.12rem;
             }
-            <div class="ts-totales-fila ts-total-final">
-                <span>Total con impuestos</span>
-                <span>@Model.TotalConImpuestos.ToString("C", culturaCR)</span>
-            </div>
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .ts-btn-estado,
+        .ts-volver,
+        .ts-toast-detalle {
+            transition: none;
+        }
+    }
+</style>
+
+<div class="pedido-detail-page">
+
+    <div class="ts-factura">
+
+        <!-- HEADER -->
+
+        <div class="ts-factura-header">
+
+            <h2 class="ts-factura-titulo">
+                Detalle de Pedido
+            </h2>
+
+            <span class="ts-factura-numero">
+                Pedido N.º @Model.IdPedido
+            </span>
+
         </div>
 
-        <a asp-action="Index" class="ts-volver">&larr; Volver al historial</a>
+        <div class="ts-factura-body">
+
+            <!-- ═══════════════════════════
+                 INFORMACIÓN GENERAL
+                 ═══════════════════════════ -->
+
+            <div class="ts-encabezado-grid">
+
+                <!-- FECHA -->
+
+                <div>
+
+                    <div class="ts-campo-label">
+                        Fecha
+                    </div>
+
+                    <div class="ts-campo-valor">
+
+                        @Model.FechaPedido.ToString(
+                        "dd/MM/yyyy HH:mm",
+                                                culturaCR
+                                                )
+
+                    </div>
+
+                </div>
+
+                <!-- ESTADO -->
+
+                <div>
+
+                    <div class="ts-campo-label">
+                        Estado
+                    </div>
+
+                    <div class="ts-campo-valor">
+
+                        <span class="ts-estado-badge"
+                              id="estadoBadgeActual">
+
+                            @Model.EstadoNombre
+
+                        </span>
+
+                    </div>
+
+                    @if (esEmpleado)
+                                        {
+                    <div class="ts-cambiar-estado">
+
+                        <select id="selectEstado"
+                                class="ts-select-estado">
+
+                            @foreach (
+                                                        var estado in
+                                                        (List<TempestSushi.Application.DTOs.PedidoMetodoOpcionDto>)
+                                                        ViewBag.Estados
+                                                        )
+                                                        {
+                            <option value="@estado.Id"
+                                    selected="@(estado.Nombre == Model.EstadoNombre)">
+
+                                @estado.Nombre
+
+                            </option>
+                                                        }
+
+                        </select>
+
+                        <button type="button"
+                                id="btnActualizarEstado"
+                                class="ts-btn-estado">
+
+                            Actualizar
+
+                        </button>
+
+                    </div>
+                                        }
+
+                </div>
+
+                <!-- CLIENTE -->
+
+                <div>
+
+                    <div class="ts-campo-label">
+                        Cliente
+                    </div>
+
+                    <div class="ts-campo-valor">
+                        @Model.ClienteNombre
+                    </div>
+
+                    <div class="ts-campo-secundario">
+                        @Model.ClienteIdentificador
+                    </div>
+
+                </div>
+
+                <!-- ENCARGADO -->
+
+                <div>
+
+                    <div class="ts-campo-label">
+                        Encargado
+                    </div>
+
+                    <div class="ts-campo-valor">
+                        @(Model.EncargadoNombre ?? "—")
+                    </div>
+
+                </div>
+
+                <!-- MÉTODO DE ENTREGA -->
+
+                <div>
+
+                    <div class="ts-campo-label">
+                        Método de entrega
+                    </div>
+
+                    <div class="ts-campo-valor">
+
+                        @Model.MetodoEntregaNombre
+
+                        @if (
+                                                !string.IsNullOrWhiteSpace(
+                                                Model.DireccionEntrega
+                                                )
+                                                )
+                        {
+                            <div class="ts-campo-secundario">
+                                @Model.DireccionEntrega
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+                <!-- MÉTODO DE PAGO -->
+
+                <div>
+
+                    <div class="ts-campo-label">
+                        Método de pago
+                    </div>
+
+                    <div class="ts-campo-valor">
+                        @Model.MetodoPagoNombre
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ═══════════════════════════
+                 CLIMA
+                 ═══════════════════════════ -->
+            @if (
+                        Model.MetodoEntregaNombre.Contains(
+                        "domicilio",
+                        StringComparison.OrdinalIgnoreCase
+                        )
+                        &&
+                        ViewBag.Clima != null
+                        )
+            {
+                <div class="ts-clima-franja">
+
+                    <span class="ts-clima-icono"
+                          aria-hidden="true">
+
+                        🌤️
+
+                    </span>
+
+                    <div class="ts-clima-info">
+
+                        <div class="ts-campo-label">
+                            Clima actual para la entrega
+                        </div>
+
+                        <div class="ts-campo-valor">
+
+                            @(
+                                                    ((TempestSushi.Application.DTOs.ClimaDto)
+                                                    ViewBag.Clima).Temperatura
+                                                    )°C
+                            —
+                            @(
+                                                    ((TempestSushi.Application.DTOs.ClimaDto)
+                                                    ViewBag.Clima).Descripcion
+                                                    )
+
+                    </div>
+
+                    </div>
+
+                </div>
+                        }
+
+            <!-- ═══════════════════════════
+                 DETALLE
+                 ═══════════════════════════ -->
+
+            <div class="ts-tabla-wrapper">
+
+                <table class="ts-tabla-detalle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Producto / Combo
+                            </th>
+
+                            <th class="ts-col-num">
+                                Precio
+                            </th>
+
+                            <th class="ts-col-num">
+                                Cantidad
+                            </th>
+
+                            <th class="ts-col-num">
+                                Subtotal
+                            </th>
+
+                            <th class="ts-col-num">
+                                Impuesto
+                            </th>
+
+                            <th>
+                                Observaciones
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var linea in Model.Lineas)
+                        {
+                            <tr>
+
+                                <td>
+
+                                    @linea.Nombre
+
+                                    <div class="ts-tipo-tag">
+                                        @linea.Tipo
+                                    </div>
+
+                                </td>
+
+                                <td class="ts-col-num">
+
+                                    @linea.PrecioUnitario.ToString(
+                                    "C",
+                                                                culturaCR
+                                                                )
+
+                            </td>
+
+                            <td class="ts-col-num">
+                                @linea.Cantidad
+                            </td>
+
+                            <td class="ts-col-num">
+
+                                @linea.Subtotal.ToString(
+                                                                "C",
+                                                                culturaCR
+                                                                )
+
+                            </td>
+
+                            <td class="ts-col-num">
+
+                                @linea.Impuesto.ToString(
+                                                                "C",
+                                                                culturaCR
+                                                                )
+
+                            </td>
+
+                            <td>
+
+                                @(
+                                                                string.IsNullOrWhiteSpace(
+                                                                linea.Observaciones
+                                                                )
+                                                                ? "—"
+                                                                : linea.Observaciones
+                                                                )
+
+                            </td>
+
+                            </tr>
+                                                }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- ═══════════════════════════
+                 TOTALES
+                 ═══════════════════════════ -->
+
+            <div class="ts-totales">
+
+                <div class="ts-totales-fila">
+
+                    <span>
+                        Total sin impuestos
+                    </span>
+
+                    <span>
+
+                        @Model.TotalSinImpuestos.ToString(
+                        "C",
+                                                culturaCR
+                                                )
+
+                    </span>
+
+                </div>
+
+                @if (Model.CostoEnvio > 0)
+                                {
+                <div class="ts-totales-fila ts-envio">
+
+                    <span>
+                        Costo de envío
+                    </span>
+
+                    <span>
+
+                        @Model.CostoEnvio.ToString(
+                                                "C",
+                                                culturaCR
+                                                )
+
+                    </span>
+
+                </div>
+                                }
+
+                <div class="ts-totales-fila ts-total-final">
+
+                    <span>
+                        Total con impuestos
+                    </span>
+
+                    <span>
+
+                        @Model.TotalConImpuestos.ToString(
+                                                "C",
+                                                culturaCR
+                                                )
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- VOLVER -->
+
+            <a asp-action="Index"
+               class="ts-volver">
+
+                &larr; Volver al historial
+
+            </a>
+
+        </div>
+
     </div>
+
 </div>
 
-<div id="toastDetalle" class="ts-toast-detalle"></div>
+<div id="toastDetalle"
+     class="ts-toast-detalle">
+</div>
 
 @section Scripts {
-    <script>
-        (function () {
-            const btnActualizar = document.getElementById('btnActualizarEstado');
-            if (!btnActualizar) return; // el cliente no tiene este botón
 
-            const toast = document.getElementById('toastDetalle');
-            const idPedido = @Model.IdPedido;
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+<script>
 
-            function mostrarToastDetalle(mensaje, tipo) {
-                toast.textContent = mensaje;
-                toast.className = 'ts-toast-detalle ts-show ' + (tipo === 'error' ? 'ts-error' : 'ts-exito');
-                clearTimeout(toast._timeoutId);
-                toast._timeoutId = setTimeout(() => toast.classList.remove('ts-show'), 4000);
-            }
+    (function () {
 
-            btnActualizar.addEventListener('click', async function () {
-                const idEstado = document.getElementById('selectEstado').value;
+        const btnActualizar =
+            document.getElementById(
+                'btnActualizarEstado'
+            );
 
-                btnActualizar.disabled = true;
+        if (!btnActualizar) {
+            return;
+        }
 
-                try {
-                    const resp = await fetch('@Url.Action("CambiarEstado", "Pedido")', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken
-                        },
-                        body: JSON.stringify({ idPedido: idPedido, idEstadoPedido: parseInt(idEstado, 10) })
-                    });
+        const toast =
+            document.getElementById(
+                'toastDetalle'
+            );
 
-                    if (!resp.ok) {
-                        const error = await resp.json().catch(() => ({ mensaje: 'No se pudo actualizar el estado.' }));
-                        throw new Error(error.mensaje || 'No se pudo actualizar el estado.');
+        const idPedido =
+            @Model.IdPedido;
+
+        const csrfToken =
+            document
+                .querySelector(
+                    'meta[name="csrf-token"]'
+                )
+                .content;
+
+        function mostrarToastDetalle(
+            mensaje,
+            tipo
+        ) {
+
+            toast.textContent =
+                mensaje;
+
+            toast.className =
+                'ts-toast-detalle ts-show ' +
+                (
+                    tipo === 'error'
+                        ? 'ts-error'
+                        : 'ts-exito'
+                );
+
+            clearTimeout(
+                toast._timeoutId
+            );
+
+            toast._timeoutId =
+                setTimeout(
+                    () =>
+                        toast
+                            .classList
+                            .remove(
+                                'ts-show'
+                            ),
+                    4000
+                );
+        }
+
+        btnActualizar
+            .addEventListener(
+                'click',
+                async function () {
+
+                    const idEstado =
+                        document
+                            .getElementById(
+                                'selectEstado'
+                            )
+                            .value;
+
+                    btnActualizar.disabled =
+                        true;
+
+                    try {
+
+                        const resp =
+                            await fetch(
+                                '@Url.Action("CambiarEstado", "Pedido")',
+                                {
+                                    method: 'POST',
+
+                                    headers: {
+                                        'Content-Type':
+                                            'application/json',
+
+                                        'X-CSRF-TOKEN':
+                                            csrfToken
+                                    },
+
+                                    body:
+                                        JSON.stringify(
+                                            {
+                                                idPedido:
+                                                    idPedido,
+
+                                                idEstadoPedido:
+                                                    parseInt(
+                                                        idEstado,
+                                                        10
+                                                    )
+                                            }
+                                        )
+                                }
+                            );
+
+                        if (!resp.ok) {
+
+                            const error =
+                                await resp
+                                    .json()
+                                    .catch(
+                                        () => ({
+                                            mensaje:
+                                                'No se pudo actualizar el estado.'
+                                        })
+                                    );
+
+                            throw new Error(
+                                error.mensaje ||
+                                'No se pudo actualizar el estado.'
+                            );
+                        }
+
+                        mostrarToastDetalle(
+                            'Estado actualizado correctamente.',
+                            'exito'
+                        );
+
+                        setTimeout(
+                            () =>
+                                location.reload(),
+                            1000
+                        );
                     }
+                    catch (e) {
 
-                    mostrarToastDetalle('Estado actualizado correctamente.', 'exito');
-                    setTimeout(() => location.reload(), 1000);
+                        mostrarToastDetalle(
+                            e.message,
+                            'error'
+                        );
 
-                } catch (e) {
-                    mostrarToastDetalle(e.message, 'error');
-                    btnActualizar.disabled = false;
+                        btnActualizar.disabled =
+                            false;
+                    }
                 }
-            });
-        })();
-    </script>
+            );
+
+    })();
+
+</script>
+
 }

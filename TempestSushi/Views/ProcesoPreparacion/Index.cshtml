@@ -1,6 +1,21 @@
 ﻿@model ICollection<TempestSushi.Application.DTOs.ProcesoPreparacionListDTO>
 
+@{
+    ViewData["Title"] = "Procesos de Preparación";
+}
+
 <style>
+    .pp-page {
+        width: 100%;
+        max-width: 1050px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .pp-header {
         display: flex;
         align-items: center;
@@ -11,50 +26,105 @@
     }
 
     .pp-title {
+        margin: 0;
         font-family: 'Rajdhani', sans-serif;
-        font-size: 2rem;
+        font-size: clamp(1.7rem, 4vw, 2rem);
         font-weight: 700;
+        line-height: 1.2;
         color: #1a3a6e;
         letter-spacing: 1px;
-        margin: 0;
     }
 
     .pp-badge {
+        flex-shrink: 0;
+        padding: 4px 12px;
+        border-radius: 999px;
         background: #1a3a6e;
         color: #4fa8e8;
-        font-size: .7rem;
-        letter-spacing: 2px;
-        padding: 4px 12px;
-        border-radius: 20px;
+        font-size: 0.7rem;
         font-weight: 600;
+        letter-spacing: 2px;
+        white-space: nowrap;
+    }
+
+    /* ═══════════════════════════════════════
+           ACCIONES
+           ═══════════════════════════════════════ */
+
+    .pp-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-mantenimiento {
+        min-height: 43px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 9px 22px;
+        border-radius: 8px;
+        background: #1a3a6e;
+        color: #ffffff !important;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-decoration: none;
+        transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+
+        .btn-mantenimiento:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(192, 57, 43, 0.16);
+        }
+
+    /* ═══════════════════════════════════════
+           TABLA
+           ═══════════════════════════════════════ */
+
+    .pp-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-radius: 12px;
+        box-shadow: 0 2px 16px rgba(26, 58, 110, 0.08);
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
     }
 
     .pp-table {
         width: 100%;
+        min-width: 650px;
+        margin: 0;
         border-collapse: separate;
         border-spacing: 0;
+        background: #ffffff;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 2px 16px rgba(26,58,110,0.08);
     }
 
         .pp-table thead tr {
             background: #1a3a6e;
-            color: #fff;
+            color: #ffffff;
         }
 
         .pp-table thead th {
             padding: 14px 20px;
+            border: none;
             font-family: 'Rajdhani', sans-serif;
             font-size: 1rem;
-            letter-spacing: 1px;
             font-weight: 600;
-            border: none;
+            letter-spacing: 1px;
+            white-space: nowrap;
         }
 
         .pp-table tbody tr {
-            background: #fff;
-            transition: background .2s;
+            background: #ffffff;
+            transition: background 0.2s ease;
         }
 
             .pp-table tbody tr:nth-child(even) {
@@ -67,49 +137,73 @@
 
         .pp-table td {
             padding: 13px 20px;
-            color: #1a3a6e;
             border-bottom: 1px solid #d0e8f8;
-            font-size: .95rem;
+            color: #1a3a6e;
+            font-size: 0.95rem;
             vertical-align: middle;
         }
+
+        .pp-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+    .pp-producto {
+        min-width: 0;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+    }
+
+    /* ═══════════════════════════════════════
+           CANTIDAD DE PASOS
+           ═══════════════════════════════════════ */
 
     .pp-pasos {
         display: inline-flex;
         align-items: center;
         gap: 6px;
+        padding: 3px 14px;
+        border-radius: 999px;
         background: #e8f4fd;
         color: #1a3a6e;
-        border-radius: 20px;
-        padding: 3px 14px;
+        font-size: 0.9rem;
         font-weight: 600;
-        font-size: .9rem;
+        white-space: nowrap;
     }
 
         .pp-pasos span {
-            background: #1a3a6e;
-            color: #fff;
-            border-radius: 50%;
             width: 22px;
             height: 22px;
+            flex-shrink: 0;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: .8rem;
+            border-radius: 50%;
+            background: #1a3a6e;
+            color: #ffffff;
+            font-size: 0.8rem;
         }
 
+    /* ═══════════════════════════════════════
+           DETALLE
+           ═══════════════════════════════════════ */
+
     .btn-detalle {
-        background: #1a3a6e;
-        color: #fff !important;
+        min-height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 18px;
         border: none;
         border-radius: 8px;
-        padding: 6px 18px;
+        background: #1a3a6e;
+        color: #ffffff !important;
         font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
-        letter-spacing: 1px;
+        font-size: 0.95rem;
         font-weight: 600;
+        letter-spacing: 1px;
         text-decoration: none;
-        transition: background .2s, transform .15s;
-        display: inline-block;
+        white-space: nowrap;
+        transition: background 0.2s ease, transform 0.15s ease;
     }
 
         .btn-detalle:hover {
@@ -117,73 +211,284 @@
             transform: translateY(-1px);
         }
 
-    .btn-mantenimiento {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: #1a3a6e;
-        color: #fff !important;
-        border-radius: 8px;
-        padding: 9px 22px;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
-        letter-spacing: 1px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: background .2s, transform .15s;
+    /* ═══════════════════════════════════════
+           VACÍO
+           ═══════════════════════════════════════ */
+
+    .pp-empty {
+        padding: 3rem 1.25rem;
+        border: 1.5px dashed #d0e8f8;
+        border-radius: 12px;
+        background: #ffffff;
+        color: #6489a3;
+        text-align: center;
     }
 
-        .btn-mantenimiento:hover {
-            background: #c0392b;
-            transform: translateY(-1px);
+    .pp-empty-title {
+        margin-bottom: 0.35rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a3a6e;
+    }
+
+    .pp-empty p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .pp-page {
+            padding: 0.75rem 0 1.5rem;
         }
+
+        .pp-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .pp-table thead th,
+        .pp-table td {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .pp-page {
+            padding-top: 0.5rem;
+        }
+
+        .pp-header {
+            gap: 8px;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.8rem;
+        }
+
+        .pp-title {
+            font-size: 1.6rem;
+        }
+
+        .pp-badge {
+            padding: 3px 9px;
+            font-size: 0.62rem;
+            letter-spacing: 1.4px;
+        }
+
+        .pp-actions {
+            width: 100%;
+        }
+
+        .btn-mantenimiento {
+            width: 100%;
+            min-height: 46px;
+        }
+
+        .pp-table {
+            min-width: 610px;
+        }
+
+            .pp-table thead th,
+            .pp-table td {
+                padding: 12px 14px;
+            }
+
+        .pp-empty {
+            padding: 2rem 1rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .pp-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .pp-title {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .pp-table tbody tr,
+        .btn-detalle,
+        .btn-mantenimiento {
+            transition: none;
+        }
+    }
 </style>
 
-<div class="pp-header" id="ppHeader">
-    <h1 class="pp-title">Procesos de Preparación</h1>
-    <span class="pp-badge">COCINA</span>
-</div>
-<div class="mb-4 d-flex gap-2">
-    <a asp-controller="ProcesoPreparacion"
-       asp-action="Mantenimiento"
-       class="btn-mantenimiento">
-        ⚙️ Administrar procesos
-    </a>
-</div>
-<table class="pp-table" id="ppTable">
+<div class="pp-page">
 
-    <thead>
-        <tr>
-            <th>Producto</th>
-            <th>Cantidad de pasos</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.NombreProducto</td>
-                <td>
-                    <span class="pp-pasos">
-                        <span>@item.CantidadPasos</span>
-                        @(item.CantidadPasos == 1 ? "paso" : "pasos")
-                    </span>
-                </td>
-                <td>
-                    <a asp-action="Details"
-                       asp-route-id="@item.IdProducto"
-                       class="btn-detalle">
-                        Ver detalle
-                    </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <!-- HEADER -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <div class="pp-header"
+         id="ppHeader">
+
+        <h1 class="pp-title">
+            Procesos de Preparación
+        </h1>
+
+        <span class="pp-badge">
+            COCINA
+        </span>
+
+    </div>
+
+    <!-- ACCIONES -->
+
+    <div class="pp-actions">
+
+        <a asp-controller="ProcesoPreparacion"
+           asp-action="Mantenimiento"
+           class="btn-mantenimiento">
+
+            ⚙️ Administrar procesos
+
+        </a>
+
+    </div>
+
+    <!-- LISTADO -->
+    @if (Model.Any())
+    {
+        <div class="pp-table-wrapper">
+
+            <table class="pp-table"
+                   id="ppTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Producto
+                        </th>
+
+                        <th>
+                            Cantidad de pasos
+                        </th>
+
+                        <th>
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td class="pp-producto">
+                                @item.NombreProducto
+                            </td>
+
+                            <td>
+
+                                <span class="pp-pasos">
+
+                                    <span>
+                                        @item.CantidadPasos
+                                    </span>
+
+                                    @(item.CantidadPasos == 1
+                                                                ? "paso"
+                                                                : "pasos")
+
+                        </span>
+
+                            </td>
+
+                            <td>
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.IdProducto"
+                                   class="btn-detalle">
+
+                                    Ver detalle
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                                }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+    else
+    {
+        <div class="pp-empty">
+
+            <div class="pp-empty-title">
+                No hay procesos configurados
+            </div>
+
+            <p>
+                Todavía no existen procesos de preparación registrados.
+            </p>
+
+        </div>
+    }
+
+</div>
+
 <script>
-    anime({ targets: '#ppHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
-    anime({ targets: '#ppTable tbody tr', translateX: [-30, 0], opacity: [0, 1], duration: 500, delay: anime.stagger(80, { start: 200 }), easing: 'easeOutExpo' });
+
+    if (
+        typeof anime !== 'undefined' &&
+        !window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches
+    ) {
+
+        anime({
+            targets: '#ppHeader',
+            translateY: [-20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '#ppTable tbody tr',
+            translateX: [-30, 0],
+            opacity: [0, 1],
+            duration: 500,
+            delay: anime.stagger(
+                80,
+                {
+                    start: 200
+                }
+            ),
+            easing: 'easeOutExpo'
+        });
+    }
+
 </script>

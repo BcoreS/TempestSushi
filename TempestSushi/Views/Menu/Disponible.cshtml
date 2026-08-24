@@ -5,27 +5,47 @@
 }
 
 <style>
+    .menu-disponible-page {
+        width: 100%;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .disp-header {
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
         padding-bottom: 1rem;
         border-bottom: 2px solid #d0e8f8;
     }
 
     .disp-title {
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 1.9rem;
-        font-weight: 700;
-        color: #1a3a6e;
         margin: 0 0 4px 0;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: clamp(1.65rem, 4vw, 1.9rem);
+        font-weight: 700;
+        line-height: 1.2;
+        color: #1a3a6e;
+        overflow-wrap: anywhere;
     }
 
     .disp-sub {
+        display: block;
         color: #4fa8e8;
-        font-size: .85rem;
+        font-size: 0.82rem;
+        font-weight: 600;
         letter-spacing: 2px;
     }
 
+    /* ═══════════════════════════════════════
+           META
+           ═══════════════════════════════════════ */
+
     .disp-meta {
+        width: 100%;
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
@@ -34,168 +54,496 @@
     }
 
     .disp-meta-chip {
+        max-width: 100%;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px 16px;
+        border-radius: 999px;
         background: #e8f4fd;
         color: #1a3a6e;
-        border-radius: 20px;
-        padding: 5px 16px;
-        font-size: .82rem;
+        font-size: 0.82rem;
         font-weight: 600;
-        letter-spacing: 1px;
+        letter-spacing: 0.5px;
+        overflow-wrap: anywhere;
     }
 
         .disp-meta-chip span {
+            flex-shrink: 0;
             color: #4fa8e8;
-            margin-right: 4px;
-            font-size: .72rem;
-            letter-spacing: 2px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
         }
 
+    /* ═══════════════════════════════════════
+           CATEGORÍAS
+           ═══════════════════════════════════════ */
+
+    .categoria-section {
+        margin-bottom: 3rem;
+    }
+
     .cat-title {
+        margin-bottom: 1rem;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #d0e8f8;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.4rem;
         font-weight: 700;
-        color: #1a3a6e;
-        padding-bottom: 8px;
-        border-bottom: 2px solid #d0e8f8;
-        margin-bottom: 1rem;
         letter-spacing: 1px;
+        color: #1a3a6e;
+        overflow-wrap: anywhere;
     }
 
+    /* ═══════════════════════════════════════
+           ITEM CARD
+           ═══════════════════════════════════════ */
+
     .item-card {
-        background: #fff;
+        height: 100%;
+        background: #ffffff;
         border: 1.5px solid #d0e8f8;
         border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(26,58,110,0.06);
-        transition: transform .2s, box-shadow .2s;
-        height: 100%;
-        opacity: 0;
+        box-shadow: 0 2px 8px rgba(26, 58, 110, 0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
         .item-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 18px rgba(26,58,110,0.12);
+            border-color: rgba(26, 58, 110, 0.22);
+            box-shadow: 0 6px 18px rgba(26, 58, 110, 0.12);
         }
 
     .item-body {
-        padding: 1rem 1.25rem;
+        min-width: 0;
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+    }
+
+    .item-info {
+        min-width: 0;
+        flex: 1;
     }
 
     .item-nombre {
+        margin-bottom: 2px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1rem;
         font-weight: 700;
+        line-height: 1.25;
         color: #1a3a6e;
-        margin-bottom: 2px;
+        overflow-wrap: anywhere;
     }
 
     .item-tipo {
-        font-size: .75rem;
-        color: #4fa8e8;
-        letter-spacing: 1px;
+        font-size: 0.75rem;
         font-weight: 500;
+        letter-spacing: 1px;
+        color: #4fa8e8;
+        overflow-wrap: anywhere;
     }
 
     .item-precio {
-        background: #1a3a6e;
-        color: #fff;
-        border-radius: 20px;
+        flex-shrink: 0;
         padding: 4px 14px;
+        border-radius: 999px;
+        background: #1a3a6e;
+        color: #ffffff;
         font-family: 'Rajdhani', sans-serif;
-        font-size: .9rem;
+        font-size: 0.9rem;
         font-weight: 700;
         white-space: nowrap;
     }
 
+    /* ═══════════════════════════════════════
+           VOLVER
+           ═══════════════════════════════════════ */
+
+    .disp-actions {
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: center;
+    }
+
     .btn-volver {
+        min-height: 42px;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 6px;
-        background: transparent;
-        color: #1a3a6e;
+        padding: 7px 20px;
         border: 1.5px solid #1a3a6e;
         border-radius: 8px;
-        padding: 7px 20px;
+        background: transparent;
+        color: #1a3a6e;
         font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
-        letter-spacing: 1px;
+        font-size: 0.95rem;
         font-weight: 600;
+        letter-spacing: 1px;
         text-decoration: none;
-        transition: all .2s;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
     }
 
         .btn-volver:hover {
             background: #1a3a6e;
-            color: #fff !important;
+            color: #ffffff !important;
+            transform: translateY(-1px);
         }
 
+    /* ═══════════════════════════════════════
+           MENÚ NO DISPONIBLE
+           ═══════════════════════════════════════ */
+
     .alert-custom {
-        background: #fff8e1;
+        width: 100%;
+        max-width: 760px;
+        margin: 2rem auto 0;
+        padding: 1.25rem 1.75rem;
         border: 1.5px solid #f0c040;
         border-radius: 12px;
+        background: #fff8e1;
         color: #7a5c00;
-        padding: 1.25rem 1.75rem;
         font-weight: 500;
+        line-height: 1.5;
         text-align: center;
-        margin-top: 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .menu-disponible-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
+        .disp-header {
+            margin-bottom: 1.25rem;
+        }
+
+        .disp-meta {
+            margin-bottom: 1.5rem;
+        }
+
+        .categoria-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .item-body {
+            padding: 0.95rem 1rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .menu-disponible-page {
+            padding-top: 0.5rem;
+        }
+
+        .disp-header {
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+        }
+
+        .disp-title {
+            font-size: 1.6rem;
+        }
+
+        .disp-sub {
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .disp-meta {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .disp-meta-chip {
+            width: 100%;
+            justify-content: flex-start;
+            border-radius: 10px;
+            padding: 0.6rem 0.75rem;
+        }
+
+        .cat-title {
+            font-size: 1.25rem;
+        }
+
+        .categoria-section {
+            margin-bottom: 2rem;
+        }
+
+        .item-body {
+            align-items: flex-start;
+            padding: 1rem;
+        }
+
+        .item-precio {
+            padding: 4px 10px;
+            font-size: 0.86rem;
+        }
+
+        .disp-actions {
+            width: 100%;
+        }
+
+        .btn-volver {
+            width: 100%;
+            min-height: 45px;
+        }
+
+        .alert-custom {
+            margin-top: 1.25rem;
+            padding: 1.1rem 1rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .item-body {
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .item-precio {
+            align-self: flex-start;
+        }
+
+        .disp-title {
+            font-size: 1.5rem;
+        }
+
+        .cat-title {
+            font-size: 1.18rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           ACCESIBILIDAD
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .item-card,
+        .btn-volver {
+            transition: none;
+        }
     }
 </style>
 
-@if (Model == null)
-{
-    <div class="alert-custom" id="alertMsg">
-        📭 @ViewBag.Mensaje
-    </div>
-    <div class="text-center mt-4">
-        <a asp-controller="Menu" asp-action="Index" class="btn-volver">← Volver al listado</a>
-    </div>
-}
-else
-{
-    <div class="disp-header" id="dispHeader">
-        <h1 class="disp-title">@Model.Nombre</h1>
-        <span class="disp-sub">MENÚ DISPONIBLE HOY</span>
-    </div>
+<div class="menu-disponible-page">
 
-    <div class="disp-meta">
-        <div class="disp-meta-chip"><span>DÍAS</span>@Model.Dias</div>
-        <div class="disp-meta-chip"><span>HORARIO</span>@Model.Horario</div>
-        <div class="disp-meta-chip"><span>VIGENCIA</span>@Model.Vigencia</div>
-    </div>
-
-    @foreach (var categoria in Model.Categorias)
+    @if (Model == null)
     {
-        <div class="mb-5">
-            <div class="cat-title">@categoria.NombreCategoria</div>
-            <div class="row g-3">
-                @foreach (var item in categoria.Items)
-                {
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="item-card">
-                            <div class="item-body">
-                                <div>
-                                    <div class="item-nombre">@item.Nombre</div>
-                                    <div class="item-tipo">@item.Tipo</div>
-                                </div>
-                                <div class="item-precio">₡@item.Precio.ToString("N2")</div>
-                            </div>
-                        </div>
-                    </div>
-                }
+        <div class="alert-custom"
+             id="alertMsg"
+             role="status">
+
+            📭 @ViewBag.Mensaje
+
+        </div>
+
+        <div class="disp-actions">
+
+            <a asp-controller="Menu"
+               asp-action="Index"
+               class="btn-volver">
+
+                ← Volver al listado
+
+            </a>
+
+        </div>
+    }
+    else
+    {
+        <!-- HEADER -->
+
+        <div class="disp-header"
+             id="dispHeader">
+
+            <h1 class="disp-title">
+                @Model.Nombre
+            </h1>
+
+            <span class="disp-sub">
+                MENÚ DISPONIBLE HOY
+            </span>
+
+        </div>
+
+        <!-- METADATOS -->
+
+        <div class="disp-meta">
+
+            <div class="disp-meta-chip">
+
+                <span>
+                    DÍAS
+                </span>
+
+                @Model.Dias
+
             </div>
+
+            <div class="disp-meta-chip">
+
+                <span>
+                    HORARIO
+                </span>
+
+                @Model.Horario
+
+            </div>
+
+            <div class="disp-meta-chip">
+
+                <span>
+                    VIGENCIA
+                </span>
+
+                @Model.Vigencia
+
+            </div>
+
+        </div>
+
+        <!-- CATEGORÍAS -->
+        @foreach (var categoria in Model.Categorias)
+        {
+            <section class="categoria-section">
+
+                <div class="cat-title">
+                    @categoria.NombreCategoria
+                </div>
+
+                <div class="row g-3">
+
+                    @foreach (var item in categoria.Items)
+                    {
+                        <div class="col-12 col-md-6 col-lg-4">
+
+                            <div class="item-card">
+
+                                <div class="item-body">
+
+                                    <div class="item-info">
+
+                                        <div class="item-nombre">
+                                            @item.Nombre
+                                        </div>
+
+                                        <div class="item-tipo">
+                                            @item.Tipo
+                                        </div>
+
+                                    </div>
+
+                                    <div class="item-precio">
+                                        ₡@item.Precio.ToString("N2")
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </section>
+        }
+
+        <!-- VOLVER -->
+
+        <div class="disp-actions">
+
+            <a asp-controller="Menu"
+               asp-action="Index"
+               class="btn-volver">
+
+                ← Volver al listado
+
+            </a>
+
         </div>
     }
 
-    <div class="text-center mt-4">
-        <a asp-controller="Menu" asp-action="Index" class="btn-volver">← Volver al listado</a>
-    </div>
-}
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script>
-    anime({ targets: '#dispHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
-    anime({ targets: '.disp-meta-chip', scale: [0.85, 1], opacity: [0, 1], duration: 400, delay: anime.stagger(80, { start: 300 }), easing: 'easeOutBack' });
-    anime({ targets: '.item-card', translateY: [20, 0], opacity: [0, 1], duration: 450, delay: anime.stagger(70, { start: 500 }), easing: 'easeOutExpo' });
+
+    if (
+        typeof anime !== 'undefined' &&
+        !window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches
+    ) {
+
+        anime({
+            targets: '#dispHeader',
+            translateY: [-20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '.disp-meta-chip',
+
+            scale: [0.85, 1],
+            opacity: [0, 1],
+
+            duration: 400,
+
+            delay:
+                anime.stagger(
+                    80,
+                    {
+                        start: 300
+                    }
+                ),
+
+            easing: 'easeOutBack'
+        });
+
+        anime({
+            targets: '.item-card',
+
+            translateY: [20, 0],
+            opacity: [0, 1],
+
+            duration: 450,
+
+            delay:
+                anime.stagger(
+                    70,
+                    {
+                        start: 500
+                    }
+                ),
+
+            easing: 'easeOutExpo'
+        });
+    }
+
 </script>

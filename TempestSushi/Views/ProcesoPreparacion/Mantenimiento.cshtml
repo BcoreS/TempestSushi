@@ -5,6 +5,17 @@
 }
 
 <style>
+    .mant-page {
+        width: 100%;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .mant-header {
         display: flex;
         align-items: center;
@@ -16,80 +27,119 @@
     }
 
     .mant-header-info {
+        min-width: 0;
         display: flex;
         align-items: center;
         gap: 12px;
     }
 
     .mant-title {
+        margin: 0;
         font-family: 'Rajdhani', sans-serif;
-        font-size: 2rem;
+        font-size: clamp(1.7rem, 4vw, 2rem);
         font-weight: 700;
+        line-height: 1.2;
         color: #1a3a6e;
         letter-spacing: 1px;
-        margin: 0;
+        overflow-wrap: anywhere;
     }
 
     .mant-badge {
+        flex-shrink: 0;
+        padding: 4px 12px;
+        border-radius: 999px;
         background: #1a3a6e;
         color: #4fa8e8;
-        font-size: .7rem;
-        letter-spacing: 2px;
-        padding: 4px 12px;
-        border-radius: 20px;
+        font-size: 0.7rem;
         font-weight: 600;
+        letter-spacing: 2px;
+        white-space: nowrap;
     }
 
+    /* ═══════════════════════════════════════
+           CREAR
+           ═══════════════════════════════════════ */
+
     .btn-crear-proceso {
+        flex-shrink: 0;
+        min-height: 43px;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
-        background: #1a3a6e;
-        color: #fff !important;
+        padding: 9px 20px;
         border: none;
         border-radius: 8px;
-        padding: 9px 20px;
+        background: #1a3a6e;
+        color: #ffffff !important;
         font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
-        letter-spacing: 1px;
+        font-size: 0.95rem;
         font-weight: 600;
+        letter-spacing: 1px;
+        text-align: center;
         text-decoration: none;
-        transition: background .2s, transform .15s;
+        white-space: nowrap;
+        transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
     }
 
         .btn-crear-proceso:hover {
             background: #c0392b;
             transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(192, 57, 43, 0.16);
         }
+
+    /* ═══════════════════════════════════════
+           ALERTAS
+           ═══════════════════════════════════════ */
+
+    .mant-alert {
+        margin-bottom: 1.25rem;
+        border-radius: 10px;
+    }
+
+    /* ═══════════════════════════════════════
+           TABLA
+           ═══════════════════════════════════════ */
+
+    .mant-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-radius: 12px;
+        box-shadow: 0 2px 16px rgba(26, 58, 110, 0.08);
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
 
     .mant-table {
         width: 100%;
+        min-width: 760px;
+        margin: 0;
         border-collapse: separate;
         border-spacing: 0;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 2px 16px rgba(26, 58, 110, .08);
+        background: #ffffff;
     }
 
         .mant-table thead tr {
             background: #1a3a6e;
-            color: #fff;
+            color: #ffffff;
         }
 
         .mant-table thead th {
             padding: 14px 18px;
+            border: none;
             font-family: 'Rajdhani', sans-serif;
             font-size: 1rem;
-            letter-spacing: 1px;
             font-weight: 600;
-            border: none;
+            letter-spacing: 1px;
             white-space: nowrap;
         }
 
         .mant-table tbody tr {
-            background: #fff;
-            transition: background .2s;
-            opacity: 0;
+            background: #ffffff;
+            transition: background 0.2s ease;
         }
 
             .mant-table tbody tr:nth-child(even) {
@@ -102,40 +152,63 @@
 
         .mant-table td {
             padding: 13px 18px;
-            color: #1a3a6e;
             border-bottom: 1px solid #d0e8f8;
-            font-size: .92rem;
+            color: #1a3a6e;
+            font-size: 0.92rem;
             vertical-align: middle;
         }
 
+        .mant-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+    /* ═══════════════════════════════════════
+           PRODUCTO
+           ═══════════════════════════════════════ */
+
     .producto-nombre {
+        display: inline-block;
+        max-width: 100%;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.05rem;
         font-weight: 700;
         color: #1a3a6e;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
     }
+
+    /* ═══════════════════════════════════════
+           PASOS
+           ═══════════════════════════════════════ */
 
     .cantidad-pasos {
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        background: #e8f4fd;
-        border-radius: 20px;
         padding: 4px 12px;
+        border-radius: 999px;
+        background: #e8f4fd;
+        color: #1a3a6e;
         font-weight: 600;
+        white-space: nowrap;
     }
 
     .cantidad-pasos-numero {
         width: 24px;
         height: 24px;
+        flex-shrink: 0;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: #1a3a6e;
-        color: #fff;
         border-radius: 50%;
-        font-size: .8rem;
+        background: #1a3a6e;
+        color: #ffffff;
+        font-size: 0.8rem;
     }
+
+    /* ═══════════════════════════════════════
+           TIEMPO
+           ═══════════════════════════════════════ */
 
     .tiempo-total {
         display: inline-flex;
@@ -143,112 +216,151 @@
         gap: 6px;
         color: #1a3a6e;
         font-weight: 600;
+        white-space: nowrap;
     }
+
+    /* ═══════════════════════════════════════
+           ACCIONES
+           ═══════════════════════════════════════ */
 
     .acciones {
         display: flex;
         justify-content: flex-end;
-        gap: 8px;
         flex-wrap: wrap;
+        gap: 8px;
     }
 
     .btn-editar-proceso,
     .btn-eliminar-proceso {
-        border-radius: 7px;
+        min-height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         padding: 6px 14px;
+        border-radius: 7px;
         font-family: 'Rajdhani', sans-serif;
-        font-size: .9rem;
+        font-size: 0.9rem;
         font-weight: 600;
-        letter-spacing: .5px;
+        letter-spacing: 0.5px;
         text-decoration: none;
-        transition: background .2s, transform .15s;
+        white-space: nowrap;
+        transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
     }
 
     .btn-editar-proceso {
+        border: 1.5px solid #1a3a6e;
         background: transparent;
         color: #1a3a6e;
-        border: 1.5px solid #1a3a6e;
     }
 
         .btn-editar-proceso:hover {
             background: #1a3a6e;
-            color: #fff;
+            color: #ffffff;
             transform: translateY(-1px);
         }
 
     .btn-eliminar-proceso {
+        border: 1.5px solid #c0392b;
         background: transparent;
         color: #c0392b;
-        border: 1.5px solid #c0392b;
     }
 
         .btn-eliminar-proceso:hover {
+            border-color: #c0392b;
             background: #c0392b;
-            color: #fff;
+            color: #ffffff;
             transform: translateY(-1px);
         }
 
+    /* ═══════════════════════════════════════
+           ESTADO VACÍO
+           ═══════════════════════════════════════ */
+
     .mant-vacio {
-        background: #fff;
+        padding: 3rem 1.5rem;
         border: 1.5px dashed #8ab2cc;
         border-radius: 14px;
-        padding: 3rem 1.5rem;
-        text-align: center;
+        background: #ffffff;
         color: #1a3a6e;
+        text-align: center;
     }
 
     .mant-vacio-icono {
+        margin-bottom: 0.75rem;
         font-size: 3rem;
-        margin-bottom: .75rem;
     }
 
     .mant-vacio-titulo {
+        margin-bottom: 0.4rem;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.35rem;
         font-weight: 700;
-        margin-bottom: .4rem;
     }
 
     .mant-vacio-texto {
-        color: #6489a3;
         margin-bottom: 1.25rem;
+        color: #6489a3;
+        line-height: 1.5;
+    }
+
+    /* ═══════════════════════════════════════
+           VOLVER
+           ═══════════════════════════════════════ */
+
+    .mant-footer-actions {
+        margin-top: 1.5rem;
+        display: flex;
+        align-items: center;
     }
 
     .btn-volver {
+        min-height: 42px;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 6px;
-        margin-top: 1.5rem;
-        background: transparent;
-        color: #1a3a6e;
+        padding: 7px 18px;
         border: 1.5px solid #1a3a6e;
         border-radius: 8px;
-        padding: 7px 18px;
+        background: transparent;
+        color: #1a3a6e;
         font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
+        font-size: 0.95rem;
         font-weight: 600;
         letter-spacing: 1px;
         text-decoration: none;
-        transition: background .2s;
+        transition: background 0.2s ease, color 0.2s ease;
     }
 
         .btn-volver:hover {
             background: #1a3a6e;
-            color: #fff;
+            color: #ffffff;
         }
 
+    /* ═══════════════════════════════════════
+           MODAL
+           ═══════════════════════════════════════ */
+
     .modal-eliminar-content {
+        overflow: hidden;
         border: none;
         border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 18px 50px rgba(26, 58, 110, .22);
+        box-shadow: 0 18px 50px rgba(26, 58, 110, 0.22);
     }
 
     .modal-eliminar-header {
-        background: #f8fcff;
-        border-bottom: 1px solid #d0e8f8;
         padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid #d0e8f8;
+        background: #f8fcff;
     }
+
+        .modal-eliminar-header .modal-title {
+            margin: 0;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            color: #1a3a6e;
+            line-height: 1.2;
+        }
 
     .modal-eliminar-body {
         padding: 1.5rem;
@@ -256,179 +368,388 @@
     }
 
     .modal-eliminar-advertencia {
-        color: #8a3b34;
-        font-size: .9rem;
-        background: #fff5f4;
+        padding: 0.8rem 1rem;
         border-left: 4px solid #c0392b;
         border-radius: 6px;
-        padding: .8rem 1rem;
+        background: #fff5f4;
+        color: #8a3b34;
+        font-size: 0.9rem;
+        line-height: 1.5;
     }
 
     .modal-eliminar-footer {
-        border-top: 1px solid #d0e8f8;
-        padding: 1rem 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
         gap: 10px;
+        padding: 1rem 1.5rem;
+        border-top: 1px solid #d0e8f8;
     }
 
-    @@media (max-width: 768px) {
-        .mant-header {
-            align-items: flex-start;
-            flex-direction: column;
+        .modal-eliminar-footer form {
+            margin: 0;
         }
 
-        .mant-table-wrapper {
-            overflow-x: auto;
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .mant-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
+        .mant-header {
+            align-items: stretch;
+            flex-direction: column;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-crear-proceso {
+            align-self: flex-start;
         }
 
         .mant-table {
             min-width: 720px;
         }
     }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .mant-page {
+            padding-top: 0.5rem;
+        }
+
+        .mant-header {
+            gap: 0.85rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.9rem;
+        }
+
+        .mant-header-info {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .mant-title {
+            font-size: 1.6rem;
+        }
+
+        .mant-badge {
+            padding: 3px 9px;
+            font-size: 0.62rem;
+            letter-spacing: 1.4px;
+        }
+
+        .btn-crear-proceso {
+            width: 100%;
+            min-height: 46px;
+        }
+
+        .mant-table {
+            min-width: 690px;
+        }
+
+            .mant-table thead th,
+            .mant-table td {
+                padding: 12px 14px;
+            }
+
+        .mant-vacio {
+            padding: 2rem 1rem;
+        }
+
+            .mant-vacio .btn-crear-proceso {
+                width: 100%;
+            }
+
+        .mant-footer-actions {
+            width: 100%;
+        }
+
+        .btn-volver {
+            width: 100%;
+            min-height: 45px;
+        }
+
+        .modal-dialog {
+            margin: 0.75rem;
+        }
+
+        .modal-eliminar-header {
+            padding: 1rem 1.1rem;
+        }
+
+        .modal-eliminar-body {
+            padding: 1.2rem 1.1rem;
+        }
+
+        .modal-eliminar-footer {
+            flex-direction: column;
+            padding: 1rem 1.1rem;
+        }
+
+            .modal-eliminar-footer form {
+                width: 100%;
+            }
+
+            .modal-eliminar-footer .btn {
+                width: 100%;
+            }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .mant-header-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.45rem;
+        }
+
+        .mant-title {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .mant-table tbody tr,
+        .btn-crear-proceso,
+        .btn-editar-proceso,
+        .btn-eliminar-proceso,
+        .btn-volver {
+            transition: none;
+        }
+    }
 </style>
 
-<div class="mant-header" id="mantHeader">
-    <div class="mant-header-info">
-        <h1 class="mant-title">
-            Mantenimiento de Procesos
-        </h1>
+<div class="mant-page">
 
-        <span class="mant-badge">
-            COCINA
-        </span>
-    </div>
+    <!-- HEADER -->
 
-    <a asp-controller="ProcesoPreparacion"
-       asp-action="Create"
-       class="btn-crear-proceso">
-        ➕ Crear proceso
-    </a>
-</div>
+    <div class="mant-header"
+         id="mantHeader">
 
-@if (TempData["MensajeExito"] != null)
-{
-    <div class="alert alert-success">
-        @TempData["MensajeExito"]
-    </div>
-}
+        <div class="mant-header-info">
 
-@if (TempData["MensajeError"] != null)
-{
-    <div class="alert alert-danger">
-        @TempData["MensajeError"]
-    </div>
-}
+            <h1 class="mant-title">
+                Mantenimiento de Procesos
+            </h1>
 
-@if (Model.Any())
-{
-    <div class="mant-table-wrapper">
-        <table class="mant-table" id="mantTable">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Cantidad de pasos</th>
-                    <th>Tiempo estimado total</th>
-                    <th class="text-end">Acciones</th>
-                </tr>
-            </thead>
+            <span class="mant-badge">
+                COCINA
+            </span>
 
-            <tbody>
-                @foreach (var proceso in Model)
-                {
-                    <tr>
-                        <td>
-                            <span class="producto-nombre">
-                                @proceso.NombreProducto
-                            </span>
-                        </td>
-
-                        <td>
-                            <span class="cantidad-pasos">
-                                <span class="cantidad-pasos-numero">
-                                    @proceso.CantidadPasos
-                                </span>
-
-                                @(proceso.CantidadPasos == 1
-                                                        ? "paso"
-                                                        : "pasos")
-                    </span>
-                </td>
-
-                        <td>
-                            <span class="tiempo-total">
-                                ⏱️
-
-                        @if (proceso.TiempoEstimadoTotal > 0)
-                                {
-                                    <span>
-                                        @proceso.TiempoEstimadoTotal minutos
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span>
-                                        Sin estimación
-                                    </span>
-                                }
-                            </span>
-                        </td>
-
-                        <td>
-                            <div class="acciones">
-
-                                <a asp-controller="ProcesoPreparacion"
-                                   asp-action="Edit"
-                                   asp-route-id="@proceso.IdProducto"
-                                   class="btn-editar-proceso">
-                                    ✏️ Editar
-                                </a>
-
-                                <button type="button"
-                                        class="btn-eliminar-proceso"
-                                        data-id="@proceso.IdProducto"
-                                        data-nombre="@proceso.NombreProducto"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalEliminarProceso">
-                                    🔄 Quitar proceso
-                                </button>
-
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-}
-else
-{
-    <div class="mant-vacio" id="mantVacio">
-
-        <div class="mant-vacio-icono">
-            🍳
-        </div>
-
-        <div class="mant-vacio-titulo">
-            No hay procesos configurados
-        </div>
-
-        <div class="mant-vacio-texto">
-            Agrega un proceso de preparación para un producto existente.
         </div>
 
         <a asp-controller="ProcesoPreparacion"
            asp-action="Create"
            class="btn-crear-proceso">
-            ➕ Crear primer proceso
+
+            ➕ Crear proceso
+
         </a>
 
     </div>
-}
 
-<a asp-controller="ProcesoPreparacion"
-   asp-action="Index"
-   class="btn-volver">
-    ← Volver al listado operativo
-</a>
+    <!-- MENSAJES -->
+    @if (TempData["MensajeExito"] != null)
+    {
+        <div class="alert alert-success mant-alert"
+             role="status">
+
+            @TempData["MensajeExito"]
+
+        </div>
+    }
+
+    @if (TempData["MensajeError"] != null)
+    {
+        <div class="alert alert-danger mant-alert"
+             role="alert">
+
+            @TempData["MensajeError"]
+
+        </div>
+    }
+
+    <!-- LISTADO -->
+    @if (Model.Any())
+    {
+        <div class="mant-table-wrapper">
+
+            <table class="mant-table"
+                   id="mantTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Producto
+                        </th>
+
+                        <th>
+                            Cantidad de pasos
+                        </th>
+
+                        <th>
+                            Tiempo estimado total
+                        </th>
+
+                        <th class="text-end">
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var proceso in Model)
+                    {
+                        <tr>
+
+                            <td>
+
+                                <span class="producto-nombre">
+                                    @proceso.NombreProducto
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <span class="cantidad-pasos">
+
+                                    <span class="cantidad-pasos-numero">
+                                        @proceso.CantidadPasos
+                                    </span>
+
+                                    @(proceso.CantidadPasos == 1
+                                                                ? "paso"
+                                                                : "pasos")
+
+                        </span>
+
+                            </td>
+
+                            <td>
+
+                                <span class="tiempo-total">
+
+                                    ⏱️
+
+                            @if (proceso.TiempoEstimadoTotal > 0)
+                                    {
+                                        <span>
+                                            @proceso.TiempoEstimadoTotal minutos
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            Sin estimación
+                                        </span>
+                                    }
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <div class="acciones">
+
+                                    <a asp-controller="ProcesoPreparacion"
+                                       asp-action="Edit"
+                                       asp-route-id="@proceso.IdProducto"
+                                       class="btn-editar-proceso">
+
+                                        ✏️ Editar
+
+                                    </a>
+
+                                    <button type="button"
+                                            class="btn-eliminar-proceso"
+                                            data-id="@proceso.IdProducto"
+                                            data-nombre="@proceso.NombreProducto"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEliminarProceso">
+
+                                        🔄 Quitar proceso
+
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+    else
+    {
+        <div class="mant-vacio"
+             id="mantVacio">
+
+            <div class="mant-vacio-icono">
+                🍳
+            </div>
+
+            <div class="mant-vacio-titulo">
+                No hay procesos configurados
+            </div>
+
+            <div class="mant-vacio-texto">
+                Agrega un proceso de preparación para un producto existente.
+            </div>
+
+            <a asp-controller="ProcesoPreparacion"
+               asp-action="Create"
+               class="btn-crear-proceso">
+
+                ➕ Crear primer proceso
+
+            </a>
+
+        </div>
+    }
+
+    <!-- VOLVER -->
+
+    <div class="mant-footer-actions">
+
+        <a asp-controller="ProcesoPreparacion"
+           asp-action="Index"
+           class="btn-volver">
+
+            ← Volver al listado operativo
+
+        </a>
+
+    </div>
+
+</div>
 
 @section Modals {
 
@@ -442,11 +763,15 @@ else
 
             <div class="modal-content modal-eliminar-content">
 
+                <!-- HEADER -->
+
                 <div class="modal-header modal-eliminar-header">
 
                     <h5 class="modal-title"
                         id="modalEliminarProcesoLabel">
+
                         Quitar proceso de preparación
+
                     </h5>
 
                     <button type="button"
@@ -457,27 +782,39 @@ else
 
                 </div>
 
+                <!-- BODY -->
+
                 <div class="modal-body modal-eliminar-body">
 
                     <p class="mb-3">
+
                         ¿Deseas quitar la configuración de preparación de
-                        <strong id="nombreProductoEliminar"></strong>?
+
+                        <strong id="nombreProductoEliminar">
+                        </strong>?
+
                     </p>
 
                     <div class="modal-eliminar-advertencia">
+
                         Se eliminarán todos los pasos y estaciones asociados
                         con este producto. El producto quedará disponible
                         para configurar un nuevo proceso de preparación.
+
                     </div>
 
                 </div>
+
+                <!-- FOOTER -->
 
                 <div class="modal-footer modal-eliminar-footer">
 
                     <button type="button"
                             class="btn btn-secondary"
                             data-bs-dismiss="modal">
+
                         Cancelar
+
                     </button>
 
                     <form asp-controller="ProcesoPreparacion"
@@ -491,7 +828,9 @@ else
 
                         <button type="submit"
                                 class="btn btn-danger">
+
                             Quitar proceso
+
                         </button>
 
                     </form>
@@ -507,52 +846,101 @@ else
 }
 
 @section Scripts {
+
     <script>
-        anime({
-            targets: '#mantHeader',
-            translateY: [-20, 0],
-            opacity: [0, 1],
-            duration: 600,
-            easing: 'easeOutExpo'
-        });
 
-        anime({
-            targets: '#mantTable tbody tr',
-            translateX: [-25, 0],
-            opacity: [0, 1],
-            duration: 450,
-            delay: anime.stagger(75, { start: 180 }),
-            easing: 'easeOutExpo'
-        });
+        /* ═══════════════════════════════════
+           ANIMACIONES
+           ═══════════════════════════════════ */
 
-        anime({
-            targets: '#mantVacio',
-            translateY: [20, 0],
-            opacity: [0, 1],
-            duration: 600,
-            delay: 150,
-            easing: 'easeOutExpo'
-        });
+        if (
+            typeof anime !== 'undefined' &&
+            !window.matchMedia(
+                '(prefers-reduced-motion: reduce)'
+            ).matches
+        ) {
 
-        document.querySelectorAll('.btn-eliminar-proceso')
-            .forEach(function (boton) {
-
-                boton.addEventListener('click', function () {
-
-                    const idProducto =
-                        this.getAttribute('data-id');
-
-                    const nombreProducto =
-                        this.getAttribute('data-nombre');
-
-                    document.getElementById(
-                        'idProductoEliminar'
-                    ).value = idProducto;
-
-                    document.getElementById(
-                        'nombreProductoEliminar'
-                    ).textContent = nombreProducto;
-                });
+            anime({
+                targets: '#mantHeader',
+                translateY: [-20, 0],
+                opacity: [0, 1],
+                duration: 600,
+                easing: 'easeOutExpo'
             });
+
+            anime({
+                targets: '#mantTable tbody tr',
+                translateX: [-25, 0],
+                opacity: [0, 1],
+                duration: 450,
+                delay: anime.stagger(
+                    75,
+                    {
+                        start: 180
+                    }
+                ),
+                easing: 'easeOutExpo'
+            });
+
+            anime({
+                targets: '#mantVacio',
+                translateY: [20, 0],
+                opacity: [0, 1],
+                duration: 600,
+                delay: 150,
+                easing: 'easeOutExpo'
+            });
+        }
+
+        /* ═══════════════════════════════════
+           MODAL DE ELIMINACIÓN
+           ═══════════════════════════════════ */
+
+        document
+            .querySelectorAll(
+                '.btn-eliminar-proceso'
+            )
+            .forEach(
+                function (boton) {
+
+                    boton.addEventListener(
+                        'click',
+                        function () {
+
+                            const idProducto =
+                                this.getAttribute(
+                                    'data-id'
+                                );
+
+                            const nombreProducto =
+                                this.getAttribute(
+                                    'data-nombre'
+                                );
+
+                            const inputId =
+                                document.getElementById(
+                                    'idProductoEliminar'
+                                );
+
+                            const nombreTexto =
+                                document.getElementById(
+                                    'nombreProductoEliminar'
+                                );
+
+                            if (inputId) {
+                                inputId.value =
+                                    idProducto;
+                            }
+
+                            if (nombreTexto) {
+                                nombreTexto.textContent =
+                                    nombreProducto;
+                            }
+                        }
+                    );
+                }
+            );
+
     </script>
+
 }

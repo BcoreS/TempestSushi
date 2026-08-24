@@ -1,6 +1,21 @@
 ﻿@model TempestSushi.Application.DTOs.ProcesoPreparacionDetalleDTO
 
+@{
+    ViewData["Title"] = "Detalle del Proceso";
+}
+
 <style>
+    .proceso-detail-page {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .det-header {
         margin-bottom: 2rem;
         padding-bottom: 1rem;
@@ -8,28 +23,40 @@
     }
 
     .det-title {
+        margin: 0 0 4px 0;
         font-family: 'Rajdhani', sans-serif;
-        font-size: 1.9rem;
+        font-size: clamp(1.65rem, 4vw, 1.9rem);
         font-weight: 700;
         color: #1a3a6e;
         letter-spacing: 1px;
-        margin: 0 0 4px 0;
+        line-height: 1.2;
     }
 
     .det-sub {
+        display: block;
         color: #4fa8e8;
-        font-size: .85rem;
+        font-size: 0.82rem;
+        font-weight: 600;
         letter-spacing: 2px;
     }
 
+    /* ═══════════════════════════════════════
+           CARD
+           ═══════════════════════════════════════ */
+
     .det-card {
-        background: #fff;
+        width: 100%;
+        margin-bottom: 1.5rem;
+        padding: 1.75rem 2rem;
+        background: #ffffff;
         border: 1.5px solid #d0e8f8;
         border-radius: 14px;
-        padding: 1.75rem 2rem;
-        box-shadow: 0 2px 16px rgba(26,58,110,0.07);
-        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 16px rgba(26, 58, 110, 0.07);
     }
+
+    /* ═══════════════════════════════════════
+           PRODUCTO
+           ═══════════════════════════════════════ */
 
     .det-producto {
         display: flex;
@@ -40,17 +67,22 @@
         border-bottom: 1px solid #d0e8f8;
     }
 
+    .det-producto-info {
+        min-width: 0;
+    }
+
     .det-producto-icon {
         width: 48px;
         height: 48px;
-        background: #1a3a6e;
-        border-radius: 12px;
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 12px;
+        background: #1a3a6e;
         color: #4fa8e8;
         font-size: 1.4rem;
-        flex-shrink: 0;
+        user-select: none;
     }
 
     .det-producto-nombre {
@@ -58,30 +90,40 @@
         font-size: 1.4rem;
         font-weight: 700;
         color: #1a3a6e;
+        line-height: 1.25;
+        overflow-wrap: anywhere;
     }
 
     .det-producto-label {
-        font-size: .75rem;
+        margin-bottom: 2px;
         color: #4fa8e8;
+        font-size: 0.75rem;
+        font-weight: 600;
         letter-spacing: 2px;
     }
 
+    /* ═══════════════════════════════════════
+           ESTACIONES
+           ═══════════════════════════════════════ */
+
     .det-estaciones-title {
+        margin-bottom: 1rem;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.1rem;
         font-weight: 600;
         color: #1a3a6e;
         letter-spacing: 1px;
-        margin-bottom: 1rem;
+        line-height: 1.4;
     }
 
     .estacion-row {
+        width: 100%;
+        min-width: 0;
         display: flex;
         align-items: center;
         gap: 14px;
         padding: 10px 0;
         border-bottom: 1px solid #f0f6fc;
-        opacity: 0;
     }
 
         .estacion-row:last-child {
@@ -91,88 +133,382 @@
     .estacion-num {
         width: 34px;
         height: 34px;
-        background: #4fa8e8;
-        color: #fff;
-        border-radius: 50%;
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 50%;
+        background: #4fa8e8;
+        color: #ffffff;
         font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
         font-size: 1rem;
-        flex-shrink: 0;
+        font-weight: 700;
     }
 
     .estacion-nombre {
+        min-width: 0;
         color: #1a3a6e;
-        font-size: .95rem;
+        font-size: 0.95rem;
         font-weight: 500;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
     }
 
     .estacion-linea {
         flex: 1;
+        min-width: 20px;
         height: 1px;
         background: #d0e8f8;
     }
 
+    /* ═══════════════════════════════════════
+           ESTADO VACÍO
+           ═══════════════════════════════════════ */
+
+    .estaciones-vacio {
+        padding: 1.75rem 1rem;
+        border: 1.5px dashed #d0e8f8;
+        border-radius: 10px;
+        color: #6489a3;
+        text-align: center;
+    }
+
+    /* ═══════════════════════════════════════
+           VOLVER
+           ═══════════════════════════════════════ */
+
+    .det-actions {
+        display: flex;
+        align-items: center;
+    }
+
     .btn-volver {
+        min-height: 42px;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 6px;
-        background: transparent;
-        color: #1a3a6e;
+        padding: 7px 20px;
         border: 1.5px solid #1a3a6e;
         border-radius: 8px;
-        padding: 7px 20px;
+        background: transparent;
+        color: #1a3a6e;
         font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
-        letter-spacing: 1px;
+        font-size: 0.95rem;
         font-weight: 600;
+        letter-spacing: 1px;
         text-decoration: none;
-        transition: all .2s;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
     }
 
         .btn-volver:hover {
             background: #1a3a6e;
-            color: #fff !important;
+            color: #ffffff !important;
+            transform: translateY(-1px);
         }
+
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .proceso-detail-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
+        .det-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .det-card {
+            padding: 1.5rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .proceso-detail-page {
+            padding-top: 0.5rem;
+        }
+
+        .det-header {
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.8rem;
+        }
+
+        .det-title {
+            font-size: 1.6rem;
+        }
+
+        .det-sub {
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .det-card {
+            padding: 1.2rem;
+            border-radius: 12px;
+        }
+
+        .det-producto {
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 1.25rem;
+        }
+
+        .det-producto-icon {
+            width: 44px;
+            height: 44px;
+            font-size: 1.25rem;
+        }
+
+        .det-producto-nombre {
+            font-size: 1.25rem;
+        }
+
+        .det-producto-label {
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .det-estaciones-title {
+            font-size: 1rem;
+            letter-spacing: 0.6px;
+        }
+
+        .estacion-row {
+            align-items: flex-start;
+            gap: 10px;
+            padding: 0.75rem 0;
+        }
+
+        .estacion-num {
+            width: 32px;
+            height: 32px;
+            font-size: 0.9rem;
+        }
+
+        .estacion-nombre {
+            flex: 1;
+            padding-top: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .estacion-linea {
+            display: none;
+        }
+
+        .det-actions {
+            width: 100%;
+        }
+
+        .btn-volver {
+            width: 100%;
+            min-height: 45px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .det-card {
+            padding: 1rem 0.9rem;
+        }
+
+        .det-title {
+            font-size: 1.5rem;
+        }
+
+        .det-producto {
+            gap: 9px;
+        }
+
+        .det-producto-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            font-size: 1.15rem;
+        }
+
+        .det-producto-nombre {
+            font-size: 1.15rem;
+        }
+
+        .estacion-row {
+            gap: 9px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .btn-volver {
+            transition: none;
+        }
+    }
 </style>
 
-<div class="det-header" id="detHeader">
-    <h1 class="det-title">Detalle del Proceso</h1>
-    <span class="det-sub">PROCESO DE PREPARACIÓN</span>
-</div>
+<div class="proceso-detail-page">
 
-<div class="det-card" id="detCard">
-    <div class="det-producto">
-        <div class="det-producto-icon">🍱</div>
-        <div>
-            <div class="det-producto-label">PRODUCTO</div>
-            <div class="det-producto-nombre">@Model.NombreProducto</div>
-        </div>
+    <!-- HEADER -->
+
+    <div class="det-header"
+         id="detHeader">
+
+        <h1 class="det-title">
+            Detalle del Proceso
+        </h1>
+
+        <span class="det-sub">
+            PROCESO DE PREPARACIÓN
+        </span>
+
     </div>
 
-    <div class="det-estaciones-title">
-        Estaciones del proceso — @Model.Estaciones.Count @(Model.Estaciones.Count == 1 ? "paso" : "pasos") en total
-    </div>
+    <!-- CARD -->
 
-    <div id="estacionesList">
-        @foreach (var estacion in Model.Estaciones)
-        {
-            <div class="estacion-row">
-                <div class="estacion-num">@estacion.NumeroPaso</div>
-                <div class="estacion-nombre">@estacion.NombreEstacion</div>
-                <div class="estacion-linea"></div>
+    <div class="det-card"
+         id="detCard">
+
+        <!-- PRODUCTO -->
+
+        <div class="det-producto">
+
+            <div class="det-producto-icon"
+                 aria-hidden="true">
+
+                🍱
+
             </div>
-        }
+
+            <div class="det-producto-info">
+
+                <div class="det-producto-label">
+                    PRODUCTO
+                </div>
+
+                <div class="det-producto-nombre">
+                    @Model.NombreProducto
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ESTACIONES -->
+
+        <div class="det-estaciones-title">
+
+            Estaciones del proceso —
+            @Model.Estaciones.Count
+            @(Model.Estaciones.Count == 1
+                        ? "paso"
+                        : "pasos")
+            en total
+
+        </div>
+
+        <div id="estacionesList">
+
+            @if (Model.Estaciones.Any())
+            {
+                @foreach (var estacion in Model.Estaciones)
+                {
+                    <div class="estacion-row">
+
+                        <div class="estacion-num">
+                            @estacion.NumeroPaso
+                        </div>
+
+                        <div class="estacion-nombre">
+                            @estacion.NombreEstacion
+                        </div>
+
+                        <div class="estacion-linea"
+                             aria-hidden="true">
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="estaciones-vacio">
+
+                    Este proceso no tiene estaciones configuradas.
+
+                </div>
+            }
+
+        </div>
+
     </div>
+
+    <!-- VOLVER -->
+
+    <div class="det-actions">
+
+        <a asp-action="Index"
+           class="btn-volver">
+
+            ← Volver
+
+        </a>
+
+    </div>
+
 </div>
 
-<a asp-action="Index" class="btn-volver">← Volver</a>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script>
-    anime({ targets: '#detHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
-    anime({ targets: '#detCard', translateY: [20, 0], opacity: [0, 1], duration: 600, delay: 150, easing: 'easeOutExpo' });
-    anime({ targets: '.estacion-row', translateX: [-20, 0], opacity: [0, 1], duration: 400, delay: anime.stagger(100, { start: 400 }), easing: 'easeOutExpo' });
+
+    if (
+        typeof anime !== 'undefined' &&
+        !window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches
+    ) {
+
+        anime({
+            targets: '#detHeader',
+            translateY: [-20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '#detCard',
+            translateY: [20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            delay: 150,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '.estacion-row',
+            translateX: [-20, 0],
+            opacity: [0, 1],
+            duration: 400,
+            delay: anime.stagger(
+                100,
+                {
+                    start: 400
+                }
+            ),
+            easing: 'easeOutExpo'
+        });
+    }
+
 </script>

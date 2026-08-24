@@ -1,167 +1,503 @@
 ﻿@model List<TempestSushi.Application.DTOs.ProductoDto>
+
 @{
     ViewData["Title"] = "Productos";
 }
 
 <style>
+    .producto-page {
+        width: 100%;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .prod-header {
         display: flex;
         align-items: center;
-        gap: 12px;
+        justify-content: space-between;
+        gap: 1rem;
         margin-bottom: 2rem;
         padding-bottom: 1rem;
         border-bottom: 2px solid #d0e8f8;
     }
 
+    .prod-header-info {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
     .prod-title {
+        margin: 0;
         font-family: 'Rajdhani', sans-serif;
-        font-size: 2rem;
+        font-size: clamp(1.7rem, 4vw, 2rem);
         font-weight: 700;
         color: #1a3a6e;
         letter-spacing: 1px;
-        margin: 0;
+        line-height: 1.2;
     }
 
     .prod-badge {
+        flex-shrink: 0;
+        padding: 4px 12px;
+        border-radius: 999px;
         background: #1a3a6e;
         color: #4fa8e8;
-        font-size: .7rem;
-        letter-spacing: 2px;
-        padding: 4px 12px;
-        border-radius: 20px;
+        font-size: 0.7rem;
         font-weight: 600;
+        letter-spacing: 2px;
+        white-space: nowrap;
     }
 
+    /* ═══════════════════════════════════════
+           NUEVO PRODUCTO
+           ═══════════════════════════════════════ */
+
+    .btn-nuevo-producto {
+        flex-shrink: 0;
+        min-height: 43px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 22px;
+        border-radius: 8px;
+        background: #1a3a6e;
+        color: #ffffff !important;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+
+        .btn-nuevo-producto:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(192, 57, 43, 0.16);
+        }
+
+    /* ═══════════════════════════════════════
+           ALERTA
+           ═══════════════════════════════════════ */
+
+    .prod-alert {
+        margin-bottom: 1.5rem;
+        border-radius: 10px;
+    }
+
+    /* ═══════════════════════════════════════
+           CARDS
+           ═══════════════════════════════════════ */
+
     .prod-card {
-        background: #fff;
-        border: 1.5px solid #d0e8f8;
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: 0 2px 12px rgba(26,58,110,0.07);
-        transition: transform .2s, box-shadow .2s;
         height: 100%;
         display: flex;
         flex-direction: column;
-        opacity: 0;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1.5px solid #d0e8f8;
+        border-radius: 14px;
+        box-shadow: 0 2px 12px rgba(26, 58, 110, 0.07);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
         .prod-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(26,58,110,0.13);
+            border-color: rgba(26, 58, 110, 0.22);
+            box-shadow: 0 8px 24px rgba(26, 58, 110, 0.13);
         }
 
-    .prod-img {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
+    /* ═══════════════════════════════════════
+           IMAGEN
+           ═══════════════════════════════════════ */
 
+    .prod-img,
     .prod-img-placeholder {
         width: 100%;
         height: 200px;
-        background: #e8f4fd;
+        flex-shrink: 0;
+    }
+
+    .prod-img {
+        display: block;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .prod-img-placeholder {
         display: flex;
         align-items: center;
         justify-content: center;
+        background: #e8f4fd;
         font-size: 2.5rem;
+        user-select: none;
     }
 
+    /* ═══════════════════════════════════════
+           BODY
+           ═══════════════════════════════════════ */
+
     .prod-body {
-        padding: 1.25rem;
+        min-width: 0;
         flex: 1;
         display: flex;
         flex-direction: column;
+        padding: 1.25rem;
     }
 
     .prod-nombre {
+        margin-bottom: 6px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.25rem;
         font-weight: 700;
+        line-height: 1.25;
         color: #1a3a6e;
-        margin-bottom: 6px;
+        overflow-wrap: anywhere;
     }
 
     .prod-cat {
-        font-size: .8rem;
-        color: #4fa8e8;
-        letter-spacing: 1px;
         margin-bottom: 8px;
+        color: #4fa8e8;
+        font-size: 0.8rem;
         font-weight: 500;
+        letter-spacing: 1px;
+        overflow-wrap: anywhere;
     }
 
     .prod-precio {
+        margin-bottom: 1rem;
+        color: #1a3a6e;
         font-size: 1.1rem;
         font-weight: 700;
-        color: #1a3a6e;
-        margin-bottom: 1rem;
+        white-space: nowrap;
     }
 
+    /* ═══════════════════════════════════════
+           BOTÓN DETALLE
+           ═══════════════════════════════════════ */
+
     .btn-ver {
-        display: block;
-        text-align: center;
-        background: #1a3a6e;
-        color: #fff !important;
-        border-radius: 8px;
-        padding: 8px;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
-        letter-spacing: 1px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: background .2s;
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin-top: auto;
+        padding: 8px 14px;
+        border-radius: 8px;
+        background: #1a3a6e;
+        color: #ffffff !important;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-align: center;
+        text-decoration: none;
+        transition: background 0.2s ease, transform 0.15s ease;
     }
 
         .btn-ver:hover {
             background: #c0392b;
+            transform: translateY(-1px);
         }
+
+    /* ═══════════════════════════════════════
+           VACÍO
+           ═══════════════════════════════════════ */
+
+    .prod-empty {
+        padding: 3rem 1.25rem;
+        border: 1.5px dashed #d0e8f8;
+        border-radius: 14px;
+        background: #ffffff;
+        color: #6489a3;
+        text-align: center;
+    }
+
+    .prod-empty-title {
+        margin-bottom: 0.35rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #1a3a6e;
+    }
+
+    .prod-empty p {
+        margin: 0;
+    }
+
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .producto-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
+        .prod-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .prod-img,
+        .prod-img-placeholder {
+            height: 185px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .producto-page {
+            padding-top: 0.5rem;
+        }
+
+        .prod-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.85rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.9rem;
+        }
+
+        .prod-header-info {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .prod-title {
+            font-size: 1.6rem;
+        }
+
+        .prod-badge {
+            padding: 3px 9px;
+            font-size: 0.62rem;
+            letter-spacing: 1.4px;
+        }
+
+        .btn-nuevo-producto {
+            width: 100%;
+            min-height: 46px;
+        }
+
+        .prod-img,
+        .prod-img-placeholder {
+            height: 210px;
+        }
+
+        .prod-body {
+            padding: 1.1rem;
+        }
+
+        .prod-nombre {
+            font-size: 1.2rem;
+        }
+
+        .btn-ver {
+            min-height: 45px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .prod-header-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.45rem;
+        }
+
+        .prod-title {
+            font-size: 1.5rem;
+        }
+
+        .prod-img,
+        .prod-img-placeholder {
+            height: 190px;
+        }
+
+        .prod-body {
+            padding: 1rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .prod-card,
+        .btn-ver,
+        .btn-nuevo-producto {
+            transition: none;
+        }
+    }
 </style>
 
-<div class="prod-header" id="prodHeader">
+<div class="producto-page">
+
+    <!-- HEADER -->
+
+    <div class="prod-header"
+         id="prodHeader">
+
+        <div class="prod-header-info">
+
+            <h1 class="prod-title">
+                Productos
+            </h1>
+
+            <span class="prod-badge">
+                @Model.Count PRODUCTOS
+            </span>
+
+        </div>
+
+        @if (User.IsInRole("Administrador"))
+        {
+            <a asp-action="Crear"
+               class="btn-nuevo-producto">
+
+                + Nuevo producto
+
+            </a>
+        }
+
+    </div>
+
+    <!-- NOTIFICACIÓN -->
     @if (ViewBag.NotificationMessage != null)
     {
-        <div class="alert alert-success">@ViewBag.NotificationMessage</div>
-    }
+        <div class="alert alert-success prod-alert"
+             role="status">
 
-    @if (User.IsInRole("Administrador"))
-    {
-        <div class="mb-4">
-            <a asp-action="Crear"
-               class="btn-ver"
-               style="display:inline-block; width:auto; padding:10px 24px;">
-                + Nuevo producto
-            </a>
+            @ViewBag.NotificationMessage
+
         </div>
     }
-</div>
 
-<div class="row g-4" id="prodGrid">
-    @foreach (var producto in Model)
+    <!-- PRODUCTOS -->
+    @if (Model.Any())
     {
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="prod-card">
-                @if (!string.IsNullOrEmpty(producto.ImagenUrl))
-                {
-                    <img src="@producto.ImagenUrl" class="prod-img" alt="@producto.Nombre" />
-                }
-                else
-                {
-                    <div class="prod-img-placeholder">🍱</div>
-                }
-                <div class="prod-body">
-                    <div class="prod-nombre">@producto.Nombre</div>
-                    <div class="prod-cat">@producto.Categoria</div>
-                    <div class="prod-precio">₡@producto.Precio.ToString("N2")</div>
-                    <a asp-controller="Producto" asp-action="Detalle" asp-route-id="@producto.IdProducto"
-                       class="btn-ver">Ver detalle</a>
+        <div class="row g-4"
+             id="prodGrid">
+
+            @foreach (var producto in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <div class="prod-card">
+
+                        @if (!string.IsNullOrEmpty(producto.ImagenUrl))
+                        {
+                            <img src="@producto.ImagenUrl"
+                                 class="prod-img"
+                                 alt="@producto.Nombre" />
+                        }
+                        else
+                        {
+                            <div class="prod-img-placeholder"
+                                 aria-hidden="true">
+
+                                🍱
+
+                            </div>
+                        }
+
+                        <div class="prod-body">
+
+                            <div class="prod-nombre">
+                                @producto.Nombre
+                            </div>
+
+                            <div class="prod-cat">
+                                @producto.Categoria
+                            </div>
+
+                            <div class="prod-precio">
+                                ₡@producto.Precio.ToString("N2")
+                            </div>
+
+                            <a asp-controller="Producto"
+                               asp-action="Detalle"
+                               asp-route-id="@producto.IdProducto"
+                               class="btn-ver">
+
+                                Ver detalle
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
                 </div>
-            </div>
+            }
+
         </div>
     }
+    else
+    {
+        <div class="prod-empty">
+
+            <div class="prod-empty-title">
+                No hay productos registrados
+            </div>
+
+            <p>
+                Todavía no existen productos disponibles.
+            </p>
+
+        </div>
+    }
+
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script>
-    anime({ targets: '#prodHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
-    anime({ targets: '.prod-card', translateY: [30, 0], opacity: [0, 1], duration: 500, delay: anime.stagger(100, { start: 200 }), easing: 'easeOutExpo' });
+
+    if (
+        typeof anime !== 'undefined' &&
+        !window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches
+    ) {
+
+        anime({
+            targets: '#prodHeader',
+            translateY: [-20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '.prod-card',
+            translateY: [30, 0],
+            opacity: [0, 1],
+            duration: 500,
+            delay: anime.stagger(
+                100,
+                {
+                    start: 200
+                }
+            ),
+            easing: 'easeOutExpo'
+        });
+    }
+
 </script>

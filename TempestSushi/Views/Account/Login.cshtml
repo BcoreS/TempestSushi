@@ -4,130 +4,187 @@
     ViewData["Title"] = "Iniciar sesión";
 }
 
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap"
+      rel="stylesheet">
 
 <style>
     :root {
-        --ink: #0a1128;
-        --abyss: #0d1b3e;
-        --foam: #e8edf5;
-        --vermillion: #c41e3a;
-        --gold: #d4af37;
+        --login-ink: #0a1128;
+        --login-abyss: #0d1b3e;
+        --login-foam: #e8edf5;
+        --login-vermillion: #c41e3a;
+        --login-gold: #d4af37;
     }
 
+    /* ═══════════════════════════════════════
+           CONTENEDOR GENERAL
+           ═══════════════════════════════════════ */
+
     .ts-login-page {
+        position: relative;
+        width: 100vw;
         margin-left: calc(50% - 50vw);
         margin-right: calc(50% - 50vw);
-        width: 100vw;
-        min-height: calc(100vh - 120px);
+        min-height: 680px;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 4rem 1.5rem;
-        background: radial-gradient( ellipse at 50% 0%, rgba(196, 30, 58, 0.18), transparent 55% ), linear-gradient( 180deg, var(--ink) 0%, var(--abyss) 65%, #142454 100% );
+        padding: clamp(2.5rem, 6vh, 4.5rem) 1.5rem;
+        overflow: hidden;
+        background: radial-gradient( ellipse at 50% -10%, rgba(196, 30, 58, 0.20), transparent 52% ), radial-gradient( circle at 85% 75%, rgba(79, 168, 232, 0.08), transparent 34% ), linear-gradient( 180deg, var(--login-ink) 0%, var(--login-abyss) 64%, #142454 100% );
     }
 
+        .ts-login-page::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient( 115deg, transparent 0%, rgba(255, 255, 255, 0.018) 50%, transparent 100% );
+        }
+
     .ts-login-wrapper {
-        width: 100%;
-        max-width: 440px;
+        position: relative;
+        z-index: 1;
+        width: min(100%, 440px);
+        margin: 0 auto;
     }
+
+    /* ═══════════════════════════════════════
+           BRAND
+           ═══════════════════════════════════════ */
 
     .ts-login-brand {
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1.8rem;
     }
 
     .ts-login-kicker {
+        margin-bottom: 0.6rem;
         font-family: 'Zen Kaku Gothic New', sans-serif;
-        color: var(--vermillion);
-        font-size: 0.75rem;
+        color: var(--login-vermillion);
+        font-size: 0.74rem;
+        font-weight: 700;
         letter-spacing: 0.18em;
         text-transform: uppercase;
-        margin-bottom: 0.65rem;
     }
 
     .ts-login-title {
-        font-family: 'Bodoni Moda', serif;
-        font-size: clamp(2.5rem, 6vw, 4rem);
-        font-weight: 700;
-        line-height: 1;
-        color: var(--foam);
         margin: 0;
+        font-family: 'Bodoni Moda', serif;
+        font-size: clamp(2.6rem, 5vw, 3.8rem);
+        font-weight: 700;
+        line-height: 0.98;
+        letter-spacing: -0.02em;
+        color: var(--login-foam);
     }
 
         .ts-login-title span {
-            color: var(--gold);
+            color: var(--login-gold);
             font-style: italic;
         }
 
-    .ts-login-subtitle {
-        font-family: 'Zen Kaku Gothic New', sans-serif;
-        color: rgba(232, 237, 245, 0.65);
-        margin-top: 0.8rem;
-        font-size: 0.95rem;
+    .ts-accent-line {
+        width: 64px;
+        height: 2px;
+        margin: 1rem auto 0;
+        border-radius: 999px;
+        background: linear-gradient( 90deg, transparent, var(--login-vermillion), transparent );
     }
+
+    .ts-login-subtitle {
+        margin: 0.8rem 0 0;
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: 0.92rem;
+        color: rgba(232, 237, 245, 0.64);
+    }
+
+    /* ═══════════════════════════════════════
+           CARD
+           ═══════════════════════════════════════ */
 
     .ts-login-card {
-        background: rgba(255, 255, 255, 0.055);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        border-radius: 22px;
+        width: 100%;
         padding: 2rem;
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.32);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.055);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
 
+    /* ═══════════════════════════════════════
+           FORMULARIO
+           ═══════════════════════════════════════ */
+
     .ts-form-group {
-        margin-bottom: 1.35rem;
+        margin-bottom: 1.25rem;
     }
 
     .ts-label {
-        font-family: 'Zen Kaku Gothic New', sans-serif;
-        font-size: 0.85rem;
-        font-weight: 500;
-        color: var(--foam);
-        margin-bottom: 0.5rem;
         display: block;
+        margin-bottom: 0.5rem;
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: 0.84rem;
+        font-weight: 500;
+        color: var(--login-foam);
     }
 
     .ts-input {
         width: 100%;
-        border-radius: 12px;
+        min-height: 48px;
+        padding: 0.8rem 1rem;
         border: 1px solid rgba(255, 255, 255, 0.13);
-        background: rgba(255, 255, 255, 0.065);
-        color: var(--foam);
-        padding: 0.85rem 1rem;
-        font-family: 'Zen Kaku Gothic New', sans-serif;
+        border-radius: 12px;
         outline: none;
-        transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+        background: rgba(255, 255, 255, 0.065);
+        color: var(--login-foam);
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: 0.95rem;
+        transition: border-color 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
     }
 
         .ts-input::placeholder {
-            color: rgba(232, 237, 245, 0.35);
+            color: rgba(232, 237, 245, 0.34);
+        }
+
+        .ts-input:hover {
+            border-color: rgba(255, 255, 255, 0.20);
         }
 
         .ts-input:focus {
-            border-color: var(--gold);
+            border-color: var(--login-gold);
             background: rgba(255, 255, 255, 0.085);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.10);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.11);
         }
 
     .ts-validation {
         display: block;
-        font-family: 'Zen Kaku Gothic New', sans-serif;
-        font-size: 0.8rem;
         margin-top: 0.4rem;
-        color: #ff8c9f;
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: 0.78rem;
+        line-height: 1.4;
+        color: #ff91a4;
+    }
+
+    /* ═══════════════════════════════════════
+           ALERTAS
+           ═══════════════════════════════════════ */
+
+    .ts-summary,
+    .ts-success {
+        margin-bottom: 1.25rem;
+        padding: 0.78rem 0.95rem;
+        border-radius: 10px;
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: 0.83rem;
+        line-height: 1.45;
     }
 
     .ts-summary {
-        font-family: 'Zen Kaku Gothic New', sans-serif;
-        font-size: 0.85rem;
         color: #ff9aaa;
         background: rgba(196, 30, 58, 0.10);
         border: 1px solid rgba(196, 30, 58, 0.25);
-        border-radius: 10px;
-        padding: 0.8rem 1rem;
-        margin-bottom: 1.3rem;
     }
 
         .ts-summary:empty {
@@ -135,103 +192,296 @@
         }
 
     .ts-success {
-        font-family: 'Zen Kaku Gothic New', sans-serif;
-        font-size: 0.85rem;
         color: #b8f3c7;
         background: rgba(39, 174, 96, 0.12);
         border: 1px solid rgba(39, 174, 96, 0.30);
-        border-radius: 10px;
-        padding: 0.8rem 1rem;
-        margin-bottom: 1.3rem;
     }
+
+    /* ═══════════════════════════════════════
+           RECORDARME
+           ═══════════════════════════════════════ */
 
     .ts-check-row {
         display: flex;
         align-items: center;
         gap: 0.55rem;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.45rem;
     }
 
         .ts-check-row input {
-            accent-color: var(--vermillion);
+            width: 1rem;
+            height: 1rem;
+            margin-top: 0;
+            accent-color: var(--login-vermillion);
+            cursor: pointer;
         }
 
     .ts-check-label {
+        margin: 0;
         font-family: 'Zen Kaku Gothic New', sans-serif;
         color: rgba(232, 237, 245, 0.72);
-        font-size: 0.88rem;
+        font-size: 0.86rem;
         cursor: pointer;
+        user-select: none;
     }
+
+    /* ═══════════════════════════════════════
+           BOTÓN LOGIN
+           ═══════════════════════════════════════ */
 
     .ts-login-button {
         width: 100%;
+        min-height: 49px;
+        padding: 0.85rem 1.5rem;
         border: none;
         border-radius: 999px;
-        padding: 0.9rem 1.5rem;
-        background: var(--vermillion);
-        color: var(--foam);
+        background: var(--login-vermillion);
+        color: var(--login-foam);
         font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: 0.92rem;
         font-weight: 700;
         letter-spacing: 0.04em;
-        box-shadow: 0 10px 28px rgba(196, 30, 58, 0.35);
-        transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        cursor: pointer;
+        box-shadow: 0 10px 28px rgba(196, 30, 58, 0.33);
+        transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
     }
 
         .ts-login-button:hover {
             transform: translateY(-2px);
             background: #d52443;
-            box-shadow: 0 14px 34px rgba(196, 30, 58, 0.45);
+            box-shadow: 0 14px 34px rgba(196, 30, 58, 0.42);
         }
 
+        .ts-login-button:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.22), 0 12px 30px rgba(196, 30, 58, 0.36);
+        }
+
+        .ts-login-button:active {
+            transform: translateY(0);
+        }
+
+    /* ═══════════════════════════════════════
+           REGISTRO
+           ═══════════════════════════════════════ */
+
     .ts-login-register {
+        margin-top: 1.2rem;
         text-align: center;
-        margin-top: 1.25rem;
         font-family: 'Zen Kaku Gothic New', sans-serif;
-        color: rgba(232, 237, 245, 0.62);
-        font-size: 0.88rem;
+        color: rgba(232, 237, 245, 0.60);
+        font-size: 0.86rem;
+        line-height: 1.5;
     }
 
         .ts-login-register a {
-            color: var(--gold);
+            color: var(--login-gold);
             text-decoration: none;
             font-weight: 700;
-            transition: color 0.2s ease;
+            transition: color 0.2s ease, text-decoration-color 0.2s ease;
         }
 
             .ts-login-register a:hover {
                 color: #f0cf5f;
+                text-decoration: underline;
+                text-underline-offset: 3px;
             }
 
+            .ts-login-register a:focus-visible {
+                outline: 2px solid rgba(212, 175, 55, 0.65);
+                outline-offset: 3px;
+                border-radius: 3px;
+            }
+
+    /* ═══════════════════════════════════════
+           TEXTO INFERIOR
+           ═══════════════════════════════════════ */
+
     .ts-login-footer {
+        margin-top: 1.25rem;
         text-align: center;
-        margin-top: 1.4rem;
         font-family: 'Zen Kaku Gothic New', sans-serif;
-        color: rgba(232, 237, 245, 0.42);
-        font-size: 0.78rem;
+        color: rgba(232, 237, 245, 0.38);
+        font-size: 0.75rem;
+        line-height: 1.45;
     }
 
-    .ts-accent-line {
-        width: 65px;
-        height: 2px;
-        background: var(--vermillion);
-        margin: 1rem auto 0;
-        border-radius: 10px;
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .ts-login-page {
+            min-height: 620px;
+            padding: 3rem 1.25rem;
+        }
+
+        .ts-login-wrapper {
+            max-width: 420px;
+        }
+
+        .ts-login-brand {
+            margin-bottom: 1.6rem;
+        }
+
+        .ts-login-title {
+            font-size: clamp( 2.45rem, 10vw, 3.25rem );
+        }
     }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
 
     @@media (max-width: 576px) {
+
         .ts-login-page {
-            padding: 2.5rem 1rem;
+            min-height: 580px;
+            padding: 2.2rem 1rem;
+        }
+
+        .ts-login-wrapper {
+            max-width: 400px;
+        }
+
+        .ts-login-brand {
+            margin-bottom: 1.35rem;
+        }
+
+        .ts-login-kicker {
+            margin-bottom: 0.5rem;
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+        }
+
+        .ts-login-title {
+            font-size: clamp( 2.2rem, 11vw, 2.9rem );
+        }
+
+        .ts-login-subtitle {
+            margin-top: 0.65rem;
+            font-size: 0.86rem;
+        }
+
+        .ts-accent-line {
+            margin-top: 0.8rem;
+            width: 54px;
         }
 
         .ts-login-card {
-            padding: 1.5rem;
+            padding: 1.5rem 1.25rem;
+            border-radius: 18px;
+        }
+
+        .ts-form-group {
+            margin-bottom: 1.1rem;
+        }
+
+        .ts-check-row {
+            margin-bottom: 1.25rem;
+        }
+
+        .ts-login-register {
+            margin-top: 1.05rem;
+            font-size: 0.82rem;
+        }
+
+        .ts-login-footer {
+            margin-top: 1rem;
+            font-size: 0.7rem;
         }
     }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .ts-login-page {
+            padding: 1.8rem 0.8rem;
+        }
+
+        .ts-login-card {
+            padding: 1.35rem 1rem;
+        }
+
+        .ts-login-title {
+            font-size: 2.15rem;
+        }
+
+        .ts-login-kicker {
+            font-size: 0.64rem;
+        }
+
+        .ts-input {
+            padding: 0.76rem 0.85rem;
+            font-size: 0.9rem;
+        }
+
+        .ts-login-button {
+            font-size: 0.88rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           PANTALLAS DE POCA ALTURA
+           ═══════════════════════════════════════ */
+
+    @@media (max-height: 720px) and (min-width: 577px) {
+
+        .ts-login-page {
+            align-items: flex-start;
+            min-height: 0;
+            padding: 2rem 1.5rem 2.5rem;
+        }
+
+        .ts-login-brand {
+            margin-bottom: 1.25rem;
+        }
+
+        .ts-login-title {
+            font-size: 2.8rem;
+        }
+
+        .ts-login-subtitle {
+            margin-top: 0.55rem;
+        }
+
+        .ts-login-card {
+            padding: 1.6rem;
+        }
+
+        .ts-form-group {
+            margin-bottom: 1rem;
+        }
+
+        .ts-check-row {
+            margin-bottom: 1.15rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .ts-login-button,
+        .ts-input,
+        .ts-login-register a {
+            transition: none;
+        }
+    }
+
 </style>
 
 <section class="ts-login-page">
 
     <div class="ts-login-wrapper">
+
+        <!-- BRAND -->
 
         <div class="ts-login-brand">
 
@@ -243,7 +493,8 @@
                 TEMPEST <span>SUSHI</span>
             </h1>
 
-            <div class="ts-accent-line"></div>
+            <div class="ts-accent-line">
+            </div>
 
             <p class="ts-login-subtitle">
                 Inicia sesión para continuar.
@@ -251,12 +502,17 @@
 
         </div>
 
+        <!-- CARD -->
+
         <div class="ts-login-card">
 
             @if (TempData["RegistroExitoso"] != null)
             {
-                <div class="ts-success">
+                <div class="ts-success"
+                     role="status">
+
                     @TempData["RegistroExitoso"]
+
                 </div>
             }
 
@@ -265,8 +521,11 @@
                   method="post">
 
                 <div asp-validation-summary="ModelOnly"
-                     class="ts-summary">
+                     class="ts-summary"
+                     role="alert">
                 </div>
+
+                <!-- CORREO -->
 
                 <div class="ts-form-group">
 
@@ -277,6 +536,7 @@
                     <input asp-for="Correo"
                            class="ts-input"
                            autocomplete="email"
+                           inputmode="email"
                            placeholder="correo@ejemplo.com" />
 
                     <span asp-validation-for="Correo"
@@ -284,6 +544,8 @@
                     </span>
 
                 </div>
+
+                <!-- PASSWORD -->
 
                 <div class="ts-form-group">
 
@@ -302,6 +564,8 @@
 
                 </div>
 
+                <!-- RECORDARME -->
+
                 <div class="ts-check-row">
 
                     <input asp-for="Recordarme"
@@ -313,26 +577,41 @@
 
                 </div>
 
+                <!-- LOGIN -->
+
                 <button type="submit"
                         class="ts-login-button">
+
                     Iniciar sesión
+
                 </button>
 
             </form>
 
+            <!-- REGISTRO -->
+
             <div class="ts-login-register">
+
                 ¿Aún no tienes una cuenta?
 
                 <a asp-controller="Account"
                    asp-action="Register">
+
                     Crear cuenta
+
                 </a>
+
             </div>
 
         </div>
 
+        <!-- FOOTER DEL LOGIN -->
+
         <div class="ts-login-footer">
-            TempestSushi · Cocina de tormenta, precisión de mar
+
+            TempestSushi · Cocina de tormenta,
+            precisión de mar
+
         </div>
 
     </div>
@@ -340,36 +619,43 @@
 </section>
 
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        if (typeof anime !== 'undefined') {
+
+        if (typeof anime !== 'undefined'
+            && !window.matchMedia(
+                '(prefers-reduced-motion: reduce)'
+            ).matches) {
 
             anime({
                 targets: '.ts-login-brand',
                 opacity: [0, 1],
-                translateY: [-15, 0],
-                duration: 650,
+                translateY: [-12, 0],
+                duration: 600,
                 easing: 'easeOutQuad'
             });
 
             anime({
                 targets: '.ts-login-card',
                 opacity: [0, 1],
-                translateY: [22, 0],
-                scale: [0.98, 1],
-                delay: 180,
-                duration: 700,
+                translateY: [18, 0],
+                scale: [0.985, 1],
+                delay: 130,
+                duration: 650,
                 easing: 'easeOutExpo'
             });
 
             anime({
                 targets: '.ts-login-footer',
                 opacity: [0, 1],
-                delay: 600,
-                duration: 500,
+                delay: 400,
+                duration: 450,
                 easing: 'linear'
             });
         }
+
     </script>
+
 }

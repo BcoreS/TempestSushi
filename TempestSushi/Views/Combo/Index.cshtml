@@ -5,150 +5,515 @@
 }
 
 <style>
+    .combo-page {
+        width: 100%;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .combo-header {
         display: flex;
         align-items: center;
-        gap: 12px;
+        justify-content: space-between;
+        gap: 1rem;
         margin-bottom: 2rem;
         padding-bottom: 1rem;
         border-bottom: 2px solid #d0e8f8;
     }
 
+    .combo-header-info {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
     .combo-title {
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1a3a6e;
-        letter-spacing: 1px;
         margin: 0;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: clamp(1.7rem, 4vw, 2rem);
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 1px;
+        color: #1a3a6e;
     }
 
     .combo-badge {
+        flex-shrink: 0;
+        padding: 4px 12px;
+        border-radius: 999px;
         background: #1a3a6e;
         color: #4fa8e8;
-        font-size: .7rem;
-        letter-spacing: 2px;
-        padding: 4px 12px;
-        border-radius: 20px;
+        font-size: 0.7rem;
         font-weight: 600;
+        letter-spacing: 2px;
+        white-space: nowrap;
     }
 
+    /* ═══════════════════════════════════════
+           NOTIFICACIÓN
+           ═══════════════════════════════════════ */
+
+    .combo-alert {
+        margin-bottom: 1.5rem;
+        border-radius: 10px;
+    }
+
+    /* ═══════════════════════════════════════
+           BOTÓN NUEVO
+           ═══════════════════════════════════════ */
+
+    .btn-nuevo {
+        flex-shrink: 0;
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.65rem 1.25rem;
+        border-radius: 8px;
+        background: #1a3a6e;
+        color: #ffffff !important;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .btn-nuevo:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(192, 57, 43, 0.18);
+        }
+
+    /* ═══════════════════════════════════════
+           GRID
+           ═══════════════════════════════════════ */
+
+    .combo-grid {
+        width: 100%;
+    }
+
+    /* ═══════════════════════════════════════
+           CARD
+           ═══════════════════════════════════════ */
+
     .combo-card {
-        background: #fff;
-        border: 1.5px solid #d0e8f8;
-        border-radius: 14px;
-        overflow: hidden;
-        box-shadow: 0 2px 12px rgba(26,58,110,0.07);
-        transition: transform .2s, box-shadow .2s;
         height: 100%;
         display: flex;
         flex-direction: column;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1.5px solid #d0e8f8;
+        border-radius: 14px;
+        box-shadow: 0 2px 12px rgba(26, 58, 110, 0.07);
         opacity: 0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
         .combo-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(26,58,110,0.13);
+            border-color: rgba(26, 58, 110, 0.22);
+            box-shadow: 0 8px 24px rgba(26, 58, 110, 0.13);
         }
+
+    /* ═══════════════════════════════════════
+           ICONO
+           ═══════════════════════════════════════ */
 
     .combo-icon {
         width: 100%;
         height: 160px;
-        background: linear-gradient(135deg, #e8f4fd 60%, #d0e8f8 100%);
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
         font-size: 3.5rem;
+        user-select: none;
+        background: linear-gradient( 135deg, #e8f4fd 60%, #d0e8f8 100% );
     }
 
+    /* ═══════════════════════════════════════
+           BODY
+           ═══════════════════════════════════════ */
+
     .combo-body {
-        padding: 1.25rem;
+        min-width: 0;
         flex: 1;
         display: flex;
         flex-direction: column;
+        padding: 1.25rem;
     }
 
     .combo-nombre {
+        margin-bottom: 6px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.25rem;
         font-weight: 700;
+        line-height: 1.25;
         color: #1a3a6e;
-        margin-bottom: 6px;
+        overflow-wrap: anywhere;
     }
 
     .combo-cat {
-        font-size: .8rem;
-        color: #4fa8e8;
-        letter-spacing: 1px;
         margin-bottom: 8px;
+        font-size: 0.78rem;
         font-weight: 500;
+        letter-spacing: 1px;
+        color: #4fa8e8;
+        overflow-wrap: anywhere;
     }
 
     .combo-precio {
-        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.15rem;
         font-weight: 700;
         color: #1a3a6e;
-        margin-bottom: 1rem;
     }
 
+    /* ═══════════════════════════════════════
+           BOTÓN DETALLE
+           ═══════════════════════════════════════ */
+
     .btn-ver {
-        display: block;
-        text-align: center;
-        background: #1a3a6e;
-        color: #fff !important;
-        border-radius: 8px;
-        padding: 8px;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: .95rem;
-        letter-spacing: 1px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: background .2s;
+        width: 100%;
+        min-height: 42px;
         margin-top: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: #1a3a6e;
+        color: #ffffff !important;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-align: center;
+        text-decoration: none;
+        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
 
         .btn-ver:hover {
             background: #c0392b;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(192, 57, 43, 0.16);
         }
+
+    /* ═══════════════════════════════════════
+           ESTADO VACÍO
+           ═══════════════════════════════════════ */
+
+    .combo-empty {
+        padding: 3rem 1.5rem;
+        text-align: center;
+        background: #ffffff;
+        border: 1.5px dashed #d0e8f8;
+        border-radius: 14px;
+        color: #7895ad;
+    }
+
+    .combo-empty-title {
+        margin-bottom: 0.35rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #1a3a6e;
+    }
+
+    .combo-empty p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .combo-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
+        .combo-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .combo-icon {
+            height: 145px;
+            font-size: 3.2rem;
+        }
+
+        .combo-body {
+            padding: 1.15rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .combo-page {
+            padding-top: 0.5rem;
+        }
+
+        .combo-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.9rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.9rem;
+        }
+
+        .combo-header-info {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .combo-title {
+            font-size: 1.65rem;
+        }
+
+        .combo-badge {
+            font-size: 0.64rem;
+            letter-spacing: 1.5px;
+        }
+
+        .btn-nuevo {
+            width: 100%;
+            min-height: 45px;
+        }
+
+        .combo-icon {
+            height: 135px;
+            font-size: 3rem;
+        }
+
+        .combo-body {
+            padding: 1.1rem;
+        }
+
+        .combo-nombre {
+            font-size: 1.2rem;
+        }
+
+        .combo-cat {
+            font-size: 0.75rem;
+        }
+
+        .combo-precio {
+            font-size: 1.1rem;
+        }
+
+        .btn-ver {
+            min-height: 44px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONOS PEQUEÑOS
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .combo-header-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.45rem;
+        }
+
+        .combo-icon {
+            height: 120px;
+            font-size: 2.7rem;
+        }
+
+        .combo-body {
+            padding: 1rem 0.95rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           ACCESIBILIDAD
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .combo-card,
+        .btn-nuevo,
+        .btn-ver {
+            transition: none;
+        }
+    }
 </style>
 
-<div class="combo-header" id="comboHeader">
+<div class="combo-page">
+
+    <!-- NOTIFICACIÓN -->
     @if (ViewBag.NotificationMessage != null)
     {
-        <div class="alert alert-success">@ViewBag.NotificationMessage</div>
+        <div class="alert alert-success combo-alert"
+             role="status">
+
+            @ViewBag.NotificationMessage
+
+        </div>
     }
 
-    @if (User.IsInRole("Administrador"))
-    {
-        <div class="mb-4">
+    <!-- HEADER -->
+
+    <div class="combo-header"
+         id="comboHeader">
+
+        <div class="combo-header-info">
+
+            <h1 class="combo-title">
+                Combos
+            </h1>
+
+            <span class="combo-badge">
+                @Model.Count COMBOS
+            </span>
+
+        </div>
+
+        @if (User.IsInRole("Administrador"))
+        {
             <a asp-action="Crear"
-               class="btn-ver"
-               style="display:inline-block; width:auto; padding:10px 24px;">
+               class="btn-nuevo">
+
                 + Nuevo combo
+
             </a>
-        </div>
-    }
-</div>
+        }
 
-<div class="row g-4" id="comboGrid">
-    @foreach (var item in Model)
+    </div>
+
+    <!-- LISTADO -->
+    @if (Model.Any())
     {
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="combo-card">
-                <div class="combo-icon">🍱</div>
-                <div class="combo-body">
-                    <div class="combo-nombre">@item.Nombre</div>
-                    <div class="combo-cat">@item.NombreCategoria</div>
-                    <div class="combo-precio">₡@item.Precio.ToString("N2")</div>
-                    <a asp-action="Details" asp-route-id="@item.IdCombo" class="btn-ver">Ver detalle</a>
+        <div class="row g-4 combo-grid"
+             id="comboGrid">
+
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-4">
+
+                    <div class="combo-card">
+
+                        <div class="combo-icon"
+                             aria-hidden="true">
+
+                            🍱
+
+                        </div>
+
+                        <div class="combo-body">
+
+                            <div class="combo-nombre">
+                                @item.Nombre
+                            </div>
+
+                            <div class="combo-cat">
+                                @item.NombreCategoria
+                            </div>
+
+                            <div class="combo-precio">
+                                ₡@item.Precio.ToString("N2")
+                            </div>
+
+                            <a asp-action="Details"
+                               asp-route-id="@item.IdCombo"
+                               class="btn-ver">
+
+                                Ver detalle
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
                 </div>
-            </div>
+            }
+
         </div>
     }
+    else
+    {
+        <div class="combo-empty">
+
+            <div class="combo-empty-title">
+                No hay combos disponibles
+            </div>
+
+            <p>
+                Todavía no existen combos registrados.
+            </p>
+
+        </div>
+    }
+
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 <script>
-    anime({ targets: '#comboHeader', translateY: [-20, 0], opacity: [0, 1], duration: 600, easing: 'easeOutExpo' });
-    anime({ targets: '.combo-card', translateY: [30, 0], opacity: [0, 1], duration: 500, delay: anime.stagger(100, { start: 200 }), easing: 'easeOutExpo' });
+
+    if (
+        typeof anime !== 'undefined' &&
+        !window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches
+    ) {
+
+        anime({
+            targets: '#comboHeader',
+            translateY: [-20, 0],
+            opacity: [0, 1],
+            duration: 600,
+            easing: 'easeOutExpo'
+        });
+
+        anime({
+            targets: '.combo-card',
+
+            translateY: [30, 0],
+            opacity: [0, 1],
+
+            duration: 500,
+
+            delay:
+                anime.stagger(
+                    100,
+                    {
+                        start: 200
+                    }
+                ),
+
+            easing: 'easeOutExpo'
+        });
+    }
+    else {
+
+        document
+            .querySelectorAll(
+                '.combo-card'
+            )
+            .forEach(function (card) {
+
+                card.style.opacity = '1';
+
+            });
+    }
+
 </script>

@@ -1,9 +1,21 @@
 ﻿@model TempestSushi.Application.DTOs.ComboFormDto
+
 @{
     ViewData["Title"] = "Crear Combo";
 }
 
 <style>
+    .combo-form-page {
+        width: 100%;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .form-header {
         margin-bottom: 2rem;
         padding-bottom: 1rem;
@@ -11,126 +23,455 @@
     }
 
     .form-title {
+        margin: 0;
         font-family: 'Rajdhani', sans-serif;
-        font-size: 1.9rem;
+        font-size: clamp(1.65rem, 4vw, 1.9rem);
         font-weight: 700;
         color: #1a3a6e;
-        margin: 0;
+        line-height: 1.2;
     }
+
+    /* ═══════════════════════════════════════
+           CARD
+           ═══════════════════════════════════════ */
 
     .form-card {
-        background: #fff;
+        width: 100%;
+        padding: 2rem;
+        background: #ffffff;
         border: 1.5px solid #d0e8f8;
         border-radius: 14px;
-        padding: 2rem;
-        box-shadow: 0 2px 16px rgba(26,58,110,0.07);
+        box-shadow: 0 2px 16px rgba(26, 58, 110, 0.07);
     }
 
+        .form-card form {
+            width: 100%;
+            min-width: 0;
+        }
+
+    /* ═══════════════════════════════════════
+           CAMPOS
+           ═══════════════════════════════════════ */
+
     .form-label {
+        display: block;
+        margin-bottom: 0.45rem;
         font-weight: 600;
         color: #1a3a6e;
     }
 
+    .form-control {
+        width: 100%;
+        min-width: 0;
+        border-color: #cfdfea;
+        border-radius: 9px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .form-control:focus {
+            border-color: #4fa8e8;
+            box-shadow: 0 0 0 3px rgba(79, 168, 232, 0.12);
+        }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    /* Evita flechas y comportamientos raros
+           de ancho en algunos navegadores móviles */
+    input[type="number"] {
+        max-width: 100%;
+    }
+
+    /* ═══════════════════════════════════════
+           PRODUCTOS
+           ═══════════════════════════════════════ */
+
     .productos-grid {
-        display: flex;
-        flex-wrap: wrap;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat( auto-fit, minmax(210px, 1fr) );
         gap: 10px;
+        max-height: 280px;
+        padding: 1rem;
+        overflow-y: auto;
+        overflow-x: hidden;
         border: 1px solid #d0e8f8;
         border-radius: 10px;
-        padding: 1rem;
-        max-height: 260px;
-        overflow-y: auto;
+        background: #fbfdff;
+        scrollbar-width: thin;
     }
 
     .producto-chip {
+        width: 100%;
+        min-width: 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.55rem;
+        padding: 0.65rem 0.85rem;
+        margin: 0;
+        border: 1px solid transparent;
+        border-radius: 12px;
         background: #e8f4fd;
-        border-radius: 20px;
-        padding: 6px 14px;
+        color: #294869;
         cursor: pointer;
+        line-height: 1.35;
+        transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
     }
 
-    .btn-guardar {
-        background: #1a3a6e;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
+        .producto-chip:hover {
+            background: #dceefa;
+            border-color: rgba(26, 58, 110, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .producto-chip input[type="checkbox"] {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            margin-top: 0.18rem;
+            accent-color: #1a3a6e;
+            cursor: pointer;
+        }
+
+    .producto-chip-text {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    /* ═══════════════════════════════════════
+           VALIDACIONES
+           ═══════════════════════════════════════ */
+
+    .text-danger {
+        display: block;
+        margin-top: 0.35rem;
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    /* ═══════════════════════════════════════
+           BOTONES
+           ═══════════════════════════════════════ */
+
+    .form-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+    }
+
+    .btn-guardar,
+    .btn-cancelar {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         padding: 10px 28px;
+        border-radius: 8px;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 700;
         letter-spacing: 1px;
+        text-align: center;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-guardar {
+        border: none;
+        background: #1a3a6e;
+        color: #ffffff;
     }
 
         .btn-guardar:hover {
             background: #c0392b;
-            color: #fff;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(192, 57, 43, 0.18);
         }
 
     .btn-cancelar {
         border: 1.5px solid #1a3a6e;
+        background: transparent;
         color: #1a3a6e;
-        border-radius: 8px;
-        padding: 10px 28px;
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-decoration: none;
     }
 
         .btn-cancelar:hover {
             background: #1a3a6e;
-            color: #fff;
+            color: #ffffff;
+            transform: translateY(-1px);
         }
+
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .combo-form-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
+        .form-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-card {
+            padding: 1.5rem;
+        }
+
+        .productos-grid {
+            grid-template-columns: repeat( auto-fit, minmax(180px, 1fr) );
+            max-height: 320px;
+            padding: 0.85rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .combo-form-page {
+            padding-top: 0.5rem;
+        }
+
+        .form-header {
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.8rem;
+        }
+
+        .form-title {
+            font-size: 1.6rem;
+        }
+
+        .form-card {
+            padding: 1.2rem;
+            border-radius: 12px;
+        }
+
+        .form-control {
+            font-size: 0.95rem;
+        }
+
+        .productos-grid {
+            grid-template-columns: 1fr;
+            gap: 8px;
+            max-height: 340px;
+            padding: 0.75rem;
+        }
+
+        .producto-chip {
+            padding: 0.65rem 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .form-actions {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.65rem;
+        }
+
+        .btn-guardar,
+        .btn-cancelar {
+            width: 100%;
+            min-height: 46px;
+            padding: 0.7rem 1rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .form-card {
+            padding: 1rem 0.9rem;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+        }
+
+        .productos-grid {
+            padding: 0.65rem;
+        }
+
+        .producto-chip {
+            font-size: 0.86rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           ACCESIBILIDAD
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .form-control,
+        .producto-chip,
+        .btn-guardar,
+        .btn-cancelar {
+            transition: none;
+        }
+    }
 </style>
 
-<div class="form-header">
-    <h1 class="form-title">Crear Combo</h1>
-</div>
+<div class="combo-form-page">
 
-<div class="form-card">
-    <form asp-action="Crear" method="post">
-        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <div class="form-header">
 
-        <div class="mb-3">
-            <label asp-for="Nombre" class="form-label"></label>
-            <input asp-for="Nombre" class="form-control" placeholder="Ej. Combo Pareja" />
-            <span asp-validation-for="Nombre" class="text-danger"></span>
-        </div>
+        <h1 class="form-title">
+            Crear Combo
+        </h1>
 
-        <div class="mb-3">
-            <label asp-for="Descripcion" class="form-label"></label>
-            <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="Descripcion" class="text-danger"></span>
-        </div>
+    </div>
 
-        <div class="mb-3">
-            <label asp-for="Precio" class="form-label">Precio (₡)</label>
-            <input asp-for="Precio" type="number" step="0.01" class="form-control" placeholder="0.00" />
-            <span asp-validation-for="Precio" class="text-danger"></span>
-        </div>
+    <div class="form-card">
 
-        <div class="mb-4">
-            <label class="form-label">Productos incluidos</label>
-            <div class="productos-grid">
-                @foreach (var prod in Model.ProductosDisponibles)
-                {
-                    <label class="producto-chip">
-                        <input type="checkbox" name="ProductosSeleccionados" value="@prod.IdProducto" />
-                        @prod.Nombre (₡@prod.Precio.ToString("N2"))
-                    </label>
-                }
+        <form asp-action="Crear"
+              method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger">
             </div>
-            <span asp-validation-for="ProductosSeleccionados" class="text-danger"></span>
-        </div>
 
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-guardar">Guardar combo</button>
-            <a asp-action="Index" class="btn-cancelar">Cancelar</a>
-        </div>
-    </form>
+            <!-- NOMBRE -->
+
+            <div class="mb-3">
+
+                <label asp-for="Nombre"
+                       class="form-label">
+                </label>
+
+                <input asp-for="Nombre"
+                       class="form-control"
+                       placeholder="Ej. Combo Pareja" />
+
+                <span asp-validation-for="Nombre"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <!-- DESCRIPCIÓN -->
+
+            <div class="mb-3">
+
+                <label asp-for="Descripcion"
+                       class="form-label">
+                </label>
+
+                <textarea asp-for="Descripcion"
+                          class="form-control"
+                          rows="3"
+                          placeholder="Descripción del combo">
+                </textarea>
+
+                <span asp-validation-for="Descripcion"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <!-- PRECIO -->
+
+            <div class="mb-3">
+
+                <label asp-for="Precio"
+                       class="form-label">
+                    Precio (₡)
+                </label>
+
+                <input asp-for="Precio"
+                       type="number"
+                       step="0.01"
+                       class="form-control"
+                       inputmode="decimal"
+                       placeholder="0.00" />
+
+                <span asp-validation-for="Precio"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <!-- PRODUCTOS -->
+
+            <div class="mb-4">
+
+                <label class="form-label">
+                    Productos incluidos
+                </label>
+
+                <div class="productos-grid">
+
+                    @foreach (var prod in Model.ProductosDisponibles)
+                    {
+                        <label class="producto-chip">
+
+                            <input type="checkbox"
+                                   name="ProductosSeleccionados"
+                                   value="@prod.IdProducto" />
+
+                            <span class="producto-chip-text">
+
+                                @prod.Nombre
+                                (₡@prod.Precio.ToString("N2"))
+
+                            </span>
+
+                        </label>
+                    }
+
+                </div>
+
+                <span asp-validation-for="ProductosSeleccionados"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <!-- ACCIONES -->
+
+            <div class="form-actions">
+
+                <button type="submit"
+                        class="btn btn-guardar">
+
+                    Guardar combo
+
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-cancelar">
+
+                    Cancelar
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
 
 @section Scripts {
+
     @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync(
+            "_ValidationScriptsPartial"
+        );
     }
+
 }

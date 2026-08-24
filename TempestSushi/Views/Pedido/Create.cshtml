@@ -1,97 +1,161 @@
 ﻿@model TempestSushi.Application.DTOs.PedidoFormularioDto
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
 @{
     ViewData["Title"] = "Registrar Pedido";
-    var culturaCR = new System.Globalization.CultureInfo("es-CR");
-    var tokens = Antiforgery.GetAndStoreTokens(Context);
-    var esCliente = Model.RolActual == "Cliente";
-    var costoEnvio = (decimal)ViewBag.CostoEnvio;
+
+    var culturaCR =
+        new System.Globalization.CultureInfo("es-CR");
+
+    var tokens =
+        Antiforgery.GetAndStoreTokens(Context);
+
+    var esCliente =
+        Model.RolActual == "Cliente";
+
+    var costoEnvio =
+        (decimal)ViewBag.CostoEnvio;
 }
 
-<meta name="csrf-token" content="@tokens.RequestToken" />
+<meta name="csrf-token"
+      content="@tokens.RequestToken" />
 
 <style>
+    .pedido-form-page {
+        width: 100%;
+        max-width: 1050px;
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+    }
+
+    /* ═══════════════════════════════════════
+           CONTENEDOR PRINCIPAL
+           ═══════════════════════════════════════ */
+
     .ts-factura-form {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+        overflow: hidden;
         background: #ffffff;
         border-radius: 14px;
         box-shadow: 0 4px 18px rgba(26, 58, 110, 0.10);
-        overflow: hidden;
-        max-width: 1000px;
-        margin: 0 auto;
     }
 
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
+
     .ts-factura-header {
-        background: #1a3a6e;
-        color: #fff;
         padding: 1.5rem 2rem;
+        background: #1a3a6e;
+        color: #ffffff;
     }
 
     .ts-factura-titulo {
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
-        font-size: 1.5rem;
-        letter-spacing: 1px;
         margin: 0;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: clamp( 1.3rem, 4vw, 1.5rem );
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 1px;
     }
 
     .ts-factura-body {
         padding: 2rem;
     }
 
+    /* ═══════════════════════════════════════
+           SECCIONES
+           ═══════════════════════════════════════ */
+
     .ts-seccion-label {
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 2px solid #d0e8f8;
         font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
         font-size: 0.95rem;
+        font-weight: 700;
         color: #1a3a6e;
         letter-spacing: 0.05em;
         text-transform: uppercase;
-        margin-bottom: 0.75rem;
-        border-bottom: 2px solid #d0e8f8;
-        padding-bottom: 0.4rem;
     }
 
     .ts-campo-label {
+        margin-bottom: 3px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 0.75rem;
         font-weight: 700;
         color: #4fa8e8;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        margin-bottom: 3px;
     }
 
     .ts-campo-readonly {
-        background: #f0f6fc;
+        width: 100%;
+        min-width: 0;
+        padding: 0.55rem 0.8rem;
         border: 1px solid #d0e8f8;
         border-radius: 8px;
-        padding: 0.55rem 0.8rem;
+        background: #f0f6fc;
         color: #1a3a6e;
         font-weight: 600;
+        overflow-wrap: anywhere;
     }
+
+    /* ═══════════════════════════════════════
+           ENCABEZADO DEL PEDIDO
+           ═══════════════════════════════════════ */
 
     .ts-encabezado-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1.25rem 2rem;
         margin-bottom: 1.75rem;
     }
 
+        .ts-encabezado-grid > div {
+            min-width: 0;
+        }
+
+        .ts-encabezado-grid .form-select,
+        .ts-encabezado-grid .form-control {
+            width: 100%;
+            min-width: 0;
+        }
+
+    /* ═══════════════════════════════════════
+           TABLA DEL PEDIDO
+           ═══════════════════════════════════════ */
+
+    .ts-tabla-wrapper {
+        width: 100%;
+        margin-bottom: 0.75rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-radius: 8px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    }
+
     .ts-tabla-lineas {
         width: 100%;
+        min-width: 850px;
+        margin-bottom: 0;
         border-collapse: collapse;
-        margin-bottom: 0.75rem;
     }
 
         .ts-tabla-lineas thead th {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            font-size: 0.78rem;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            color: #1a3a6e;
-            border-bottom: 2px solid #1a3a6e;
             padding: 0.5rem 0.5rem;
+            border-bottom: 2px solid #1a3a6e;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #1a3a6e;
+            letter-spacing: 0.04em;
             text-align: left;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .ts-tabla-lineas tbody td {
@@ -101,130 +165,204 @@
         }
 
         .ts-tabla-lineas .ts-col-num {
+            color: #294869;
+            font-weight: 600;
             text-align: right;
             white-space: nowrap;
-            font-weight: 600;
-            color: #294869;
         }
 
+    .ts-select-item {
+        min-width: 180px;
+    }
+
     .ts-input-cantidad {
+        width: 80px;
         max-width: 80px;
     }
 
+    .ts-input-obs {
+        min-width: 150px;
+    }
+
+    /* ═══════════════════════════════════════
+           BORRAR LÍNEA
+           ═══════════════════════════════════════ */
+
     .ts-btn-borrar-linea {
-        border: none;
-        background: rgba(192, 57, 43, 0.08);
-        color: #c0392b;
-        border-radius: 8px;
         width: 32px;
         height: 32px;
+        border: none;
+        border-radius: 8px;
+        background: rgba(192, 57, 43, 0.08);
+        color: #c0392b;
         font-weight: 700;
         cursor: pointer;
-        transition: all .15s ease;
+        transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
     }
 
         .ts-btn-borrar-linea:hover {
             background: #c0392b;
-            color: #fff;
+            color: #ffffff;
+            transform: translateY(-1px);
         }
 
+    /* ═══════════════════════════════════════
+           AGREGAR
+           ═══════════════════════════════════════ */
+
     .ts-btn-agregar {
-        background: rgba(79, 168, 232, 0.10);
-        border: 1px dashed #4fa8e8;
-        color: #1a3a6e;
-        border-radius: 10px;
+        min-height: 42px;
+        margin-bottom: 1.5rem;
         padding: 0.5rem 1rem;
+        border: 1px dashed #4fa8e8;
+        border-radius: 10px;
+        background: rgba(79, 168, 232, 0.10);
+        color: #1a3a6e;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 700;
         cursor: pointer;
-        margin-bottom: 1.5rem;
+        transition: background 0.2s ease, transform 0.2s ease;
     }
 
         .ts-btn-agregar:hover {
-            background: rgba(79, 168, 232, 0.2);
+            background: rgba(79, 168, 232, 0.20);
+            transform: translateY(-1px);
         }
 
+    /* ═══════════════════════════════════════
+           ERROR CANTIDAD
+           ═══════════════════════════════════════ */
+
     .ts-error-cantidad {
+        display: none;
+        margin-top: 3px;
         color: #c0392b;
         font-size: 0.72rem;
         font-weight: 600;
-        display: none;
-        margin-top: 3px;
+        line-height: 1.3;
     }
 
+    /* ═══════════════════════════════════════
+           TOTALES
+           ═══════════════════════════════════════ */
+
     .ts-totales {
-        margin-left: auto;
+        width: 100%;
         max-width: 320px;
+        margin-left: auto;
         margin-bottom: 2rem;
     }
 
     .ts-totales-fila {
         display: flex;
         justify-content: space-between;
+        gap: 1rem;
         padding: 0.35rem 0;
-        font-size: 0.92rem;
         color: #294869;
+        font-size: 0.92rem;
     }
 
-    .ts-totales-fila.ts-total-final {
-        border-top: 2px solid #1a3a6e;
-        margin-top: 0.5rem;
-        padding-top: 0.75rem;
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
-        font-size: 1.2rem;
-        color: #1a3a6e;
+        .ts-totales-fila span:last-child {
+            flex-shrink: 0;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .ts-totales-fila.ts-total-final {
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 2px solid #1a3a6e;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a3a6e;
+        }
+
+    /* ═══════════════════════════════════════
+           MÉTODO DE PAGO
+           ═══════════════════════════════════════ */
+
+    .ts-metodo-pago {
+        width: 100%;
+        max-width: 320px;
     }
 
     .ts-pago-tarjeta,
     .ts-pago-efectivo {
         display: none;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1rem;
         margin-top: 1rem;
     }
 
+        .ts-pago-tarjeta > div,
+        .ts-pago-efectivo > div {
+            min-width: 0;
+        }
+
+    /* ═══════════════════════════════════════
+           BOTÓN REGISTRAR
+           ═══════════════════════════════════════ */
+
+    .ts-registrar-wrapper {
+        margin-top: 2rem;
+        text-align: center;
+    }
+
     .ts-btn-registrar {
-        background: #c0392b;
-        color: #fff;
+        min-height: 47px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 2rem;
         border: none;
         border-radius: 999px;
-        padding: 0.75rem 2rem;
+        background: #c0392b;
+        color: #ffffff;
         font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
         font-size: 1.05rem;
+        font-weight: 700;
         letter-spacing: 0.05em;
         cursor: pointer;
-        display: block;
-        margin: 0 auto;
+        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
 
         .ts-btn-registrar:hover {
             background: #a5301f;
+            transform: translateY(-1px);
+            box-shadow: 0 7px 18px rgba(192, 57, 43, 0.20);
         }
 
         .ts-btn-registrar:disabled {
             background: #c9c9c9;
+            box-shadow: none;
             cursor: not-allowed;
+            transform: none;
         }
+
+    /* ═══════════════════════════════════════
+           TOAST
+           ═══════════════════════════════════════ */
 
     .ts-toast {
         position: fixed;
-        bottom: 24px;
         right: 24px;
-        min-width: 280px;
+        bottom: 24px;
+        width: calc(100% - 48px);
+        min-width: 0;
         max-width: 360px;
         padding: 1rem 1.25rem;
         border-radius: 10px;
-        color: #fff;
+        color: #ffffff;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 600;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+        line-height: 1.4;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
         z-index: 2000;
         transform: translateY(20px);
         opacity: 0;
-        transition: all .25s ease;
         pointer-events: none;
+        transition: transform 0.25s ease, opacity 0.25s ease;
     }
 
         .ts-toast.ts-show {
@@ -232,546 +370,1910 @@
             opacity: 1;
         }
 
-        .ts-toast.ts-exito { background: #1a7d3a; }
-        .ts-toast.ts-error { background: #c0392b; }
+        .ts-toast.ts-exito {
+            background: #1a7d3a;
+        }
+
+        .ts-toast.ts-error {
+            background: #c0392b;
+        }
+
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .pedido-form-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
+        .ts-factura-header {
+            padding: 1.25rem 1.5rem;
+        }
+
+        .ts-factura-body {
+            padding: 1.5rem;
+        }
+
+        .ts-encabezado-grid {
+            gap: 1rem 1.25rem;
+        }
+
+        .ts-tabla-wrapper {
+            padding-bottom: 4px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .pedido-form-page {
+            padding-top: 0.5rem;
+        }
+
+        .ts-factura-form {
+            border-radius: 12px;
+        }
+
+        .ts-factura-header {
+            padding: 1.1rem 1.2rem;
+        }
+
+        .ts-factura-body {
+            padding: 1.25rem 1rem;
+        }
+
+        .ts-factura-titulo {
+            font-size: 1.3rem;
+        }
+
+        .ts-encabezado-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ts-seccion-label {
+            font-size: 0.88rem;
+        }
+
+        .ts-tabla-lineas {
+            min-width: 820px;
+        }
+
+        .ts-btn-agregar {
+            width: 100%;
+            min-height: 45px;
+            margin-bottom: 1.25rem;
+        }
+
+        .ts-totales {
+            max-width: 100%;
+            margin-left: 0;
+        }
+
+        .ts-pago-tarjeta,
+        .ts-pago-efectivo {
+            grid-template-columns: 1fr;
+            gap: 0.9rem;
+        }
+
+        .ts-metodo-pago {
+            max-width: 100%;
+        }
+
+        .ts-btn-registrar {
+            width: 100%;
+            min-height: 48px;
+        }
+
+        .ts-toast {
+            right: 12px;
+            bottom: 12px;
+            width: calc(100% - 24px);
+            max-width: none;
+            padding: 0.9rem 1rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .ts-factura-header {
+            padding: 1rem 0.95rem;
+        }
+
+        .ts-factura-body {
+            padding: 1.1rem 0.85rem;
+        }
+
+        .ts-factura-titulo {
+            font-size: 1.2rem;
+        }
+
+        .ts-campo-label {
+            font-size: 0.7rem;
+        }
+
+        .ts-campo-readonly {
+            padding: 0.5rem 0.7rem;
+            font-size: 0.9rem;
+        }
+
+        .ts-totales-fila {
+            font-size: 0.87rem;
+        }
+
+            .ts-totales-fila.ts-total-final {
+                font-size: 1.1rem;
+            }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .ts-btn-borrar-linea,
+        .ts-btn-agregar,
+        .ts-btn-registrar,
+        .ts-toast {
+            transition: none;
+        }
+    }
 </style>
 
-<div class="ts-factura-form">
-    <div class="ts-factura-header">
-        <h2 class="ts-factura-titulo">Registrar Pedido</h2>
-    </div>
+<div class="pedido-form-page">
 
-    <div class="ts-factura-body">
-        <form id="formPedido" novalidate>
+    <div class="ts-factura-form">
 
-            <!-- ══ ENCABEZADO ══ -->
-            <div class="ts-encabezado-grid">
-                <div>
-                    <div class="ts-campo-label">Fecha</div>
-                    <div class="ts-campo-readonly">@DateTime.Now.ToString("dd/MM/yyyy HH:mm", culturaCR)</div>
-                </div>
+        <!-- HEADER -->
 
-                <div>
-                    <div class="ts-campo-label">Estado</div>
-                    <div class="ts-campo-readonly">Se asigna automáticamente al registrar</div>
-                </div>
+        <div class="ts-factura-header">
 
-                @if (esCliente)
-                {
+            <h2 class="ts-factura-titulo">
+                Registrar Pedido
+            </h2>
+
+        </div>
+
+        <div class="ts-factura-body">
+
+            <form id="formPedido"
+                  novalidate>
+
+                <!-- ═══════════════════════════
+                     ENCABEZADO
+                     ═══════════════════════════ -->
+
+                <div class="ts-encabezado-grid">
+
                     <div>
-                        <div class="ts-campo-label">Cliente</div>
-                        <div class="ts-campo-readonly">@Model.ClienteNombre</div>
-                    </div>
-                    <div>
-                        <div class="ts-campo-label">Correo</div>
-                        <div class="ts-campo-readonly">@Model.ClienteCorreo</div>
-                    </div>
-                }
-                else
-                {
-                    <div>
-                        <div class="ts-campo-label">Cliente</div>
-                        <select id="selectCliente" class="form-select">
-                            <option value="">Seleccione un cliente...</option>
-                            @foreach (var c in Model.ClientesDisponibles)
-                            {
-                                <option value="@c.IdUsuario" data-correo="@c.Correo">@c.Nombre</option>
-                            }
-                        </select>
-                    </div>
-                    <div>
-                        <div class="ts-campo-label">Correo del cliente</div>
-                        <div class="ts-campo-readonly" id="clienteCorreoDetalle">—</div>
+
+                        <div class="ts-campo-label">
+                            Fecha
+                        </div>
+
+                        <div class="ts-campo-readonly">
+
+                            @DateTime.Now.ToString(
+                            "dd/MM/yyyy HH:mm",
+                                                        culturaCR
+                                                        )
+
+                        </div>
+
                     </div>
 
                     <div>
-                        <div class="ts-campo-label">Encargado</div>
-                        <div class="ts-campo-readonly">@Model.EncargadoNombre</div>
+
+                        <div class="ts-campo-label">
+                            Estado
+                        </div>
+
+                        <div class="ts-campo-readonly">
+                            Se asigna automáticamente al registrar
+                        </div>
+
                     </div>
-                }
 
-                <div>
-                    <div class="ts-campo-label">Método de entrega</div>
-                    <select id="selectMetodoEntrega" class="form-select">
-                        <option value="">Seleccione...</option>
-                        @foreach (var m in Model.MetodosEntrega)
-                        {
-                            var esDomicilio = m.Nombre.Contains("domicilio", StringComparison.OrdinalIgnoreCase) ? "true" : "false";
-                            <option value="@m.Id" data-domicilio="@esDomicilio">@m.Nombre</option>
-                        }
-                    </select>
-                </div>
+                    @if (esCliente)
+                                        {
+                    <div>
 
-                <div id="grupoDireccion" style="display:none;">
-                    <div class="ts-campo-label">Dirección de entrega</div>
-                    <input type="text" id="inputDireccion" class="form-control" placeholder="Detalles de la dirección" />
-                </div>
-            </div>
+                        <div class="ts-campo-label">
+                            Cliente
+                        </div>
 
-            <!-- ══ LÍNEAS DE DETALLE ══ -->
-            <div class="ts-seccion-label">Detalle del pedido</div>
+                        <div class="ts-campo-readonly">
+                            @Model.ClienteNombre
+                        </div>
 
-            <table class="ts-tabla-lineas">
-                <thead>
-                    <tr>
-                        <th style="width:28%">Producto / Combo</th>
-                        <th style="width:10%">Cantidad</th>
-                        <th style="width:14%">Precio</th>
-                        <th style="width:14%">Subtotal</th>
-                        <th style="width:14%">Impuesto</th>
-                        <th style="width:16%">Observaciones</th>
-                        <th style="width:4%"></th>
-                    </tr>
-                </thead>
-                <tbody id="lineasBody"></tbody>
-            </table>
+                    </div>
 
-            <button type="button" id="btnAgregarLinea" class="ts-btn-agregar">+ Agregar producto o combo</button>
+                    <div>
 
-            <div class="ts-totales">
-                <div class="ts-totales-fila">
-                    <span>Total sin impuestos</span>
-                    <span id="totalSinImpuestos">₡0</span>
-                </div>
-                <div class="ts-totales-fila">
-                    <span>Impuestos</span>
-                    <span id="totalImpuestos">₡0</span>
-                </div>
-                <div class="ts-totales-fila" id="filaEnvio" style="display:none;">
-                    <span>Costo de envío</span>
-                    <span id="totalEnvio">₡0</span>
-                </div>
-                <div class="ts-totales-fila ts-total-final">
-                    <span>Total a pagar</span>
-                    <span id="totalFinal">₡0</span>
-                </div>
-            </div>
+                        <div class="ts-campo-label">
+                            Correo
+                        </div>
 
-            <!-- ══ PAGO ══ -->
-            <div class="ts-seccion-label">Pago</div>
+                        <div class="ts-campo-readonly">
+                            @Model.ClienteCorreo
+                        </div>
 
-            <div>
-                <div class="ts-campo-label">Método de pago</div>
-                <select id="selectMetodoPago" class="form-select" style="max-width:320px;">
-                    <option value="">Seleccione...</option>
-                    @foreach (var m in Model.MetodosPago)
+                    </div>
+                                        }
+                                        else
                     {
-                        var esTarjeta = m.Nombre.Contains("tarjeta", StringComparison.OrdinalIgnoreCase) ? "true" : "false";
-                        <option value="@m.Id" data-tarjeta="@esTarjeta">@m.Nombre</option>
+                        <div>
+
+                            <div class="ts-campo-label">
+                                Cliente
+                            </div>
+
+                            <select id="selectCliente"
+                                    class="form-select">
+
+                                <option value="">
+                                    Seleccione un cliente...
+                                </option>
+
+                                @foreach (var c in Model.ClientesDisponibles)
+                                {
+                                    <option value="@c.IdUsuario"
+                                            data-correo="@c.Correo">
+
+                                        @c.Nombre
+
+                                    </option>
+                                }
+
+                            </select>
+
+                        </div>
+
+                        <div>
+
+                            <div class="ts-campo-label">
+                                Correo del cliente
+                            </div>
+
+                            <div class="ts-campo-readonly"
+                                 id="clienteCorreoDetalle">
+
+                                —
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <div class="ts-campo-label">
+                                Encargado
+                            </div>
+
+                            <div class="ts-campo-readonly">
+                                @Model.EncargadoNombre
+                            </div>
+
+                        </div>
                     }
-                </select>
-            </div>
 
-            <div class="ts-pago-tarjeta" id="grupoTarjeta">
-                <div>
-                    <div class="ts-campo-label">Número de tarjeta</div>
-                    <input type="text" id="inputNumeroTarjeta" class="form-control" maxlength="19" placeholder="0000 0000 0000 0000" />
-                </div>
-                <div>
-                    <div class="ts-campo-label">Nombre del titular</div>
-                    <input type="text" id="inputNombreTitular" class="form-control" placeholder="Nombre como aparece en la tarjeta" />
-                </div>
-                <div>
-                    <div class="ts-campo-label">Vencimiento</div>
-                    <input type="text" id="inputVencimiento" class="form-control" maxlength="5" placeholder="MM/AA" />
-                </div>
-                <div>
-                    <div class="ts-campo-label">CVV</div>
-                    <input type="text" id="inputCvv" class="form-control" maxlength="4" placeholder="123" />
-                </div>
-            </div>
+                    <div>
 
-            <div class="ts-pago-efectivo" id="grupoEfectivo">
-                <div>
-                    <div class="ts-campo-label">Monto recibido</div>
-                    <input type="number" id="inputMontoRecibido" class="form-control" min="0" step="1" placeholder="0" />
-                </div>
-                <div>
-                    <div class="ts-campo-label">Vuelto</div>
-                    <div class="ts-campo-readonly" id="vueltoCalculado">₡0</div>
-                </div>
-            </div>
+                        <div class="ts-campo-label">
+                            Método de entrega
+                        </div>
 
-            <div style="margin-top:2rem;">
-                <button type="button" id="btnRegistrar" class="ts-btn-registrar">Registrar Pedido</button>
-            </div>
-        </form>
+                        <select id="selectMetodoEntrega"
+                                class="form-select">
+
+                            <option value="">
+                                Seleccione...
+                            </option>
+
+                            @foreach (var m in Model.MetodosEntrega)
+                            {
+                                var esDomicilio =
+                                m.Nombre.Contains(
+                                "domicilio",
+                                StringComparison.OrdinalIgnoreCase
+                                )
+                                ? "true"
+                                : "false";
+
+                                <option value="@m.Id"
+                                        data-domicilio="@esDomicilio">
+
+                                    @m.Nombre
+
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <div id="grupoDireccion"
+                         style="display:none;">
+
+                        <div class="ts-campo-label">
+                            Dirección de entrega
+                        </div>
+
+                        <input type="text"
+                               id="inputDireccion"
+                               class="form-control"
+                               autocomplete="street-address"
+                               placeholder="Detalles de la dirección" />
+
+                    </div>
+
+                </div>
+
+                <!-- ═══════════════════════════
+                     DETALLE DEL PEDIDO
+                     ═══════════════════════════ -->
+
+                <div class="ts-seccion-label">
+                    Detalle del pedido
+                </div>
+
+                <div class="ts-tabla-wrapper">
+
+                    <table class="ts-tabla-lineas">
+
+                        <thead>
+
+                            <tr>
+
+                                <th style="width:28%">
+                                    Producto / Combo
+                                </th>
+
+                                <th style="width:10%">
+                                    Cantidad
+                                </th>
+
+                                <th style="width:14%">
+                                    Precio
+                                </th>
+
+                                <th style="width:14%">
+                                    Subtotal
+                                </th>
+
+                                <th style="width:14%">
+                                    Impuesto
+                                </th>
+
+                                <th style="width:16%">
+                                    Observaciones
+                                </th>
+
+                                <th style="width:4%">
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="lineasBody">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <button type="button"
+                        id="btnAgregarLinea"
+                        class="ts-btn-agregar">
+
+                    + Agregar producto o combo
+
+                </button>
+
+                <!-- TOTALES -->
+
+                <div class="ts-totales">
+
+                    <div class="ts-totales-fila">
+
+                        <span>
+                            Total sin impuestos
+                        </span>
+
+                        <span id="totalSinImpuestos">
+                            ₡0
+                        </span>
+
+                    </div>
+
+                    <div class="ts-totales-fila">
+
+                        <span>
+                            Impuestos
+                        </span>
+
+                        <span id="totalImpuestos">
+                            ₡0
+                        </span>
+
+                    </div>
+
+                    <div class="ts-totales-fila"
+                         id="filaEnvio"
+                         style="display:none;">
+
+                        <span>
+                            Costo de envío
+                        </span>
+
+                        <span id="totalEnvio">
+                            ₡0
+                        </span>
+
+                    </div>
+
+                    <div class="ts-totales-fila ts-total-final">
+
+                        <span>
+                            Total a pagar
+                        </span>
+
+                        <span id="totalFinal">
+                            ₡0
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- ═══════════════════════════
+                     PAGO
+                     ═══════════════════════════ -->
+
+                <div class="ts-seccion-label">
+                    Pago
+                </div>
+
+                <div>
+
+                    <div class="ts-campo-label">
+                        Método de pago
+                    </div>
+
+                    <select id="selectMetodoPago"
+                            class="form-select ts-metodo-pago">
+
+                        <option value="">
+                            Seleccione...
+                        </option>
+
+                        @foreach (var m in Model.MetodosPago)
+                        {
+                            var esTarjeta =
+                            m.Nombre.Contains(
+                            "tarjeta",
+                            StringComparison.OrdinalIgnoreCase
+                            )
+                            ? "true"
+                            : "false";
+
+                            <option value="@m.Id"
+                                    data-tarjeta="@esTarjeta">
+
+                                @m.Nombre
+
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+                <!-- TARJETA -->
+
+                <div class="ts-pago-tarjeta"
+                     id="grupoTarjeta">
+
+                    <div>
+
+                        <div class="ts-campo-label">
+                            Número de tarjeta
+                        </div>
+
+                        <input type="text"
+                               id="inputNumeroTarjeta"
+                               class="form-control"
+                               maxlength="19"
+                               inputmode="numeric"
+                               autocomplete="cc-number"
+                               placeholder="0000 0000 0000 0000" />
+
+                    </div>
+
+                    <div>
+
+                        <div class="ts-campo-label">
+                            Nombre del titular
+                        </div>
+
+                        <input type="text"
+                               id="inputNombreTitular"
+                               class="form-control"
+                               autocomplete="cc-name"
+                               placeholder="Nombre como aparece en la tarjeta" />
+
+                    </div>
+
+                    <div>
+
+                        <div class="ts-campo-label">
+                            Vencimiento
+                        </div>
+
+                        <input type="text"
+                               id="inputVencimiento"
+                               class="form-control"
+                               maxlength="5"
+                               inputmode="numeric"
+                               autocomplete="cc-exp"
+                               placeholder="MM/AA" />
+
+                    </div>
+
+                    <div>
+
+                        <div class="ts-campo-label">
+                            CVV
+                        </div>
+
+                        <input type="text"
+                               id="inputCvv"
+                               class="form-control"
+                               maxlength="4"
+                               inputmode="numeric"
+                               autocomplete="cc-csc"
+                               placeholder="123" />
+
+                    </div>
+
+                </div>
+
+                <!-- EFECTIVO -->
+
+                <div class="ts-pago-efectivo"
+                     id="grupoEfectivo">
+
+                    <div>
+
+                        <div class="ts-campo-label">
+                            Monto recibido
+                        </div>
+
+                        <input type="number"
+                               id="inputMontoRecibido"
+                               class="form-control"
+                               min="0"
+                               step="1"
+                               inputmode="decimal"
+                               placeholder="0" />
+
+                    </div>
+
+                    <div>
+
+                        <div class="ts-campo-label">
+                            Vuelto
+                        </div>
+
+                        <div class="ts-campo-readonly"
+                             id="vueltoCalculado">
+
+                            ₡0
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- REGISTRAR -->
+
+                <div class="ts-registrar-wrapper">
+
+                    <button type="button"
+                            id="btnRegistrar"
+                            class="ts-btn-registrar">
+
+                        Registrar Pedido
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
+
 </div>
 
-<!-- Plantilla oculta con el select de items (se clona por cada línea) -->
+<!-- Plantilla oculta con el select de items -->
+
 <template id="tplSelectItem">
+
     <select class="form-select ts-select-item">
-        <option value="">Seleccione...</option>
+
+        <option value="">
+            Seleccione...
+        </option>
+
         <optgroup label="Productos">
+
             @foreach (var p in Model.Productos)
             {
-                <option value="Producto:@p.IdItem">@p.Nombre</option>
+                <option value="Producto:@p.IdItem">
+                    @p.Nombre
+                </option>
             }
+
         </optgroup>
+
         <optgroup label="Combos">
+
             @foreach (var c in Model.Combos)
             {
-                <option value="Combo:@c.IdItem">@c.Nombre</option>
+                <option value="Combo:@c.IdItem">
+                    @c.Nombre
+                </option>
             }
+
         </optgroup>
+
     </select>
+
 </template>
 
-<div id="toast" class="ts-toast"></div>
+<div id="toast"
+     class="ts-toast">
+</div>
 
 @section Scripts {
-<script>
-(function () {
-    const culturaFormatoMoneda = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC', minimumFractionDigits: 2 });
-    const calcularLineaUrl = '@Url.Action("CalcularLinea", "Pedido")';
-    const registrarPedidoUrl = '@Url.Action("Create", "Pedido")';
-    const costoEnvioFijo = @costoEnvio.ToString(System.Globalization.CultureInfo.InvariantCulture);
-    const esCliente = @(esCliente ? "true" : "false");
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-    const lineasBody = document.getElementById('lineasBody');
-    const selectItemTemplate = document.getElementById('tplSelectItem').innerHTML.trim();
-    const toast = document.getElementById('toast');
+    <script>
 
-    function formatoMoneda(valor) {
-        return culturaFormatoMoneda.format(valor || 0);
-    }
+        (function () {
 
-    function mostrarToast(mensaje, tipo) {
-        toast.textContent = mensaje;
-        toast.className = 'ts-toast ts-show ' + (tipo === 'error' ? 'ts-error' : 'ts-exito');
-        clearTimeout(toast._timeoutId);
-        toast._timeoutId = setTimeout(() => toast.classList.remove('ts-show'), 4000);
-    }
+            const culturaFormatoMoneda =
+                new Intl.NumberFormat(
+                    'es-CR',
+                    {
+                        style: 'currency',
+                        currency: 'CRC',
+                        minimumFractionDigits: 2
+                    }
+                );
 
-    // ── Cliente (Encargado selecciona de lista) ──────────────
-    const selectCliente = document.getElementById('selectCliente');
-    if (selectCliente) {
-        selectCliente.addEventListener('change', function () {
-            const opt = selectCliente.selectedOptions[0];
-            const correo = opt ? opt.getAttribute('data-correo') : null;
-            document.getElementById('clienteCorreoDetalle').textContent = correo || '—';
-        });
-    }
+            const calcularLineaUrl =
+                '@Url.Action("CalcularLinea", "Pedido")';
 
-    // ── Método de entrega / dirección ─────────────────────────
-    const selectMetodoEntrega = document.getElementById('selectMetodoEntrega');
-    const grupoDireccion = document.getElementById('grupoDireccion');
-    const inputDireccion = document.getElementById('inputDireccion');
+            const registrarPedidoUrl =
+                '@Url.Action("Create", "Pedido")';
 
-    selectMetodoEntrega.addEventListener('change', function () {
-        const opt = selectMetodoEntrega.selectedOptions[0];
-        const esDomicilio = opt && opt.getAttribute('data-domicilio') === 'true';
-        grupoDireccion.style.display = esDomicilio ? 'block' : 'none';
-        if (!esDomicilio) inputDireccion.value = '';
-        recalcularTotales();
-    });
+            const costoEnvioFijo =
+                @costoEnvio.ToString(
+                    System.Globalization.CultureInfo.InvariantCulture
+                        );
 
-    // ── Líneas dinámicas ───────────────────────────────────────
-    function crearFila() {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${selectItemTemplate}</td>
-            <td>
-                <input type="number" class="form-control ts-input-cantidad" min="0" step="1" value="1" />
-                <div class="ts-error-cantidad">Solo se aceptan números.</div>
-            </td>
-            <td class="ts-col-num ts-precio">${formatoMoneda(0)}</td>
-            <td class="ts-col-num ts-subtotal">${formatoMoneda(0)}</td>
-            <td class="ts-col-num ts-impuesto">${formatoMoneda(0)}</td>
-            <td><input type="text" class="form-control ts-input-obs" placeholder="Observaciones" /></td>
-            <td><button type="button" class="ts-btn-borrar-linea" title="Eliminar línea">&times;</button></td>
-        `;
-        lineasBody.appendChild(tr);
-        attachRowEvents(tr);
-    }
+        const esCliente =
+            @(esCliente ? "true" : "false");
 
-    function attachRowEvents(tr) {
-        const selectEl = tr.querySelector('.ts-select-item');
-        const cantidadEl = tr.querySelector('.ts-input-cantidad');
-        const obsEl = tr.querySelector('.ts-input-obs');
-        const borrarBtn = tr.querySelector('.ts-btn-borrar-linea');
+        const csrfToken =
+            document
+                .querySelector(
+                    'meta[name="csrf-token"]'
+                )
+                .content;
 
-        selectEl.addEventListener('change', () => recalcularLinea(tr));
-        cantidadEl.addEventListener('input', () => onCantidadInput(tr));
-        obsEl.addEventListener('change', () => { tr.dataset.observaciones = obsEl.value; recalcularLinea(tr); });
-        borrarBtn.addEventListener('click', () => eliminarFila(tr));
-    }
+        const lineasBody =
+            document.getElementById(
+                'lineasBody'
+            );
 
-    function onCantidadInput(tr) {
-        const cantidadEl = tr.querySelector('.ts-input-cantidad');
-        const errorEl = tr.querySelector('.ts-error-cantidad');
-        const valorTexto = cantidadEl.value;
+        const selectItemTemplate =
+            document
+                .getElementById(
+                    'tplSelectItem'
+                )
+                .innerHTML
+                .trim();
 
-        if (valorTexto === '') {
-            // caja vacía: NO se borra la línea, solo se espera a que el usuario siga escribiendo
-            errorEl.style.display = 'none';
-            return;
+        const toast =
+            document.getElementById(
+                'toast'
+            );
+
+        function formatoMoneda(valor) {
+
+            return culturaFormatoMoneda
+                .format(valor || 0);
         }
 
-        const cantidad = Number(valorTexto);
-        if (!Number.isInteger(cantidad) || cantidad < 0 || valorTexto.includes('.') || valorTexto.includes(',')) {
-            errorEl.style.display = 'block';
-            return;
-        }
-        errorEl.style.display = 'none';
+        function mostrarToast(
+            mensaje,
+            tipo
+        ) {
 
-        if (cantidad === 0) {
-            eliminarFila(tr);
-            return;
-        }
+            toast.textContent =
+                mensaje;
 
-        recalcularLinea(tr);
-    }
+            toast.className =
+                'ts-toast ts-show ' +
+                (
+                    tipo === 'error'
+                        ? 'ts-error'
+                        : 'ts-exito'
+                );
 
-    async function recalcularLinea(tr) {
-        const selectEl = tr.querySelector('.ts-select-item');
-        const cantidadEl = tr.querySelector('.ts-input-cantidad');
-        const obsEl = tr.querySelector('.ts-input-obs');
-        const valor = selectEl.value;
+            clearTimeout(
+                toast._timeoutId
+            );
 
-        if (!valor) {
-            tr.dataset.subtotal = '0';
-            tr.dataset.impuesto = '0';
-            tr.dataset.cantidad = '0';
-            recalcularTotales();
-            return;
-        }
-
-        const [tipo, idItemStr] = valor.split(':');
-        const idItem = parseInt(idItemStr, 10);
-        const cantidadTexto = cantidadEl.value;
-        if (cantidadTexto === '' || Number(cantidadTexto) <= 0) return;
-        const cantidad = parseInt(cantidadTexto, 10);
-
-        try {
-            const resp = await fetch(calcularLineaUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tipo: tipo, idItem: idItem, cantidad: cantidad, observaciones: obsEl.value })
-            });
-
-            if (!resp.ok) throw new Error('fallo calculo');
-            const linea = await resp.json();
-
-            tr.dataset.tipo = tipo;
-            tr.dataset.idItem = idItem;
-            tr.dataset.cantidad = linea.cantidad;
-            tr.dataset.subtotal = linea.subtotal;
-            tr.dataset.impuesto = linea.impuesto;
-            tr.dataset.observaciones = obsEl.value;
-
-            tr.querySelector('.ts-precio').textContent = formatoMoneda(linea.precioUnitario);
-            tr.querySelector('.ts-subtotal').textContent = formatoMoneda(linea.subtotal);
-            tr.querySelector('.ts-impuesto').textContent = formatoMoneda(linea.impuesto);
-
-            recalcularTotales();
-        } catch (e) {
-            mostrarToast('No se pudo calcular esa línea. Intente de nuevo.', 'error');
-        }
-    }
-
-    function eliminarFila(tr) {
-        tr.remove();
-        recalcularTotales();
-    }
-
-    function esEntregaDomicilio() {
-        const opt = selectMetodoEntrega.selectedOptions[0];
-        return opt && opt.getAttribute('data-domicilio') === 'true' && inputDireccion.value.trim() !== '';
-    }
-
-    function calcularCantidadTotal() {
-        let total = 0;
-        document.querySelectorAll('#lineasBody tr').forEach(tr => {
-            total += parseInt(tr.dataset.cantidad || '0', 10);
-        });
-        return total;
-    }
-
-            let totalActualNumerico = 0; // guarda el total real como número, nunca lo leemos del texto formateado
-
-        function recalcularTotales() {
-            let subtotal = 0, impuesto = 0;
-            document.querySelectorAll('#lineasBody tr').forEach(tr => {
-                subtotal += parseFloat(tr.dataset.subtotal || '0');
-                impuesto += parseFloat(tr.dataset.impuesto || '0');
-            });
-
-            const aplicaEnvio = esEntregaDomicilio();
-            const envio = aplicaEnvio ? costoEnvioFijo : 0;
-            const total = subtotal + impuesto + envio;
-            totalActualNumerico = total;
-
-            document.getElementById('totalSinImpuestos').textContent = formatoMoneda(subtotal);
-            document.getElementById('totalImpuestos').textContent = formatoMoneda(impuesto);
-            document.getElementById('filaEnvio').style.display = aplicaEnvio ? 'flex' : 'none';
-            document.getElementById('totalEnvio').textContent = formatoMoneda(envio);
-            document.getElementById('totalFinal').textContent = formatoMoneda(total);
-
-            actualizarVuelto();
-            actualizarBadgeCantidad(calcularCantidadTotal());
+            toast._timeoutId =
+                setTimeout(
+                    () =>
+                        toast
+                            .classList
+                            .remove(
+                                'ts-show'
+                            ),
+                    4000
+                );
         }
 
-    document.getElementById('btnAgregarLinea').addEventListener('click', crearFila);
-    inputDireccion.addEventListener('input', recalcularTotales);
-    crearFila(); // arranca con una línea vacía
+        /* ═══════════════════════════════════════
+           CLIENTE
+           ═══════════════════════════════════════ */
 
-               // ── Badge de cantidad (header) ─────────────────────────────
-            function actualizarBadgeCantidad(cantidad) {
-                const badge = document.getElementById('ts-cart-badge');
-                if (badge) {
-                    badge.textContent = cantidad;
-                    badge.style.display = cantidad > 0 ? 'inline-flex' : 'none';
+        const selectCliente =
+            document.getElementById(
+                'selectCliente'
+            );
+
+        if (selectCliente) {
+
+            selectCliente
+                .addEventListener(
+                    'change',
+                    function () {
+
+                        const opt =
+                            selectCliente
+                                .selectedOptions[0];
+
+                        const correo =
+                            opt
+                                ? opt.getAttribute(
+                                    'data-correo'
+                                )
+                                : null;
+
+                        document
+                            .getElementById(
+                                'clienteCorreoDetalle'
+                            )
+                            .textContent =
+                                correo || '—';
+                    }
+                );
+        }
+
+        /* ═══════════════════════════════════════
+           ENTREGA
+           ═══════════════════════════════════════ */
+
+        const selectMetodoEntrega =
+            document.getElementById(
+                'selectMetodoEntrega'
+            );
+
+        const grupoDireccion =
+            document.getElementById(
+                'grupoDireccion'
+            );
+
+        const inputDireccion =
+            document.getElementById(
+                'inputDireccion'
+            );
+
+        selectMetodoEntrega
+            .addEventListener(
+                'change',
+                function () {
+
+                    const opt =
+                        selectMetodoEntrega
+                            .selectedOptions[0];
+
+                    const esDomicilio =
+                        opt &&
+                        opt.getAttribute(
+                            'data-domicilio'
+                        ) === 'true';
+
+                    grupoDireccion.style.display =
+                        esDomicilio
+                            ? 'block'
+                            : 'none';
+
+                    if (!esDomicilio) {
+                        inputDireccion.value = '';
+                    }
+
+                    recalcularTotales();
                 }
-                window.dispatchEvent(new CustomEvent('ts:pedido-cantidad-actualizada', { detail: { cantidad } }));
+            );
+
+        /* ═══════════════════════════════════════
+           LÍNEAS
+           ═══════════════════════════════════════ */
+
+        function crearFila() {
+
+            const tr =
+                document.createElement(
+                    'tr'
+                );
+
+            tr.innerHTML = `
+                <td>
+                    ${selectItemTemplate}
+                </td>
+
+                <td>
+                    <input
+                        type="number"
+                        class="form-control ts-input-cantidad"
+                        min="0"
+                        step="1"
+                        value="1"
+                        inputmode="numeric" />
+
+                    <div class="ts-error-cantidad">
+                        Solo se aceptan números.
+                    </div>
+                </td>
+
+                <td class="ts-col-num ts-precio">
+                    ${formatoMoneda(0)}
+                </td>
+
+                <td class="ts-col-num ts-subtotal">
+                    ${formatoMoneda(0)}
+                </td>
+
+                <td class="ts-col-num ts-impuesto">
+                    ${formatoMoneda(0)}
+                </td>
+
+                <td>
+                    <input
+                        type="text"
+                        class="form-control ts-input-obs"
+                        placeholder="Observaciones" />
+                </td>
+
+                <td>
+                    <button
+                        type="button"
+                        class="ts-btn-borrar-linea"
+                        title="Eliminar línea">
+                        &times;
+                    </button>
+                </td>
+            `;
+
+            lineasBody
+                .appendChild(tr);
+
+            attachRowEvents(tr);
+        }
+
+        function attachRowEvents(tr) {
+
+            const selectEl =
+                tr.querySelector(
+                    '.ts-select-item'
+                );
+
+            const cantidadEl =
+                tr.querySelector(
+                    '.ts-input-cantidad'
+                );
+
+            const obsEl =
+                tr.querySelector(
+                    '.ts-input-obs'
+                );
+
+            const borrarBtn =
+                tr.querySelector(
+                    '.ts-btn-borrar-linea'
+                );
+
+            selectEl
+                .addEventListener(
+                    'change',
+                    () =>
+                        recalcularLinea(tr)
+                );
+
+            cantidadEl
+                .addEventListener(
+                    'input',
+                    () =>
+                        onCantidadInput(tr)
+                );
+
+            obsEl
+                .addEventListener(
+                    'change',
+                    () => {
+
+                        tr.dataset.observaciones =
+                            obsEl.value;
+
+                        recalcularLinea(tr);
+                    }
+                );
+
+            borrarBtn
+                .addEventListener(
+                    'click',
+                    () =>
+                        eliminarFila(tr)
+                );
+        }
+
+        function onCantidadInput(tr) {
+
+            const cantidadEl =
+                tr.querySelector(
+                    '.ts-input-cantidad'
+                );
+
+            const errorEl =
+                tr.querySelector(
+                    '.ts-error-cantidad'
+                );
+
+            const valorTexto =
+                cantidadEl.value;
+
+            if (valorTexto === '') {
+
+                errorEl.style.display =
+                    'none';
+
+                return;
             }
 
-    // ── Pago ────────────────────────────────────────────────────
-    const selectMetodoPago = document.getElementById('selectMetodoPago');
-    const grupoTarjeta = document.getElementById('grupoTarjeta');
-    const grupoEfectivo = document.getElementById('grupoEfectivo');
-    const inputMontoRecibido = document.getElementById('inputMontoRecibido');
-            // ── Formato automático de campos de tarjeta ─────────────────
-            const inputNumeroTarjeta = document.getElementById('inputNumeroTarjeta');
-            const inputVencimiento = document.getElementById('inputVencimiento');
-            const inputCvv = document.getElementById('inputCvv');
+            const cantidad =
+                Number(valorTexto);
 
-            inputNumeroTarjeta.addEventListener('input', function () {
-                let digitos = this.value.replace(/\D/g, '').slice(0, 16);
-                this.value = digitos.replace(/(.{4})/g, '$1 ').trim();
-            });
+            if (
+                !Number.isInteger(cantidad) ||
+                cantidad < 0 ||
+                valorTexto.includes('.') ||
+                valorTexto.includes(',')
+            ) {
 
-            inputVencimiento.addEventListener('input', function () {
-                let digitos = this.value.replace(/\D/g, '').slice(0, 4);
-                if (digitos.length > 2) {
-                    this.value = digitos.slice(0, 2) + '/' + digitos.slice(2);
-                } else {
-                    this.value = digitos;
+                errorEl.style.display =
+                    'block';
+
+                return;
+            }
+
+            errorEl.style.display =
+                'none';
+
+            if (cantidad === 0) {
+
+                eliminarFila(tr);
+
+                return;
+            }
+
+            recalcularLinea(tr);
+        }
+
+        async function recalcularLinea(tr) {
+
+            const selectEl =
+                tr.querySelector(
+                    '.ts-select-item'
+                );
+
+            const cantidadEl =
+                tr.querySelector(
+                    '.ts-input-cantidad'
+                );
+
+            const obsEl =
+                tr.querySelector(
+                    '.ts-input-obs'
+                );
+
+            const valor =
+                selectEl.value;
+
+            if (!valor) {
+
+                tr.dataset.subtotal =
+                    '0';
+
+                tr.dataset.impuesto =
+                    '0';
+
+                tr.dataset.cantidad =
+                    '0';
+
+                recalcularTotales();
+
+                return;
+            }
+
+            const [
+                tipo,
+                idItemStr
+            ] = valor.split(':');
+
+            const idItem =
+                parseInt(
+                    idItemStr,
+                    10
+                );
+
+            const cantidadTexto =
+                cantidadEl.value;
+
+            if (
+                cantidadTexto === '' ||
+                Number(cantidadTexto) <= 0
+            ) {
+                return;
+            }
+
+            const cantidad =
+                parseInt(
+                    cantidadTexto,
+                    10
+                );
+
+            try {
+
+                const resp =
+                    await fetch(
+                        calcularLineaUrl,
+                        {
+                            method: 'POST',
+
+                            headers: {
+                                'Content-Type':
+                                    'application/json'
+                            },
+
+                            body:
+                                JSON.stringify(
+                                    {
+                                        tipo: tipo,
+                                        idItem: idItem,
+                                        cantidad: cantidad,
+                                        observaciones:
+                                            obsEl.value
+                                    }
+                                )
+                        }
+                    );
+
+                if (!resp.ok) {
+                    throw new Error(
+                        'fallo calculo'
+                    );
                 }
-            });
 
-            inputCvv.addEventListener('input', function () {
-                this.value = this.value.replace(/\D/g, '').slice(0, 4);
-            });
+                const linea =
+                    await resp.json();
 
-    selectMetodoPago.addEventListener('change', function () {
-        const opt = selectMetodoPago.selectedOptions[0];
-        const esTarjeta = opt && opt.getAttribute('data-tarjeta') === 'true';
-        const esEfectivo = opt && opt.value !== '' && !esTarjeta;
-        grupoTarjeta.style.display = esTarjeta ? 'grid' : 'none';
-        grupoEfectivo.style.display = esEfectivo ? 'grid' : 'none';
-    });
+                tr.dataset.tipo =
+                    tipo;
 
-           function totalActual() {
+                tr.dataset.idItem =
+                    idItem;
+
+                tr.dataset.cantidad =
+                    linea.cantidad;
+
+                tr.dataset.subtotal =
+                    linea.subtotal;
+
+                tr.dataset.impuesto =
+                    linea.impuesto;
+
+                tr.dataset.observaciones =
+                    obsEl.value;
+
+                tr.querySelector(
+                    '.ts-precio'
+                ).textContent =
+                    formatoMoneda(
+                        linea.precioUnitario
+                    );
+
+                tr.querySelector(
+                    '.ts-subtotal'
+                ).textContent =
+                    formatoMoneda(
+                        linea.subtotal
+                    );
+
+                tr.querySelector(
+                    '.ts-impuesto'
+                ).textContent =
+                    formatoMoneda(
+                        linea.impuesto
+                    );
+
+                recalcularTotales();
+            }
+            catch (e) {
+
+                mostrarToast(
+                    'No se pudo calcular esa línea. Intente de nuevo.',
+                    'error'
+                );
+            }
+        }
+
+        function eliminarFila(tr) {
+
+            tr.remove();
+
+            recalcularTotales();
+        }
+
+        /* ═══════════════════════════════════════
+           TOTALES
+           ═══════════════════════════════════════ */
+
+        function esEntregaDomicilio() {
+
+            const opt =
+                selectMetodoEntrega
+                    .selectedOptions[0];
+
+            return (
+                opt &&
+                opt.getAttribute(
+                    'data-domicilio'
+                ) === 'true' &&
+                inputDireccion
+                    .value
+                    .trim() !== ''
+            );
+        }
+
+        function calcularCantidadTotal() {
+
+            let total = 0;
+
+            document
+                .querySelectorAll(
+                    '#lineasBody tr'
+                )
+                .forEach(
+                    tr => {
+
+                        total +=
+                            parseInt(
+                                tr.dataset
+                                    .cantidad ||
+                                    '0',
+                                10
+                            );
+                    }
+                );
+
+            return total;
+        }
+
+        let totalActualNumerico = 0;
+
+        function recalcularTotales() {
+
+            let subtotal = 0;
+            let impuesto = 0;
+
+            document
+                .querySelectorAll(
+                    '#lineasBody tr'
+                )
+                .forEach(
+                    tr => {
+
+                        subtotal +=
+                            parseFloat(
+                                tr.dataset
+                                    .subtotal ||
+                                    '0'
+                            );
+
+                        impuesto +=
+                            parseFloat(
+                                tr.dataset
+                                    .impuesto ||
+                                    '0'
+                            );
+                    }
+                );
+
+            const aplicaEnvio =
+                esEntregaDomicilio();
+
+            const envio =
+                aplicaEnvio
+                    ? costoEnvioFijo
+                    : 0;
+
+            const total =
+                subtotal +
+                impuesto +
+                envio;
+
+            totalActualNumerico =
+                total;
+
+            document
+                .getElementById(
+                    'totalSinImpuestos'
+                )
+                .textContent =
+                    formatoMoneda(
+                        subtotal
+                    );
+
+            document
+                .getElementById(
+                    'totalImpuestos'
+                )
+                .textContent =
+                    formatoMoneda(
+                        impuesto
+                    );
+
+            document
+                .getElementById(
+                    'filaEnvio'
+                )
+                .style.display =
+                    aplicaEnvio
+                        ? 'flex'
+                        : 'none';
+
+            document
+                .getElementById(
+                    'totalEnvio'
+                )
+                .textContent =
+                    formatoMoneda(
+                        envio
+                    );
+
+            document
+                .getElementById(
+                    'totalFinal'
+                )
+                .textContent =
+                    formatoMoneda(
+                        total
+                    );
+
+            actualizarVuelto();
+
+            actualizarBadgeCantidad(
+                calcularCantidadTotal()
+            );
+        }
+
+        document
+            .getElementById(
+                'btnAgregarLinea'
+            )
+            .addEventListener(
+                'click',
+                crearFila
+            );
+
+        inputDireccion
+            .addEventListener(
+                'input',
+                recalcularTotales
+            );
+
+        crearFila();
+
+        /* ═══════════════════════════════════════
+           BADGE DEL PEDIDO
+           ═══════════════════════════════════════ */
+
+        function actualizarBadgeCantidad(
+            cantidad
+        ) {
+
+            const badge =
+                document.getElementById(
+                    'ts-cart-badge'
+                );
+
+            if (badge) {
+
+                badge.textContent =
+                    cantidad;
+
+                badge.style.display =
+                    cantidad > 0
+                        ? 'inline-flex'
+                        : 'none';
+            }
+
+            window.dispatchEvent(
+                new CustomEvent(
+                    'ts:pedido-cantidad-actualizada',
+                    {
+                        detail: {
+                            cantidad
+                        }
+                    }
+                )
+            );
+        }
+
+        /* ═══════════════════════════════════════
+           PAGO
+           ═══════════════════════════════════════ */
+
+        const selectMetodoPago =
+            document.getElementById(
+                'selectMetodoPago'
+            );
+
+        const grupoTarjeta =
+            document.getElementById(
+                'grupoTarjeta'
+            );
+
+        const grupoEfectivo =
+            document.getElementById(
+                'grupoEfectivo'
+            );
+
+        const inputMontoRecibido =
+            document.getElementById(
+                'inputMontoRecibido'
+            );
+
+        const inputNumeroTarjeta =
+            document.getElementById(
+                'inputNumeroTarjeta'
+            );
+
+        const inputVencimiento =
+            document.getElementById(
+                'inputVencimiento'
+            );
+
+        const inputCvv =
+            document.getElementById(
+                'inputCvv'
+            );
+
+        inputNumeroTarjeta
+            .addEventListener(
+                'input',
+                function () {
+
+                    let digitos =
+                        this
+                            .value
+                            .replace(
+                                /\D/g,
+                                ''
+                            )
+                            .slice(
+                                0,
+                                16
+                            );
+
+                    this.value =
+                        digitos
+                            .replace(
+                                /(.{4})/g,
+                                '$1 '
+                            )
+                            .trim();
+                }
+            );
+
+        inputVencimiento
+            .addEventListener(
+                'input',
+                function () {
+
+                    let digitos =
+                        this
+                            .value
+                            .replace(
+                                /\D/g,
+                                ''
+                            )
+                            .slice(
+                                0,
+                                4
+                            );
+
+                    if (
+                        digitos.length > 2
+                    ) {
+
+                        this.value =
+                            digitos.slice(
+                                0,
+                                2
+                            ) +
+                            '/' +
+                            digitos.slice(
+                                2
+                            );
+                    }
+                    else {
+
+                        this.value =
+                            digitos;
+                    }
+                }
+            );
+
+        inputCvv
+            .addEventListener(
+                'input',
+                function () {
+
+                    this.value =
+                        this
+                            .value
+                            .replace(
+                                /\D/g,
+                                ''
+                            )
+                            .slice(
+                                0,
+                                4
+                            );
+                }
+            );
+
+        selectMetodoPago
+            .addEventListener(
+                'change',
+                function () {
+
+                    const opt =
+                        selectMetodoPago
+                            .selectedOptions[0];
+
+                    const esTarjeta =
+                        opt &&
+                        opt.getAttribute(
+                            'data-tarjeta'
+                        ) === 'true';
+
+                    const esEfectivo =
+                        opt &&
+                        opt.value !== '' &&
+                        !esTarjeta;
+
+                    grupoTarjeta.style.display =
+                        esTarjeta
+                            ? 'grid'
+                            : 'none';
+
+                    grupoEfectivo.style.display =
+                        esEfectivo
+                            ? 'grid'
+                            : 'none';
+                }
+            );
+
+        function totalActual() {
+
             return totalActualNumerico;
         }
 
         function actualizarVuelto() {
-            const recibido = parseFloat(inputMontoRecibido.value || '0');
-            const total = totalActual();
-            const vuelto = recibido - total;
-            document.getElementById('vueltoCalculado').textContent = formatoMoneda(vuelto > 0 ? vuelto : 0);
-        }
-    inputMontoRecibido.addEventListener('input', actualizarVuelto);
 
-    // ── Registrar pedido ────────────────────────────────────────
-    document.getElementById('btnRegistrar').addEventListener('click', async function () {
-        const btn = this;
+            const recibido =
+                parseFloat(
+                    inputMontoRecibido
+                        .value ||
+                        '0'
+                );
 
-        const filas = Array.from(document.querySelectorAll('#lineasBody tr'))
-            .filter(tr => tr.dataset.idItem && parseInt(tr.dataset.cantidad || '0', 10) > 0);
+            const total =
+                totalActual();
 
-        if (filas.length === 0) {
-            mostrarToast('Agregue al menos un producto o combo.', 'error');
-            return;
-        }
+            const vuelto =
+                recibido -
+                total;
 
-        if (!esCliente && !document.getElementById('selectCliente').value) {
-            mostrarToast('Debe seleccionar un cliente.', 'error');
-            return;
-        }
-
-        const idMetodoEntrega = selectMetodoEntrega.value;
-        if (!idMetodoEntrega) {
-            mostrarToast('Debe seleccionar un método de entrega.', 'error');
-            return;
+            document
+                .getElementById(
+                    'vueltoCalculado'
+                )
+                .textContent =
+                    formatoMoneda(
+                        vuelto > 0
+                            ? vuelto
+                            : 0
+                    );
         }
 
-        if (esEntregaDomicilio() === false && selectMetodoEntrega.selectedOptions[0].getAttribute('data-domicilio') === 'true' && inputDireccion.value.trim() === '') {
-            mostrarToast('Debe indicar la dirección de entrega.', 'error');
-            return;
-        }
+        inputMontoRecibido
+            .addEventListener(
+                'input',
+                actualizarVuelto
+            );
 
-        const idMetodoPago = selectMetodoPago.value;
-        if (!idMetodoPago) {
-            mostrarToast('Debe seleccionar un método de pago.', 'error');
-            return;
-        }
+        /* ═══════════════════════════════════════
+           REGISTRAR PEDIDO
+           ═══════════════════════════════════════ */
 
-        const esTarjeta = selectMetodoPago.selectedOptions[0].getAttribute('data-tarjeta') === 'true';
+        document
+            .getElementById(
+                'btnRegistrar'
+            )
+            .addEventListener(
+                'click',
+                async function () {
 
-        const pago = { idMetodoPago: parseInt(idMetodoPago, 10) };
-        if (esTarjeta) {
-            pago.numeroTarjeta = document.getElementById('inputNumeroTarjeta').value;
-            pago.nombreTitular = document.getElementById('inputNombreTitular').value;
-            pago.fechaVencimiento = document.getElementById('inputVencimiento').value;
-            pago.cvv = document.getElementById('inputCvv').value;
-        } else {
-            const montoRecibido = parseFloat(inputMontoRecibido.value || '0');
-            if (montoRecibido < totalActual()) {
-                mostrarToast('El monto recibido no puede ser menor al total.', 'error');
-                return;
-            }
-            pago.montoRecibido = montoRecibido;
-        }
+                    const btn =
+                        this;
 
-        const registro = {
-            idCliente: esCliente ? 0 : parseInt(document.getElementById('selectCliente').value, 10),
-            idMetodoEntrega: parseInt(idMetodoEntrega, 10),
-            direccionEntrega: esEntregaDomicilio() ? inputDireccion.value.trim() : null,
-            lineas: filas.map(tr => ({
-                tipo: tr.dataset.tipo,
-                idItem: parseInt(tr.dataset.idItem, 10),
-                cantidad: parseInt(tr.dataset.cantidad, 10),
-                observaciones: tr.dataset.observaciones || null
-            })),
-            pago: pago
-        };
+                    const filas =
+                        Array
+                            .from(
+                                document
+                                    .querySelectorAll(
+                                        '#lineasBody tr'
+                                    )
+                            )
+                            .filter(
+                                tr =>
+                                    tr.dataset.idItem &&
+                                    parseInt(
+                                        tr.dataset
+                                            .cantidad ||
+                                            '0',
+                                        10
+                                    ) > 0
+                            );
 
-        btn.disabled = true;
-        btn.textContent = 'Registrando...';
+                    if (
+                        filas.length === 0
+                    ) {
 
-        try {
-            const resp = await fetch(registrarPedidoUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify(registro)
-            });
+                        mostrarToast(
+                            'Agregue al menos un producto o combo.',
+                            'error'
+                        );
 
-            if (!resp.ok) {
-                const error = await resp.json().catch(() => ({ mensaje: 'No se pudo registrar el pedido.' }));
-                throw new Error(error.mensaje || 'No se pudo registrar el pedido.');
-            }
+                        return;
+                    }
 
-            const pedidoCreado = await resp.json();
-            mostrarToast('Pedido registrado correctamente.', 'exito');
-            actualizarBadgeCantidad(0);
+                    if (
+                        !esCliente &&
+                        !document
+                            .getElementById(
+                                'selectCliente'
+                            )
+                            .value
+                    ) {
 
-            setTimeout(() => {
-                window.location.href = '@Url.Action("Details", "Pedido")/' + pedidoCreado.idPedido;
-            }, 1200);
+                        mostrarToast(
+                            'Debe seleccionar un cliente.',
+                            'error'
+                        );
 
-        } catch (e) {
-            mostrarToast(e.message, 'error');
-            btn.disabled = false;
-            btn.textContent = 'Registrar Pedido';
-        }
-    });
-})();
+                        return;
+                    }
+
+                    const idMetodoEntrega =
+                        selectMetodoEntrega.value;
+
+                    if (
+                        !idMetodoEntrega
+                    ) {
+
+                        mostrarToast(
+                            'Debe seleccionar un método de entrega.',
+                            'error'
+                        );
+
+                        return;
+                    }
+
+                    if (
+                        esEntregaDomicilio() === false &&
+                        selectMetodoEntrega
+                            .selectedOptions[0]
+                            .getAttribute(
+                                'data-domicilio'
+                            ) === 'true' &&
+                        inputDireccion
+                            .value
+                            .trim() === ''
+                    ) {
+
+                        mostrarToast(
+                            'Debe indicar la dirección de entrega.',
+                            'error'
+                        );
+
+                        return;
+                    }
+
+                    const idMetodoPago =
+                        selectMetodoPago.value;
+
+                    if (
+                        !idMetodoPago
+                    ) {
+
+                        mostrarToast(
+                            'Debe seleccionar un método de pago.',
+                            'error'
+                        );
+
+                        return;
+                    }
+
+                    const esTarjeta =
+                        selectMetodoPago
+                            .selectedOptions[0]
+                            .getAttribute(
+                                'data-tarjeta'
+                            ) === 'true';
+
+                    const pago = {
+                        idMetodoPago:
+                            parseInt(
+                                idMetodoPago,
+                                10
+                            )
+                    };
+
+                    if (esTarjeta) {
+
+                        pago.numeroTarjeta =
+                            document
+                                .getElementById(
+                                    'inputNumeroTarjeta'
+                                )
+                                .value;
+
+                        pago.nombreTitular =
+                            document
+                                .getElementById(
+                                    'inputNombreTitular'
+                                )
+                                .value;
+
+                        pago.fechaVencimiento =
+                            document
+                                .getElementById(
+                                    'inputVencimiento'
+                                )
+                                .value;
+
+                        pago.cvv =
+                            document
+                                .getElementById(
+                                    'inputCvv'
+                                )
+                                .value;
+                    }
+                    else {
+
+                        const montoRecibido =
+                            parseFloat(
+                                inputMontoRecibido
+                                    .value ||
+                                    '0'
+                            );
+
+                        if (
+                            montoRecibido <
+                            totalActual()
+                        ) {
+
+                            mostrarToast(
+                                'El monto recibido no puede ser menor al total.',
+                                'error'
+                            );
+
+                            return;
+                        }
+
+                        pago.montoRecibido =
+                            montoRecibido;
+                    }
+
+                    const registro = {
+
+                        idCliente:
+                            esCliente
+                                ? 0
+                                : parseInt(
+                                    document
+                                        .getElementById(
+                                            'selectCliente'
+                                        )
+                                        .value,
+                                    10
+                                ),
+
+                        idMetodoEntrega:
+                            parseInt(
+                                idMetodoEntrega,
+                                10
+                            ),
+
+                        direccionEntrega:
+                            esEntregaDomicilio()
+                                ? inputDireccion
+                                    .value
+                                    .trim()
+                                : null,
+
+                        lineas:
+                            filas.map(
+                                tr => ({
+                                    tipo:
+                                        tr.dataset.tipo,
+
+                                    idItem:
+                                        parseInt(
+                                            tr.dataset.idItem,
+                                            10
+                                        ),
+
+                                    cantidad:
+                                        parseInt(
+                                            tr.dataset.cantidad,
+                                            10
+                                        ),
+
+                                    observaciones:
+                                        tr.dataset
+                                            .observaciones ||
+                                            null
+                                })
+                            ),
+
+                        pago: pago
+                    };
+
+                    btn.disabled =
+                        true;
+
+                    btn.textContent =
+                        'Registrando...';
+
+                    try {
+
+                        const resp =
+                            await fetch(
+                                registrarPedidoUrl,
+                                {
+                                    method:
+                                        'POST',
+
+                                    headers: {
+                                        'Content-Type':
+                                            'application/json',
+
+                                        'X-CSRF-TOKEN':
+                                            csrfToken
+                                    },
+
+                                    body:
+                                        JSON.stringify(
+                                            registro
+                                        )
+                                }
+                            );
+
+                        if (!resp.ok) {
+
+                            const error =
+                                await resp
+                                    .json()
+                                    .catch(
+                                        () => ({
+                                            mensaje:
+                                                'No se pudo registrar el pedido.'
+                                        })
+                                    );
+
+                            throw new Error(
+                                error.mensaje ||
+                                'No se pudo registrar el pedido.'
+                            );
+                        }
+
+                        const pedidoCreado =
+                            await resp.json();
+
+                        mostrarToast(
+                            'Pedido registrado correctamente.',
+                            'exito'
+                        );
+
+                        actualizarBadgeCantidad(
+                            0
+                        );
+
+                        setTimeout(
+                            () => {
+
+                                window.location.href =
+                                    '@Url.Action("Details", "Pedido")/' +
+                                    pedidoCreado.idPedido;
+
+                            },
+                            1200
+                        );
+                    }
+                    catch (e) {
+
+                        mostrarToast(
+                            e.message,
+                            'error'
+                        );
+
+                        btn.disabled =
+                            false;
+
+                        btn.textContent =
+                            'Registrar Pedido';
+                    }
+                }
+            );
+
+    })();
+
 </script>
+
 }

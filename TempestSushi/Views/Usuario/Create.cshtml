@@ -6,6 +6,7 @@
 
 <style>
     .usuario-form-page {
+        width: 100%;
         max-width: 850px;
         margin: 0 auto;
         padding: 1rem 0 2rem;
@@ -18,36 +19,40 @@
     }
 
     .usuario-form-title {
+        margin: 0;
         font-family: 'Rajdhani', sans-serif;
-        font-size: 2rem;
+        font-size: clamp(1.7rem, 4vw, 2rem);
         font-weight: 700;
         color: #1a3a6e;
         letter-spacing: 1px;
-        margin: 0;
+        line-height: 1.2;
     }
 
     .usuario-form-subtitle {
-        color: #7895ad;
-        font-size: 0.88rem;
         margin-top: 0.25rem;
         margin-bottom: 0;
+        color: #7895ad;
+        font-size: 0.88rem;
+        line-height: 1.45;
     }
 
     .usuario-form-card {
+        width: 100%;
+        padding: 2rem;
         background: #ffffff;
         border: 1px solid #dceaf5;
         border-radius: 14px;
-        padding: 2rem;
         box-shadow: 0 4px 18px rgba(26, 58, 110, 0.08);
     }
 
     .usuario-form-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0 1.25rem;
     }
 
     .usuario-form-group {
+        min-width: 0;
         margin-bottom: 1.35rem;
     }
 
@@ -57,18 +62,19 @@
 
     .usuario-label {
         display: block;
+        margin-bottom: 0.45rem;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 700;
         color: #1a3a6e;
-        margin-bottom: 0.45rem;
     }
 
     .usuario-input,
     .usuario-select {
         width: 100%;
+        min-width: 0;
+        padding: 0.7rem 0.85rem;
         border: 1px solid #cfe0ed;
         border-radius: 9px;
-        padding: 0.7rem 0.85rem;
         background: #ffffff;
         color: #294869;
         outline: none;
@@ -83,19 +89,22 @@
 
     .usuario-validation {
         display: block;
+        margin-top: 0.35rem;
         color: #c0392b;
         font-size: 0.78rem;
-        margin-top: 0.35rem;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
     }
 
     .usuario-summary {
-        color: #a93226;
-        background: rgba(192, 57, 43, 0.08);
+        margin-bottom: 1.25rem;
+        padding: 0.8rem 1rem;
         border: 1px solid rgba(192, 57, 43, 0.20);
         border-radius: 9px;
-        padding: 0.8rem 1rem;
-        margin-bottom: 1.25rem;
+        background: rgba(192, 57, 43, 0.08);
+        color: #a93226;
         font-size: 0.85rem;
+        line-height: 1.45;
     }
 
         .usuario-summary:empty {
@@ -103,9 +112,10 @@
         }
 
     .usuario-note {
+        margin-top: 0.35rem;
         color: #7895ad;
         font-size: 0.78rem;
-        margin-top: 0.35rem;
+        line-height: 1.4;
     }
 
     .usuario-actions {
@@ -116,25 +126,30 @@
     }
 
     .usuario-btn {
-        border-radius: 999px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         padding: 0.7rem 1.4rem;
+        border: none;
+        border-radius: 999px;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 700;
+        text-align: center;
         text-decoration: none;
-        border: none;
         cursor: pointer;
         transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
     }
 
     .usuario-btn-volver {
+        border: 1px solid #d0e8f8;
         background: #eef5fa;
         color: #1a3a6e;
-        border: 1px solid #d0e8f8;
     }
 
         .usuario-btn-volver:hover {
-            color: #1a3a6e;
             background: #e0edf6;
+            color: #1a3a6e;
             transform: translateY(-1px);
         }
 
@@ -151,6 +166,7 @@
         }
 
     @@media (max-width: 700px) {
+
         .usuario-form-grid {
             grid-template-columns: 1fr;
         }
@@ -169,7 +185,58 @@
 
         .usuario-btn {
             width: 100%;
-            text-align: center;
+        }
+    }
+
+    @@media (max-width: 576px) {
+
+        .usuario-form-page {
+            padding-top: 0.5rem;
+        }
+
+        .usuario-form-header {
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.8rem;
+        }
+
+        .usuario-form-title {
+            font-size: 1.6rem;
+        }
+
+        .usuario-form-subtitle {
+            font-size: 0.84rem;
+        }
+
+        .usuario-form-card {
+            padding: 1.2rem;
+            border-radius: 12px;
+        }
+
+        .usuario-input,
+        .usuario-select {
+            font-size: 0.95rem;
+        }
+
+        .usuario-btn {
+            min-height: 46px;
+        }
+    }
+
+    @@media (max-width: 390px) {
+
+        .usuario-form-card {
+            padding: 1rem 0.9rem;
+        }
+
+        .usuario-form-title {
+            font-size: 1.5rem;
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .usuario-btn {
+            transition: none;
         }
     }
 </style>
@@ -259,6 +326,7 @@
 
                     <input asp-for="Telefono"
                            class="usuario-input"
+                           inputmode="tel"
                            autocomplete="off"
                            placeholder="Número de teléfono" />
 
@@ -318,12 +386,16 @@
                 <a asp-controller="Usuario"
                    asp-action="Index"
                    class="usuario-btn usuario-btn-volver">
+
                     Volver
+
                 </a>
 
                 <button type="submit"
                         class="usuario-btn usuario-btn-guardar">
+
                     Crear usuario
+
                 </button>
 
             </div>
@@ -335,11 +407,18 @@
 </div>
 
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        if (typeof anime !== 'undefined') {
 
+        if (
+            typeof anime !== 'undefined' &&
+            !window.matchMedia(
+                '(prefers-reduced-motion: reduce)'
+            ).matches
+        )
+        {
             anime({
                 targets: '.usuario-form-header',
                 opacity: [0, 1],
@@ -357,5 +436,7 @@
                 easing: 'easeOutExpo'
             });
         }
+
     </script>
+
 }

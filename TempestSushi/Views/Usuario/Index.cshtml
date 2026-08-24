@@ -11,10 +11,15 @@
 
 <style>
     .usuarios-page {
+        width: 100%;
         max-width: 1250px;
         margin: 0 auto;
         padding: 1rem 0 2rem;
     }
+
+    /* ═══════════════════════════════════════
+           HEADER
+           ═══════════════════════════════════════ */
 
     .usuarios-header {
         display: flex;
@@ -27,40 +32,46 @@
     }
 
     .usuarios-header-info {
+        min-width: 0;
         display: flex;
         flex-direction: column;
         gap: 0.25rem;
     }
 
     .usuarios-title {
+        margin: 0;
         font-family: 'Rajdhani', sans-serif;
-        font-size: 2rem;
+        font-size: clamp(1.7rem, 4vw, 2rem);
         font-weight: 700;
         color: #1a3a6e;
         letter-spacing: 1px;
-        margin: 0;
+        line-height: 1.2;
     }
 
     .usuarios-subtitle {
+        margin: 0;
         color: #7895ad;
         font-size: 0.88rem;
-        margin: 0;
+        line-height: 1.45;
     }
 
     .usuarios-btn-crear {
+        flex-shrink: 0;
+        min-height: 44px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 0.4rem;
+        padding: 0.7rem 1.4rem;
         border: none;
         border-radius: 999px;
-        padding: 0.7rem 1.4rem;
         background: #1a3a6e;
         color: #ffffff;
-        text-decoration: none;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 700;
         letter-spacing: 0.04em;
+        text-decoration: none;
+        white-space: nowrap;
         transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -71,41 +82,57 @@
             box-shadow: 0 7px 18px rgba(26, 58, 110, 0.22);
         }
 
+    /* ═══════════════════════════════════════
+           ALERTAS
+           ═══════════════════════════════════════ */
+
     .usuarios-alert {
-        border-radius: 10px;
-        padding: 0.85rem 1rem;
         margin-bottom: 1.2rem;
+        padding: 0.85rem 1rem;
+        border-radius: 10px;
         font-size: 0.9rem;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
     }
 
     .usuarios-alert-exito {
-        background: rgba(39, 174, 96, 0.10);
         border: 1px solid rgba(39, 174, 96, 0.25);
+        background: rgba(39, 174, 96, 0.10);
         color: #1e7d46;
     }
 
     .usuarios-alert-error {
-        background: rgba(192, 57, 43, 0.09);
         border: 1px solid rgba(192, 57, 43, 0.25);
+        background: rgba(192, 57, 43, 0.09);
         color: #a93226;
     }
 
+    /* ═══════════════════════════════════════
+           CARD / TABLA
+           ═══════════════════════════════════════ */
+
     .usuarios-card {
+        width: 100%;
+        overflow: hidden;
         background: #ffffff;
         border: 1px solid #dceaf5;
         border-radius: 14px;
-        overflow: hidden;
         box-shadow: 0 4px 18px rgba(26, 58, 110, 0.08);
     }
 
     .usuarios-table-wrapper {
+        width: 100%;
         overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
     }
 
     .usuarios-table {
         width: 100%;
-        border-collapse: collapse;
+        min-width: 880px;
         margin: 0;
+        border-collapse: collapse;
     }
 
         .usuarios-table thead {
@@ -113,22 +140,22 @@
         }
 
         .usuarios-table th {
+            padding: 0.85rem 1rem;
+            border-bottom: 2px solid #d0e8f8;
+            color: #1a3a6e;
             font-family: 'Rajdhani', sans-serif;
             font-size: 0.82rem;
             font-weight: 700;
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            color: #1a3a6e;
-            padding: 0.85rem 1rem;
-            border-bottom: 2px solid #d0e8f8;
             white-space: nowrap;
         }
 
         .usuarios-table td {
             padding: 0.9rem 1rem;
+            border-bottom: 1px solid #edf4f9;
             color: #294869;
             font-size: 0.88rem;
-            border-bottom: 1px solid #edf4f9;
             vertical-align: middle;
         }
 
@@ -144,23 +171,46 @@
                 background: #f8fbfe;
             }
 
+    /* ═══════════════════════════════════════
+           USUARIO
+           ═══════════════════════════════════════ */
+
     .usuario-nombre {
-        font-weight: 700;
+        max-width: 260px;
         color: #1a3a6e;
+        font-weight: 700;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
     }
 
     .usuario-correo {
+        max-width: 280px;
+        margin-top: 2px;
         color: #66869e;
         font-size: 0.82rem;
-        margin-top: 2px;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
     }
+
+    .usuario-propio {
+        display: inline-block;
+        margin-left: 0.3rem;
+        color: #d68910;
+        font-size: 0.68rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    /* ═══════════════════════════════════════
+           BADGES
+           ═══════════════════════════════════════ */
 
     .usuario-badge {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border-radius: 999px;
         padding: 0.3rem 0.65rem;
+        border-radius: 999px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 0.72rem;
         font-weight: 700;
@@ -198,23 +248,35 @@
         color: #626f70;
     }
 
+    /* ═══════════════════════════════════════
+           ACCIONES
+           ═══════════════════════════════════════ */
+
     .usuarios-acciones {
         display: flex;
         align-items: center;
-        gap: 0.45rem;
         flex-wrap: wrap;
+        gap: 0.45rem;
     }
+
+        .usuarios-acciones form {
+            margin: 0;
+        }
 
     .btn-usuario-editar,
     .btn-usuario-estado {
-        border-radius: 7px;
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         padding: 0.38rem 0.7rem;
+        border-radius: 7px;
         font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
         font-size: 0.78rem;
+        font-weight: 700;
         text-decoration: none;
-        transition: transform 0.15s ease, background 0.15s ease;
         white-space: nowrap;
+        transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
     }
 
     .btn-usuario-editar {
@@ -235,9 +297,9 @@
     }
 
     .btn-usuario-desactivar {
+        border: 1px solid rgba(192, 57, 43, 0.20);
         background: rgba(192, 57, 43, 0.08);
         color: #c0392b;
-        border: 1px solid rgba(192, 57, 43, 0.20);
     }
 
         .btn-usuario-desactivar:hover {
@@ -246,9 +308,9 @@
         }
 
     .btn-usuario-activar {
+        border: 1px solid rgba(39, 174, 96, 0.22);
         background: rgba(39, 174, 96, 0.09);
         color: #1e8449;
-        border: 1px solid rgba(39, 174, 96, 0.22);
     }
 
         .btn-usuario-activar:hover {
@@ -256,33 +318,125 @@
             color: #ffffff;
         }
 
-    .usuario-propio {
-        display: inline-block;
-        margin-left: 0.3rem;
-        font-size: 0.68rem;
-        font-weight: 700;
-        color: #d68910;
-    }
+    /* ═══════════════════════════════════════
+           VACÍO
+           ═══════════════════════════════════════ */
 
     .usuarios-vacio {
         padding: 3rem 1rem;
-        text-align: center;
         color: #7895ad;
+        text-align: center;
     }
 
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
     @@media (max-width: 768px) {
+
+        .usuarios-page {
+            padding: 0.75rem 0 1.5rem;
+        }
+
         .usuarios-header {
             flex-direction: column;
             align-items: stretch;
+            margin-bottom: 1.5rem;
         }
 
         .usuarios-btn-crear {
             width: 100%;
         }
+
+        .usuarios-table {
+            min-width: 820px;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .usuarios-page {
+            padding-top: 0.5rem;
+        }
+
+        .usuarios-header {
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.9rem;
+        }
+
+        .usuarios-title {
+            font-size: 1.6rem;
+        }
+
+        .usuarios-subtitle {
+            font-size: 0.84rem;
+        }
+
+        .usuarios-btn-crear {
+            min-height: 46px;
+        }
+
+        .usuarios-card {
+            border-radius: 12px;
+        }
+
+        .usuarios-table {
+            min-width: 790px;
+        }
+
+            .usuarios-table th,
+            .usuarios-table td {
+                padding: 0.75rem 0.8rem;
+            }
+
+        .btn-usuario-editar,
+        .btn-usuario-estado {
+            min-height: 38px;
+            padding: 0.4rem 0.75rem;
+        }
+
+        .usuarios-vacio {
+            padding: 2rem 1rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .usuarios-title {
+            font-size: 1.5rem;
+        }
+
+        .usuarios-subtitle {
+            font-size: 0.8rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .usuarios-table tbody tr,
+        .usuarios-btn-crear,
+        .btn-usuario-editar,
+        .btn-usuario-estado {
+            transition: none;
+        }
     }
 </style>
 
 <div class="usuarios-page">
+
+    <!-- HEADER -->
 
     <div class="usuarios-header">
 
@@ -301,24 +455,35 @@
         <a asp-controller="Usuario"
            asp-action="Create"
            class="usuarios-btn-crear">
+
             + Crear usuario
+
         </a>
 
     </div>
 
+    <!-- MENSAJES -->
     @if (TempData["MensajeExito"] != null)
     {
-        <div class="usuarios-alert usuarios-alert-exito">
+        <div class="usuarios-alert usuarios-alert-exito"
+             role="status">
+
             @TempData["MensajeExito"]
+
         </div>
     }
 
     @if (TempData["MensajeError"] != null)
     {
-        <div class="usuarios-alert usuarios-alert-error">
+        <div class="usuarios-alert usuarios-alert-error"
+             role="alert">
+
             @TempData["MensajeError"]
+
         </div>
     }
+
+    <!-- LISTADO -->
 
     <div class="usuarios-card">
 
@@ -329,14 +494,35 @@
                 <table class="usuarios-table">
 
                     <thead>
+
                         <tr>
-                            <th>Usuario</th>
-                            <th>Teléfono</th>
-                            <th>Rol</th>
-                            <th>Estado</th>
-                            <th>Fecha de registro</th>
-                            <th>Acciones</th>
+
+                            <th>
+                                Usuario
+                            </th>
+
+                            <th>
+                                Teléfono
+                            </th>
+
+                            <th>
+                                Rol
+                            </th>
+
+                            <th>
+                                Estado
+                            </th>
+
+                            <th>
+                                Fecha de registro
+                            </th>
+
+                            <th>
+                                Acciones
+                            </th>
+
                         </tr>
+
                     </thead>
 
                     <tbody>
@@ -350,17 +536,30 @@
                             var claseRol =
                             usuario.Rol switch
                             {
-                                "Administrador" => "usuario-rol-administrador",
-                                "Encargado" => "usuario-rol-encargado",
-                                "Cocina" => "usuario-rol-cocina",
-                                "Cliente" => "usuario-rol-cliente",
-                                _ => "usuario-inactivo"
+                                "Administrador" =>
+                                            "usuario-rol-administrador",
+
+                                "Encargado" =>
+                                            "usuario-rol-encargado",
+
+                                "Cocina" =>
+                                            "usuario-rol-cocina",
+
+                                "Cliente" =>
+                                            "usuario-rol-cliente",
+
+                                _ =>
+                                            "usuario-inactivo"
                             };
 
                             <tr>
 
+                                <!-- USUARIO -->
+
                                 <td>
+
                                     <div class="usuario-nombre">
+
                                         @usuario.NombreCompleto
 
                                         @if (esUsuarioActual)
@@ -369,26 +568,39 @@
                                                 Usted
                                             </span>
                                         }
+
                                 </div>
 
                                 <div class="usuario-correo">
                                     @usuario.Correo
                                 </div>
+
                             </td>
 
+                            <!-- TELÉFONO -->
+
                             <td>
+
                                 @(string.IsNullOrWhiteSpace(usuario.Telefono)
                                                             ? "—"
                                                             : usuario.Telefono)
+
                         </td>
 
+                                <!-- ROL -->
+
                                 <td>
+
                                     <span class="usuario-badge @claseRol">
                                         @usuario.Rol
                                     </span>
+
                                 </td>
 
+                                <!-- ESTADO -->
+
                                 <td>
+
                             @if (usuario.Activo)
                                     {
                                         <span class="usuario-badge usuario-activo">
@@ -401,37 +613,49 @@
                                             Inactivo
                                         </span>
                                     }
+
                                 </td>
 
-                                <td>
-                                    @usuario.FechaRegistro.ToString("dd/MM/yyyy")
-                                </td>
+                                <!-- FECHA -->
 
                                 <td>
 
-                                    <div class="usuarios-acciones">
+                                    @usuario.FechaRegistro.ToString(
+                                    "dd/MM/yyyy"
+                                                        )
 
-                                        <a asp-controller="Usuario"
-                                           asp-action="Edit"
-                                           asp-route-id="@usuario.IdUsuario"
-                                           class="btn-usuario-editar">
-                                            Editar
-                                        </a>
+                        </td>
 
-                                        @if (!esUsuarioActual)
+                        <!-- ACCIONES -->
+
+                        <td>
+
+                            <div class="usuarios-acciones">
+
+                                <a asp-controller="Usuario"
+                                   asp-action="Edit"
+                                   asp-route-id="@usuario.IdUsuario"
+                                   class="btn-usuario-editar">
+
+                                    Editar
+
+                                </a>
+
+                                @if (!esUsuarioActual)
                                         {
                                             <form asp-controller="Usuario"
                                                   asp-action="CambiarEstado"
                                                   asp-route-id="@usuario.IdUsuario"
-                                                  method="post"
-                                                  style="margin:0;">
+                                                  method="post">
 
                                                 @if (usuario.Activo)
                                                 {
                                                     <button type="submit"
                                                             class="btn-usuario-estado btn-usuario-desactivar"
                                                             onclick="return confirm('¿Desea inactivar este usuario?');">
+
                                                         Inactivar
+
                                                     </button>
                                                 }
                                                 else
@@ -439,7 +663,9 @@
                                                     <button type="submit"
                                                             class="btn-usuario-estado btn-usuario-activar"
                                                             onclick="return confirm('¿Desea activar este usuario?');">
+
                                                         Activar
+
                                                     </button>
                                                 }
 
@@ -462,7 +688,9 @@
         else
         {
             <div class="usuarios-vacio">
+
                 No existen usuarios registrados.
+
             </div>
         }
 
@@ -471,9 +699,16 @@
 </div>
 
 @section Scripts {
-    <script>
-        if (typeof anime !== 'undefined') {
 
+    <script>
+
+        if (
+            typeof anime !== 'undefined' &&
+            !window.matchMedia(
+                '(prefers-reduced-motion: reduce)'
+            ).matches
+        )
+        {
             anime({
                 targets: '.usuarios-header',
                 opacity: [0, 1],
@@ -495,12 +730,19 @@
                 targets: '.usuarios-table tbody tr',
                 opacity: [0, 1],
                 translateX: [-8, 0],
-                delay: anime.stagger(45, {
-                    start: 250
-                }),
+
+                delay: anime.stagger(
+                    45,
+                    {
+                        start: 250
+                    }
+                ),
+
                 duration: 400,
                 easing: 'easeOutQuad'
             });
         }
+
     </script>
+
 }

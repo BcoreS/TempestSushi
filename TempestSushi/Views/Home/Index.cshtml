@@ -2,9 +2,11 @@
     ViewData["Title"] = "Inicio";
 }
 
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap"
+      rel="stylesheet">
 
 <style>
+
     :root {
         --ink: #0a1128;
         --abyss: #0d1b3e;
@@ -14,49 +16,76 @@
         --mist: rgba(255, 255, 255, 0.06);
     }
 
-    /* Trampa para que el hero ocupe todo el ancho aunque el layout tenga un .container que lo limite */
-    .ts-hero, .ts-cards-section {
+    /* ═══════════════════════════════════════
+           SECCIONES FULL WIDTH
+           ═══════════════════════════════════════ */
+
+    .ts-hero,
+    .ts-cards-section {
+        width: 100vw;
         margin-left: calc(50% - 50vw);
         margin-right: calc(50% - 50vw);
-        width: 100vw;
         box-sizing: border-box;
     }
 
+    /* ═══════════════════════════════════════
+           HERO
+           ═══════════════════════════════════════ */
+
     .ts-hero {
+        position: relative;
         min-height: 86vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 8vh 24px 8vh;
-        background: radial-gradient(ellipse at 50% -10%, rgba(196, 30, 58, 0.20), transparent 55%), linear-gradient(180deg, var(--ink) 0%, var(--abyss) 60%, #142454 100%);
-        color: var(--foam);
-        position: relative;
+        padding: 8vh 24px;
         overflow: hidden;
+        color: var(--foam);
+        background: radial-gradient( ellipse at 50% -10%, rgba(196, 30, 58, 0.20), transparent 55% ), linear-gradient( 180deg, var(--ink) 0%, var(--abyss) 60%, #142454 100% );
     }
 
+        .ts-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient( circle at 15% 75%, rgba(79, 168, 232, 0.05), transparent 28% );
+        }
+
+    /* ═══════════════════════════════════════
+           KICKER
+           ═══════════════════════════════════════ */
+
     .ts-kicker {
+        position: relative;
+        margin-bottom: 1.2rem;
         font-family: 'Zen Kaku Gothic New', sans-serif;
         font-size: 0.85rem;
+        font-weight: 500;
         letter-spacing: 0.18em;
         text-transform: uppercase;
         color: var(--vermillion);
-        margin-bottom: 1.2rem;
         opacity: 0;
     }
 
+    /* ═══════════════════════════════════════
+           TÍTULO
+           ═══════════════════════════════════════ */
+
     .ts-headline {
-        font-family: 'Bodoni Moda', serif;
-        font-weight: 700;
-        font-size: clamp(3rem, 9vw, 7.5rem);
-        line-height: 0.95;
-        letter-spacing: 0.01em;
+        position: relative;
         margin: 0;
         display: flex;
         flex-wrap: wrap;
-        gap: 0.25em 0.45em;
         justify-content: center;
+        gap: 0.25em 0.45em;
+        font-family: 'Bodoni Moda', serif;
+        font-weight: 700;
+        font-size: clamp( 3rem, 9vw, 7.5rem );
+        line-height: 0.95;
+        letter-spacing: 0.01em;
     }
 
         .ts-headline .word {
@@ -72,8 +101,13 @@
                 font-style: italic;
             }
 
+    /* ═══════════════════════════════════════
+           LÍNEA DECORATIVA
+           ═══════════════════════════════════════ */
+
     .ts-line-wrap {
-        width: min(560px, 80vw);
+        position: relative;
+        width: min( 560px, 80vw );
         margin: 1.4rem auto 0;
     }
 
@@ -90,22 +124,32 @@
         stroke-linecap: round;
     }
 
+    /* ═══════════════════════════════════════
+           SUBTÍTULO
+           ═══════════════════════════════════════ */
+
     .ts-sub {
-        font-family: 'Zen Kaku Gothic New', sans-serif;
-        font-size: clamp(1rem, 2vw, 1.25rem);
-        color: rgba(232, 237, 245, 0.78);
+        position: relative;
         max-width: 540px;
         margin: 1.6rem auto 0;
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: clamp( 1rem, 2vw, 1.25rem );
         line-height: 1.6;
+        color: rgba( 232, 237, 245, 0.78 );
         opacity: 0;
     }
 
+    /* ═══════════════════════════════════════
+           BOTONES
+           ═══════════════════════════════════════ */
+
     .ts-ctas {
+        position: relative;
         display: flex;
-        gap: 1rem;
-        margin-top: 2.4rem;
         flex-wrap: wrap;
         justify-content: center;
+        gap: 1rem;
+        margin-top: 2.4rem;
     }
 
         .ts-ctas .ts-cta {
@@ -113,15 +157,18 @@
         }
 
     .ts-cta {
+        min-width: 145px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.85rem 1.8rem;
+        border-radius: 999px;
         font-family: 'Zen Kaku Gothic New', sans-serif;
         font-weight: 600;
         font-size: 0.95rem;
         letter-spacing: 0.04em;
-        padding: 0.85rem 1.8rem;
-        border-radius: 999px;
         text-decoration: none;
         transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
-        display: inline-block;
     }
 
     .ts-cta-primary {
@@ -132,31 +179,43 @@
 
         .ts-cta-primary:hover {
             transform: translateY(-3px);
+            color: var(--foam);
             box-shadow: 0 14px 30px rgba(196, 30, 58, 0.45);
         }
 
     .ts-cta-secondary {
+        border: 1px solid rgba(212, 175, 55, 0.5);
         background: transparent;
         color: var(--gold);
-        border: 1px solid rgba(212, 175, 55, 0.5);
     }
 
         .ts-cta-secondary:hover {
             transform: translateY(-3px);
             border-color: var(--gold);
             background: rgba(212, 175, 55, 0.08);
+            color: var(--gold);
         }
 
+    .ts-cta:focus-visible {
+        outline: 2px solid rgba(212, 175, 55, 0.80);
+        outline-offset: 4px;
+    }
+
+    /* ═══════════════════════════════════════
+           SECCIÓN CARDS
+           ═══════════════════════════════════════ */
+
     .ts-cards-section {
-        background: var(--abyss);
         padding: 5rem 24px 6rem;
+        background: var(--abyss);
     }
 
     .ts-cards {
+        width: 100%;
         max-width: 1100px;
         margin: 0 auto;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        grid-template-columns: repeat( auto-fit, minmax(230px, 1fr) );
         gap: 1.4rem;
     }
 
@@ -164,21 +223,32 @@
             opacity: 0;
         }
 
+    /* ═══════════════════════════════════════
+           CARD
+           ═══════════════════════════════════════ */
+
     .ts-card {
-        background: var(--mist);
+        min-width: 0;
+        display: block;
+        padding: 1.8rem 1.6rem;
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 18px;
-        padding: 1.8rem 1.6rem;
+        background: var(--mist);
         color: var(--foam);
         text-decoration: none;
-        display: block;
-        transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+        transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     }
 
         .ts-card:hover {
             transform: translateY(-6px);
             border-color: var(--vermillion);
             background: rgba(196, 30, 58, 0.07);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
+        }
+
+        .ts-card:focus-visible {
+            outline: 2px solid rgba(212, 175, 55, 0.80);
+            outline-offset: 4px;
         }
 
     .ts-card-eyebrow {
@@ -190,21 +260,24 @@
     }
 
     .ts-card h3 {
+        margin: 0.5rem 0 0.6rem;
         font-family: 'Bodoni Moda', serif;
         font-size: 1.5rem;
-        margin: 0.5rem 0 0.6rem;
         color: var(--foam);
     }
 
     .ts-card p {
+        margin: 0;
         font-family: 'Zen Kaku Gothic New', sans-serif;
         font-size: 0.9rem;
-        color: rgba(232, 237, 245, 0.7);
         line-height: 1.5;
-        margin: 0;
+        color: rgba( 232, 237, 245, 0.70 );
     }
 
-    /* Si el navegador pide menos movimiento, o si anime.js no carga, todo queda visible sin animar */
+    /* ═══════════════════════════════════════
+           FALLBACK SIN ANIME.JS
+           ═══════════════════════════════════════ */
+
     body.ts-static .ts-kicker,
     body.ts-static .ts-headline .word,
     body.ts-static .ts-sub,
@@ -217,67 +290,389 @@
         stroke-dashoffset: 0 !important;
     }
 
-    @@media (prefers-reduced-motion: reduce) {
-        .ts-kicker, .ts-headline .word, .ts-sub, .ts-ctas .ts-cta, .ts-cards .ts-card {
-            opacity: 1 !important;
+    /* ═══════════════════════════════════════
+           TABLET
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 768px) {
+
+        .ts-hero {
+            min-height: 78vh;
+            padding: 5rem 1.25rem;
+        }
+
+        .ts-kicker {
+            margin-bottom: 1rem;
+            font-size: 0.76rem;
+        }
+
+        .ts-headline {
+            font-size: clamp( 3rem, 13vw, 5rem );
+            gap: 0.2em 0.35em;
+        }
+
+        .ts-line-wrap {
+            width: min( 500px, 86vw );
+            margin-top: 1.2rem;
+        }
+
+        .ts-sub {
+            max-width: 480px;
+            margin-top: 1.35rem;
+            font-size: 1rem;
+        }
+
+        .ts-ctas {
+            margin-top: 2rem;
+        }
+
+        .ts-cards-section {
+            padding: 4rem 1.25rem 5rem;
         }
     }
+
+    /* ═══════════════════════════════════════
+           MÓVIL
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 576px) {
+
+        .ts-hero {
+            min-height: 72vh;
+            padding: 4rem 1rem;
+        }
+
+        .ts-kicker {
+            margin-bottom: 0.9rem;
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+        }
+
+        .ts-headline {
+            font-size: clamp( 2.7rem, 16vw, 4.4rem );
+            line-height: 0.98;
+            gap: 0.18em 0.32em;
+        }
+
+        .ts-line-wrap {
+            width: min( 440px, 88vw );
+            margin-top: 1.1rem;
+        }
+
+        .ts-sub {
+            max-width: 360px;
+            margin-top: 1.25rem;
+            font-size: 0.95rem;
+            line-height: 1.55;
+        }
+
+        .ts-ctas {
+            width: 100%;
+            gap: 0.75rem;
+            margin-top: 1.8rem;
+        }
+
+        .ts-cta {
+            width: min( 100%, 300px );
+            min-height: 47px;
+            padding: 0.8rem 1.4rem;
+            text-align: center;
+        }
+
+        .ts-cards-section {
+            padding: 3rem 1rem 4rem;
+        }
+
+        .ts-cards {
+            gap: 1rem;
+        }
+
+        .ts-card {
+            padding: 1.5rem 1.3rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           TELÉFONO PEQUEÑO
+           ═══════════════════════════════════════ */
+
+    @@media (max-width: 390px) {
+
+        .ts-hero {
+            min-height: 68vh;
+            padding: 3.2rem 0.85rem;
+        }
+
+        .ts-kicker {
+            font-size: 0.67rem;
+        }
+
+        .ts-headline {
+            font-size: 2.6rem;
+            gap: 0.15em 0.3em;
+        }
+
+        .ts-line-wrap {
+            width: 90vw;
+        }
+
+        .ts-sub {
+            font-size: 0.9rem;
+        }
+
+        .ts-cta {
+            width: 100%;
+            max-width: 285px;
+            padding: 0.8rem 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .ts-cards {
+            grid-template-columns: 1fr;
+        }
+
+        .ts-card h3 {
+            font-size: 1.4rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           PANTALLAS BAJAS
+           ═══════════════════════════════════════ */
+
+    @@media (max-height: 700px) and (min-width: 577px) {
+
+        .ts-hero {
+            min-height: 620px;
+            padding: 3rem 1.5rem;
+        }
+
+        .ts-headline {
+            font-size: clamp( 3rem, 8vw, 5.5rem );
+        }
+
+        .ts-kicker {
+            margin-bottom: 0.85rem;
+        }
+
+        .ts-line-wrap {
+            margin-top: 1rem;
+        }
+
+        .ts-sub {
+            margin-top: 1rem;
+        }
+
+        .ts-ctas {
+            margin-top: 1.5rem;
+        }
+    }
+
+    /* ═══════════════════════════════════════
+           MOVIMIENTO REDUCIDO
+           ═══════════════════════════════════════ */
+
+    @@media (prefers-reduced-motion: reduce) {
+
+        .ts-kicker,
+        .ts-headline .word,
+        .ts-sub,
+        .ts-ctas .ts-cta,
+        .ts-cards .ts-card {
+            opacity: 1 !important;
+        }
+
+        .ts-card,
+        .ts-cta {
+            transition: none;
+        }
+    }
+
 </style>
 
+<!-- ═══════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════ -->
+
 <section class="ts-hero">
-    <div class="ts-kicker">Cocina de tormenta, precisión de mar</div>
-    <h1 class="ts-headline" id="tsHeadline">
-        <span class="word">TEMPEST</span><span class="word">SUSHI</span>
+
+    <div class="ts-kicker">
+
+        Cocina de tormenta, precisión de mar
+
+    </div>
+
+    <h1 class="ts-headline"
+        id="tsHeadline">
+
+        <span class="word">
+            TEMPEST
+        </span>
+
+        <span class="word">
+            SUSHI
+        </span>
+
     </h1>
+
     <div class="ts-line-wrap">
-        <svg viewBox="0 0 1000 80" xmlns="http://www.w3.org/2000/svg">
-            <path id="tsPath" d="M0,40 L120,10 L180,58 L260,14 Q340,72 420,32 T580,42 L650,8 L720,56 L800,20 Q880,62 1000,36" />
+
+        <svg viewBox="0 0 1000 80"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-hidden="true">
+
+            <path id="tsPath"
+                  d="M0,40 L120,10 L180,58 L260,14 Q340,72 420,32 T580,42 L650,8 L720,56 L800,20 Q880,62 1000,36" />
+
         </svg>
+
     </div>
-    <p class="ts-sub" id="tsSub">Donde la furia del océano se convierte en precisión de cuchillo.</p>
-    <div class="ts-ctas" id="tsCtas">
-        <a class="ts-cta ts-cta-primary" asp-controller="Producto" asp-action="Index">Ver productos</a>
-        <a class="ts-cta ts-cta-secondary" asp-controller="Combo" asp-action="Index">Ver combos</a>
+
+    <p class="ts-sub"
+       id="tsSub">
+
+        Donde la furia del océano se convierte
+        en precisión de cuchillo.
+
+    </p>
+
+    <div class="ts-ctas"
+         id="tsCtas">
+
+        <a class="ts-cta ts-cta-primary"
+           asp-controller="Producto"
+           asp-action="Index">
+
+            Ver productos
+
+        </a>
+
+        <a class="ts-cta ts-cta-secondary"
+           asp-controller="Combo"
+           asp-action="Index">
+
+            Ver combos
+
+        </a>
+
     </div>
+
 </section>
+
+<!-- ═══════════════════════════════════════
+     ACCESOS
+     ═══════════════════════════════════════ -->
 
 <section class="ts-cards-section">
-    <div class="ts-cards" id="tsCards">
-        <a class="ts-card" asp-controller="Producto" asp-action="Index">
-            <span class="ts-card-eyebrow">Carta</span>
-            <h3>Productos</h3>
-            <p>Más de 20 platillos: rolls, nigiris, entradas y postres preparados al momento.</p>
+
+    <div class="ts-cards"
+         id="tsCards">
+
+        <a class="ts-card"
+           asp-controller="Producto"
+           asp-action="Index">
+
+            <span class="ts-card-eyebrow">
+                Carta
+            </span>
+
+            <h3>
+                Productos
+            </h3>
+
+            <p>
+                Más de 20 platillos: rolls, nigiris,
+                entradas y postres preparados al momento.
+            </p>
+
         </a>
-        <a class="ts-card" asp-controller="Combo" asp-action="Index">
-            <span class="ts-card-eyebrow">Para compartir</span>
-            <h3>Combos</h3>
-            <p>Combinaciones armadas, desde dúos hasta menús familiares.</p>
+
+        <a class="ts-card"
+           asp-controller="Combo"
+           asp-action="Index">
+
+            <span class="ts-card-eyebrow">
+                Para compartir
+            </span>
+
+            <h3>
+                Combos
+            </h3>
+
+            <p>
+                Combinaciones armadas, desde dúos
+                hasta menús familiares.
+            </p>
+
         </a>
-        <a class="ts-card" asp-controller="Menu" asp-action="Index">
-            <span class="ts-card-eyebrow">Disponible ahora</span>
-            <h3>Menús</h3>
-            <p>Lo que se sirve según el día y la hora: almuerzo, cena o fin de semana.</p>
+
+        <a class="ts-card"
+           asp-controller="Menu"
+           asp-action="Index">
+
+            <span class="ts-card-eyebrow">
+                Disponible ahora
+            </span>
+
+            <h3>
+                Menús
+            </h3>
+
+            <p>
+                Lo que se sirve según el día y la hora:
+                almuerzo, cena o fin de semana.
+            </p>
+
         </a>
-        <a class="ts-card" asp-controller="ProcesoPreparacion" asp-action="Index">
-            <span class="ts-card-eyebrow">En cocina</span>
-            <h3>Preparación</h3>
-            <p>Cada plato pasa por estaciones reales, paso a paso, hasta llegar a tu mesa.</p>
+
+        <a class="ts-card"
+           asp-controller="ProcesoPreparacion"
+           asp-action="Index">
+
+            <span class="ts-card-eyebrow">
+                En cocina
+            </span>
+
+            <h3>
+                Preparación
+            </h3>
+
+            <p>
+                Cada plato pasa por estaciones reales,
+                paso a paso, hasta llegar a tu mesa.
+            </p>
+
         </a>
 
     </div>
 
-   
 </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
-<script>
-    (function () {
-        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+<!-- ═══════════════════════════════════════
+     ANIMACIONES
+     ═══════════════════════════════════════ -->
 
-        if (prefersReducedMotion || typeof anime === 'undefined') {
-            document.body.classList.add('ts-static');
+<script>
+
+    (function () {
+
+        var prefersReducedMotion =
+            window.matchMedia(
+                '(prefers-reduced-motion: reduce)'
+            ).matches;
+
+        if (
+            prefersReducedMotion ||
+            typeof anime === 'undefined'
+        ) {
+            document.body.classList.add(
+                'ts-static'
+            );
+
             return;
         }
+
+        /* Kicker */
 
         anime({
             targets: '.ts-kicker',
@@ -287,28 +682,63 @@
             easing: 'easeOutQuad'
         });
 
+        /* Título */
+
         anime({
             targets: '#tsHeadline .word',
             opacity: [0, 1],
             translateY: [30, 0],
-            delay: anime.stagger(150, { start: 250 }),
+
+            delay:
+                anime.stagger(
+                    150,
+                    {
+                        start: 250
+                    }
+                ),
+
             duration: 800,
+
             easing: 'easeOutExpo'
         });
 
-        var path = document.getElementById('tsPath');
+        /* Línea */
+
+        var path =
+            document.getElementById(
+                'tsPath'
+            );
+
         if (path) {
-            var pathLength = path.getTotalLength();
-            path.style.strokeDasharray = pathLength;
-            path.style.strokeDashoffset = pathLength;
+
+            var pathLength =
+                path.getTotalLength();
+
+            path.style.strokeDasharray =
+                pathLength;
+
+            path.style.strokeDashoffset =
+                pathLength;
+
             anime({
                 targets: '#tsPath',
-                strokeDashoffset: [pathLength, 0],
+
+                strokeDashoffset:
+                    [
+                        pathLength,
+                        0
+                    ],
+
                 duration: 1100,
+
                 delay: 700,
-                easing: 'easeInOutSine'
+
+                easing:
+                    'easeInOutSine'
             });
         }
+
+        /* Subtítulo */
 
         anime({
             targets: '#tsSub',
@@ -319,34 +749,108 @@
             easing: 'easeOutQuad'
         });
 
+        /* Botones */
+
         anime({
-            targets: '#tsCtas .ts-cta',
+            targets:
+                '#tsCtas .ts-cta',
+
             opacity: [0, 1],
+
             scale: [0.92, 1],
-            delay: anime.stagger(120, { start: 1750 }),
+
+            delay:
+                anime.stagger(
+                    120,
+                    {
+                        start: 1750
+                    }
+                ),
+
             duration: 500,
+
             easing: 'easeOutBack'
         });
 
-        var cards = document.querySelectorAll('#tsCards .ts-card');
-        if ('IntersectionObserver' in window && cards.length) {
+        /* Cards */
+
+        var cards =
+            document.querySelectorAll(
+                '#tsCards .ts-card'
+            );
+
+        if (
+            'IntersectionObserver' in window &&
+            cards.length
+        ) {
+
             var animated = false;
-            var observer = new IntersectionObserver(function (entries) {
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting && !animated) {
-                        animated = true;
-                        anime({
-                            targets: cards,
-                            opacity: [0, 1],
-                            translateY: [24, 0],
-                            delay: anime.stagger(100),
-                            duration: 600,
-                            easing: 'easeOutQuad'
-                        });
+
+            var observer =
+                new IntersectionObserver(
+                    function (entries) {
+
+                        entries.forEach(
+                            function (entry) {
+
+                                if (
+                                    entry.isIntersecting &&
+                                    !animated
+                                ) {
+
+                                    animated = true;
+
+                                    anime({
+                                        targets:
+                                            cards,
+
+                                        opacity:
+                                            [0, 1],
+
+                                        translateY:
+                                            [24, 0],
+
+                                        delay:
+                                            anime.stagger(
+                                                100
+                                            ),
+
+                                        duration:
+                                            600,
+
+                                        easing:
+                                            'easeOutQuad'
+                                    });
+
+                                    observer.disconnect();
+                                }
+                            });
+                    },
+                    {
+                        threshold: 0.2
                     }
-                });
-            }, { threshold: 0.2 });
-            observer.observe(document.getElementById('tsCards'));
+                );
+
+            var cardsContainer =
+                document.getElementById(
+                    'tsCards'
+                );
+
+            if (cardsContainer) {
+                observer.observe(
+                    cardsContainer
+                );
+            }
         }
+        else {
+
+            cards.forEach(
+                function (card) {
+                    card.style.opacity = '1';
+                }
+            );
+        }
+
     })();
+
 </script>
