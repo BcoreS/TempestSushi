@@ -84,8 +84,8 @@
         }
 
         /* ═══════════════════════════════════════
-                           NAVBAR
-                           ═══════════════════════════════════════ */
+                                   NAVBAR
+                                   ═══════════════════════════════════════ */
 
         .ts-navbar {
             width: 100%;
@@ -115,8 +115,8 @@
         }
 
         /* ═══════════════════════════════════════
-                           BRAND
-                           ═══════════════════════════════════════ */
+                                   BRAND
+                                   ═══════════════════════════════════════ */
 
         .ts-brand {
             display: flex;
@@ -159,9 +159,26 @@
             white-space: nowrap;
         }
 
+        .ts-nav-icon {
+            flex-shrink: 0;
+            opacity: 0.85;
+        }
+
+        .ts-navbar-toggler.ts-toggler-open .ts-toggler-icon span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .ts-navbar-toggler.ts-toggler-open .ts-toggler-icon span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .ts-navbar-toggler.ts-toggler-open .ts-toggler-icon span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
         /* ═══════════════════════════════════════
-                           BOTÓN HAMBURGUESA
-                           ═══════════════════════════════════════ */
+                                   BOTÓN HAMBURGUESA
+                                   ═══════════════════════════════════════ */
 
         .ts-navbar-toggler {
             display: none;
@@ -205,8 +222,8 @@
             }
 
         /* ═══════════════════════════════════════
-                           CONTENEDOR DERECHO
-                           ═══════════════════════════════════════ */
+                                   CONTENEDOR DERECHO
+                                   ═══════════════════════════════════════ */
 
         .ts-navbar-right {
             min-width: 0;
@@ -222,8 +239,8 @@
         }
 
         /* ═══════════════════════════════════════
-                           NAVEGACIÓN
-                           ═══════════════════════════════════════ */
+                                   NAVEGACIÓN
+                                   ═══════════════════════════════════════ */
 
         .ts-nav {
             display: flex;
@@ -258,8 +275,8 @@
                 }
 
             /* ═══════════════════════════════════════
-                           DROPDOWNS
-                           ═══════════════════════════════════════ */
+                                   DROPDOWNS
+                                   ═══════════════════════════════════════ */
 
             .ts-nav .dropdown-menu {
                 min-width: 215px;
@@ -308,8 +325,8 @@
         }
 
         /* ═══════════════════════════════════════
-                           BADGE DE PEDIDOS
-                           ═══════════════════════════════════════ */
+                                   BADGE DE PEDIDOS
+                                   ═══════════════════════════════════════ */
 
         .ts-cart-badge {
             display: inline-flex;
@@ -328,8 +345,8 @@
         }
 
         /* ═══════════════════════════════════════
-                           USUARIO
-                           ═══════════════════════════════════════ */
+                                   USUARIO
+                                   ═══════════════════════════════════════ */
 
         .ts-user-area {
             display: flex;
@@ -398,8 +415,8 @@
         }
 
         /* ═══════════════════════════════════════
-                           LOGIN / LOGOUT
-                           ═══════════════════════════════════════ */
+                                   LOGIN / LOGOUT
+                                   ═══════════════════════════════════════ */
 
         .ts-logout-form {
             margin: 0;
@@ -445,8 +462,8 @@
             }
 
         /* ═══════════════════════════════════════
-                           CONTENIDO PRINCIPAL
-                           ═══════════════════════════════════════ */
+                                   CONTENIDO PRINCIPAL
+                                   ═══════════════════════════════════════ */
 
         .ts-main {
             width: 100%;
@@ -460,8 +477,8 @@
             }
 
         /* ═══════════════════════════════════════
-                           FOOTER
-                           ═══════════════════════════════════════ */
+                                   FOOTER
+                                   ═══════════════════════════════════════ */
 
         footer.ts-footer {
             flex-shrink: 0;
@@ -487,8 +504,8 @@
                 }
 
         /* ═══════════════════════════════════════
-                           TABLET / NOTEBOOK PEQUEÑO
-                           ═══════════════════════════════════════ */
+                                   TABLET / NOTEBOOK PEQUEÑO
+                                   ═══════════════════════════════════════ */
 
         @@media (max-width: 1100px) {
 
@@ -539,8 +556,8 @@
         }
 
         /* ═══════════════════════════════════════
-                           MÓVIL / TABLET VERTICAL
-                           ═══════════════════════════════════════ */
+                                   MÓVIL / TABLET VERTICAL
+                                   ═══════════════════════════════════════ */
 
         @@media (max-width: 768px) {
 
@@ -688,8 +705,8 @@
         }
 
         /* ═══════════════════════════════════════
-                           TELÉFONOS PEQUEÑOS
-                           ═══════════════════════════════════════ */
+                                   TELÉFONOS PEQUEÑOS
+                                   ═══════════════════════════════════════ */
 
         @@media (max-width: 430px) {
 
@@ -736,8 +753,8 @@
         }
 
         /* ═══════════════════════════════════════
-                           TELÉFONOS MUY PEQUEÑOS
-                           ═══════════════════════════════════════ */
+                                   TELÉFONOS MUY PEQUEÑOS
+                                   ═══════════════════════════════════════ */
 
         @@media (max-width: 350px) {
 
@@ -765,8 +782,8 @@
         }
 
         /* ═══════════════════════════════════════
-                           ACCESIBILIDAD: REDUCIR MOVIMIENTO
-                           ═══════════════════════════════════════ */
+                                   ACCESIBILIDAD: REDUCIR MOVIMIENTO
+                                   ═══════════════════════════════════════ */
 
         @@media (prefers-reduced-motion: reduce) {
 
@@ -865,17 +882,17 @@
                                    asp-controller="Home"
                                    asp-action="Index">
 
+                                    <svg class="ts-nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7" /><path d="M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9" /></svg>
                                     Home
 
                                 </a>
 
                             </li>
 
-                            <!-- OPERACIÓN -->
+                            <!-- CATÁLOGO -->
                             @if (User.IsInRole("Cliente")
                                                     || User.IsInRole("Encargado")
-                                                    || User.IsInRole("Administrador")
-                                                    || User.IsInRole("Cocina"))
+                                                    || User.IsInRole("Administrador"))
                             {
                                 <li class="nav-item dropdown">
 
@@ -885,142 +902,122 @@
                                        data-bs-toggle="dropdown"
                                        aria-expanded="false">
 
-                                        Operación
+                                        <svg class="ts-nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /></svg>
+                                        Catálogo
 
                                     </a>
 
                                     <ul class="dropdown-menu">
 
-                                        <!-- CATÁLOGO -->
-                                        @if (User.IsInRole("Cliente")
-                                                                        || User.IsInRole("Encargado")
-                                                                        || User.IsInRole("Administrador"))
-                                        {
-                                            <li class="ts-dropdown-label">
-                                                Catálogo
-                                            </li>
+                                        <li>
 
-                                            <li>
+                                            <a class="dropdown-item"
+                                               asp-area=""
+                                               asp-controller="Producto"
+                                               asp-action="Index">
 
-                                                <a class="dropdown-item"
-                                                   asp-area=""
-                                                   asp-controller="Producto"
-                                                   asp-action="Index">
+                                                Productos
 
-                                                    Productos
+                                            </a>
 
-                                                </a>
+                                        </li>
 
-                                            </li>
+                                        <li>
 
-                                            <li>
+                                            <a class="dropdown-item"
+                                               asp-area=""
+                                               asp-controller="Combo"
+                                               asp-action="Index">
 
-                                                <a class="dropdown-item"
-                                                   asp-area=""
-                                                   asp-controller="Combo"
-                                                   asp-action="Index">
+                                                Combos
 
-                                                    Combos
+                                            </a>
 
-                                                </a>
+                                        </li>
 
-                                            </li>
+                                        <li>
 
-                                            <li>
+                                            <a class="dropdown-item"
+                                               asp-area=""
+                                               asp-controller="Menu"
+                                               asp-action="Index">
 
-                                                <a class="dropdown-item"
-                                                   asp-area=""
-                                                   asp-controller="Menu"
-                                                   asp-action="Index">
+                                                Menús
 
-                                                    Menús
+                                            </a>
 
-                                                </a>
-
-                                            </li>
-
-                                            <li>
-                                                <div class="ts-dropdown-divider">
-                                                </div>
-                                            </li>
-
-                                            <li class="ts-dropdown-label">
-                                                Pedidos
-                                            </li>
-
-                                            <li>
-
-                                                <a class="dropdown-item"
-                                                   asp-area=""
-                                                   asp-controller="Pedido"
-                                                   asp-action="Index">
-
-                                                    Pedidos
-
-                                                    <span id="ts-pedido-badge"
-                                                          class="ts-cart-badge"
-                                                          style="display:none;">
-                                                        0
-                                                    </span>
-
-                                                </a>
-
-                                            </li>
-
-                                            @if (User.IsInRole("Cliente"))
-                                            {
-                                                <li>
-
-                                                    <a class="dropdown-item"
-                                                       asp-area=""
-                                                       asp-controller="Carrito"
-                                                       asp-action="Index">
-
-                                                        Carrito
-
-                                                        <span id="ts-carrito-badge"
-                                                              class="ts-cart-badge"
-                                                              style="display:none;">
-                                                            0
-                                                        </span>
-
-                                                    </a>
-
-                                                </li>
-                                            }
-                                        }
-
-                                        <!-- COCINA -->
-                                        @if (User.IsInRole("Cocina")
-                                                                        || User.IsInRole("Administrador"))
-                                        {
-                                            @if (User.IsInRole("Administrador"))
-                                            {
-                                                <li>
-                                                    <div class="ts-dropdown-divider">
-                                                    </div>
-                                                </li>
-                                            }
-
-                                            <li class="ts-dropdown-label">
-                                                Cocina
-                                            </li>
-
-                                            <li>
-
-                                                <a class="dropdown-item"
-                                                   asp-area=""
-                                                   asp-controller="ProcesoPreparacion"
-                                                   asp-action="Index">
-
-                                                    Preparación
-
-                                                </a>
-
-                                            </li>
-                                        }
+                                        </li>
 
                                     </ul>
+
+                                </li>
+                            }
+
+                            <!-- PEDIDOS -->
+                            @if (User.IsInRole("Cliente")
+                                                    || User.IsInRole("Encargado")
+                                                    || User.IsInRole("Administrador"))
+                            {
+                                <li>
+
+                                    <a class="nav-link"
+                                       asp-area=""
+                                       asp-controller="Pedido"
+                                       asp-action="Index">
+
+                                        <svg class="ts-nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2l1 4h10l1-4" /><rect x="4" y="6" width="16" height="16" rx="2" /><path d="M9 11h6M9 15h6" /></svg>
+                                        Pedidos
+
+                                        <span id="ts-pedido-badge"
+                                              class="ts-cart-badge"
+                                              style="display:none;">
+                                            0
+                                        </span>
+
+                                    </a>
+
+                                </li>
+                            }
+
+                            <!-- CARRITO (solo Cliente) -->
+                            @if (User.IsInRole("Cliente"))
+                            {
+                                <li>
+
+                                    <a class="nav-link"
+                                       asp-area=""
+                                       asp-controller="Carrito"
+                                       asp-action="Index">
+
+                                        <svg class="ts-nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1.4" fill="currentColor" stroke="none" /><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none" /><path d="M2 3h2l2.4 12.2a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L21 7H6" /></svg>
+                                        Carrito
+
+                                        <span id="ts-carrito-badge"
+                                              class="ts-cart-badge"
+                                              style="display:none;">
+                                            0
+                                        </span>
+
+                                    </a>
+
+                                </li>
+                            }
+
+                            <!-- COCINA -->
+                            @if (User.IsInRole("Cocina")
+                                                    || User.IsInRole("Administrador"))
+                            {
+                                <li>
+
+                                    <a class="nav-link"
+                                       asp-area=""
+                                       asp-controller="ProcesoPreparacion"
+                                       asp-action="Index">
+
+                                        <svg class="ts-nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 3v7a4 4 0 0 0 8 0V3" /><path d="M8 10v11" /><path d="M18 3c-2 2-2 5 0 7v11" /></svg>
+                                        Cocina
+
+                                    </a>
 
                                 </li>
                             }
@@ -1037,6 +1034,7 @@
                                        data-bs-toggle="dropdown"
                                        aria-expanded="false">
 
+                                        <svg class="ts-nav-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
                                         Administración
 
                                     </a>
@@ -1367,8 +1365,60 @@
         }
 
         /* ═══════════════════════════════════════
-           CERRAR MENÚ MÓVIL AL NAVEGAR
+           HAMBURGUESA: TRANSFORMAR A X
            ═══════════════════════════════════════ */
+
+        (function configurarToggler() {
+
+            const toggler =
+                document.querySelector('.ts-navbar-toggler');
+
+            const collapseElement =
+                document.getElementById('tsNavCollapse');
+
+            if (!toggler || !collapseElement) {
+                return;
+            }
+
+            collapseElement.addEventListener('show.bs.collapse', function () {
+                toggler.classList.add('ts-toggler-open');
+            });
+
+            collapseElement.addEventListener('hide.bs.collapse', function () {
+                toggler.classList.remove('ts-toggler-open');
+            });
+
+        })();
+
+        /* ═══════════════════════════════════════
+           DROPDOWNS: ANIMACIÓN DE APERTURA
+           ═══════════════════════════════════════ */
+
+        if (typeof anime !== 'undefined') {
+
+            document.addEventListener('show.bs.dropdown', function (evento) {
+
+                const menu =
+                    evento.target.nextElementSibling ||
+                    evento.target.parentElement.querySelector('.dropdown-menu');
+
+                if (!menu) {
+                    return;
+                }
+
+                anime({
+                    targets: menu,
+                    opacity: [0, 1],
+                    translateY: [-8, 0],
+                    scale: [0.97, 1],
+                    duration: 220,
+                    easing: 'easeOutQuad'
+                });
+
+            });
+        }
+
+
 
         (function configurarMenuMovil() {
 
@@ -1383,7 +1433,7 @@
 
             document
                 .querySelectorAll(
-                    '#tsNavCollapse .dropdown-item'
+                    '#tsNavCollapse .dropdown-item, #tsNavCollapse > .ts-nav > li > .nav-link:not(.dropdown-toggle)'
                 )
                 .forEach(function (link) {
 

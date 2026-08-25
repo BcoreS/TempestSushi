@@ -367,12 +367,25 @@
             Historial de Pedidos
         </h2>
 
-        <a asp-action="Create"
-           class="ts-btn-nuevo">
+        @if (esEncargadoOAdmin)
+        {
+            <a asp-action="Create"
+               class="ts-btn-nuevo">
 
-            + Nuevo Pedido
+                + Nuevo Pedido
 
-        </a>
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Carrito"
+               asp-action="Index"
+               class="ts-btn-nuevo">
+
+                Ir al carrito
+
+            </a>
+        }
 
     </div>
 

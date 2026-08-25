@@ -69,8 +69,13 @@ namespace TempestSushi.Web.Controllers
         }
 
         // Formulario de registro
+        // El Cliente registra pedidos solo desde /Carrito; si intenta entrar
+        // directo a esta URL, se le redirige al carrito en vez de mostrar el formulario.
         public async Task<IActionResult> Create()
         {
+            if (_usuarioActual.Rol == "Cliente")
+                return RedirectToAction("Index", "Carrito");
+
             var datos = await _servicePedido.ObtenerDatosFormularioAsync();
             datos.EncargadoNombre = User.FindFirstValue(ClaimTypes.Name);
             ViewBag.CostoEnvio = _envioOptions.CostoEnvio;
