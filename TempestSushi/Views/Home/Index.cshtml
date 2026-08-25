@@ -17,8 +17,8 @@
     }
 
     /* ═══════════════════════════════════════
-           SECCIONES FULL WIDTH
-           ═══════════════════════════════════════ */
+               SECCIONES FULL WIDTH
+               ═══════════════════════════════════════ */
 
     .ts-hero,
     .ts-cards-section {
@@ -29,8 +29,8 @@
     }
 
     /* ═══════════════════════════════════════
-           HERO
-           ═══════════════════════════════════════ */
+               HERO
+               ═══════════════════════════════════════ */
 
     .ts-hero {
         position: relative;
@@ -55,11 +55,68 @@
         }
 
     /* ═══════════════════════════════════════
-           KICKER
-           ═══════════════════════════════════════ */
+               DECORACIÓN AMBIENTAL — blobs + burbujas
+               (todo lo que se mueve en loop se anima
+               SIEMPRE fuera de cualquier timeline)
+               ═══════════════════════════════════════ */
+
+    .ts-hero-decor {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .ts-hero-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(60px);
+        opacity: 0;
+        will-change: transform;
+    }
+
+    .ts-hero-blob--a {
+        width: 420px;
+        height: 420px;
+        top: -160px;
+        left: -100px;
+        background: var(--vermillion);
+    }
+
+    .ts-hero-blob--b {
+        width: 340px;
+        height: 340px;
+        bottom: -140px;
+        right: -80px;
+        background: var(--gold);
+    }
+
+    .ts-hero-blob--c {
+        width: 260px;
+        height: 260px;
+        top: 40%;
+        left: 60%;
+        background: #4fa8e8;
+    }
+
+    .ts-hero-particle {
+        position: absolute;
+        bottom: -20px;
+        border-radius: 50%;
+        background: rgba(232, 237, 245, 0.45);
+        box-shadow: 0 0 6px rgba(232, 237, 245, 0.35);
+        opacity: 0;
+        will-change: transform, opacity;
+    }
+
+    /* ═══════════════════════════════════════
+               KICKER
+               ═══════════════════════════════════════ */
 
     .ts-kicker {
         position: relative;
+        z-index: 1;
         margin-bottom: 1.2rem;
         font-family: 'Zen Kaku Gothic New', sans-serif;
         font-size: 0.85rem;
@@ -71,11 +128,12 @@
     }
 
     /* ═══════════════════════════════════════
-           TÍTULO
-           ═══════════════════════════════════════ */
+               TÍTULO
+               ═══════════════════════════════════════ */
 
     .ts-headline {
         position: relative;
+        z-index: 1;
         margin: 0;
         display: flex;
         flex-wrap: wrap;
@@ -89,6 +147,8 @@
     }
 
         .ts-headline .word {
+            position: relative;
+            display: inline-block;
             opacity: 0;
         }
 
@@ -101,12 +161,24 @@
                 font-style: italic;
             }
 
+    /* Halo dorado detrás de "SUSHI", pulsa suavemente en loop */
+    .ts-word-glow {
+        position: absolute;
+        inset: -18% -12%;
+        z-index: -1;
+        border-radius: 50%;
+        background: radial-gradient(ellipse, rgba(212, 175, 55, 0.35), transparent 70%);
+        opacity: 0;
+        pointer-events: none;
+    }
+
     /* ═══════════════════════════════════════
-           LÍNEA DECORATIVA
-           ═══════════════════════════════════════ */
+               LÍNEA DECORATIVA
+               ═══════════════════════════════════════ */
 
     .ts-line-wrap {
         position: relative;
+        z-index: 1;
         width: min( 560px, 80vw );
         margin: 1.4rem auto 0;
     }
@@ -125,11 +197,12 @@
     }
 
     /* ═══════════════════════════════════════
-           SUBTÍTULO
-           ═══════════════════════════════════════ */
+               SUBTÍTULO
+               ═══════════════════════════════════════ */
 
     .ts-sub {
         position: relative;
+        z-index: 1;
         max-width: 540px;
         margin: 1.6rem auto 0;
         font-family: 'Zen Kaku Gothic New', sans-serif;
@@ -140,11 +213,12 @@
     }
 
     /* ═══════════════════════════════════════
-           BOTONES
-           ═══════════════════════════════════════ */
+               BOTONES
+               ═══════════════════════════════════════ */
 
     .ts-ctas {
         position: relative;
+        z-index: 1;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -168,7 +242,7 @@
         font-size: 0.95rem;
         letter-spacing: 0.04em;
         text-decoration: none;
-        transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+        transition: box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
     }
 
     .ts-cta-primary {
@@ -178,7 +252,6 @@
     }
 
         .ts-cta-primary:hover {
-            transform: translateY(-3px);
             color: var(--foam);
             box-shadow: 0 14px 30px rgba(196, 30, 58, 0.45);
         }
@@ -190,7 +263,6 @@
     }
 
         .ts-cta-secondary:hover {
-            transform: translateY(-3px);
             border-color: var(--gold);
             background: rgba(212, 175, 55, 0.08);
             color: var(--gold);
@@ -202,8 +274,8 @@
     }
 
     /* ═══════════════════════════════════════
-           SECCIÓN CARDS
-           ═══════════════════════════════════════ */
+               SECCIÓN CARDS
+               ═══════════════════════════════════════ */
 
     .ts-cards-section {
         padding: 5rem 24px 6rem;
@@ -224,8 +296,8 @@
         }
 
     /* ═══════════════════════════════════════
-           CARD
-           ═══════════════════════════════════════ */
+               CARD
+               ═══════════════════════════════════════ */
 
     .ts-card {
         min-width: 0;
@@ -236,11 +308,10 @@
         background: var(--mist);
         color: var(--foam);
         text-decoration: none;
-        transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     }
 
         .ts-card:hover {
-            transform: translateY(-6px);
             border-color: var(--vermillion);
             background: rgba(196, 30, 58, 0.07);
             box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
@@ -275,8 +346,8 @@
     }
 
     /* ═══════════════════════════════════════
-           FALLBACK SIN ANIME.JS
-           ═══════════════════════════════════════ */
+               FALLBACK SIN ANIME.JS / MOVIMIENTO REDUCIDO
+               ═══════════════════════════════════════ */
 
     body.ts-static .ts-kicker,
     body.ts-static .ts-headline .word,
@@ -290,9 +361,13 @@
         stroke-dashoffset: 0 !important;
     }
 
+    body.ts-static .ts-hero-decor {
+        display: none;
+    }
+
     /* ═══════════════════════════════════════
-           TABLET
-           ═══════════════════════════════════════ */
+               TABLET
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 768px) {
 
@@ -332,8 +407,8 @@
     }
 
     /* ═══════════════════════════════════════
-           MÓVIL
-           ═══════════════════════════════════════ */
+               MÓVIL
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 576px) {
 
@@ -390,11 +465,15 @@
         .ts-card {
             padding: 1.5rem 1.3rem;
         }
+        /* Menos partículas/blobs en móvil: se ocultan las extra vía JS */
+        .ts-hero-blob--c {
+            display: none;
+        }
     }
 
     /* ═══════════════════════════════════════
-           TELÉFONO PEQUEÑO
-           ═══════════════════════════════════════ */
+               TELÉFONO PEQUEÑO
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 390px) {
 
@@ -437,8 +516,8 @@
     }
 
     /* ═══════════════════════════════════════
-           PANTALLAS BAJAS
-           ═══════════════════════════════════════ */
+               PANTALLAS BAJAS
+               ═══════════════════════════════════════ */
 
     @@media (max-height: 700px) and (min-width: 577px) {
 
@@ -469,8 +548,8 @@
     }
 
     /* ═══════════════════════════════════════
-           MOVIMIENTO REDUCIDO
-           ═══════════════════════════════════════ */
+               MOVIMIENTO REDUCIDO
+               ═══════════════════════════════════════ */
 
     @@media (prefers-reduced-motion: reduce) {
 
@@ -482,9 +561,8 @@
             opacity: 1 !important;
         }
 
-        .ts-card,
-        .ts-cta {
-            transition: none;
+        .ts-hero-decor {
+            display: none;
         }
     }
 
@@ -494,7 +572,14 @@
      HERO
      ═══════════════════════════════════════ -->
 
-<section class="ts-hero">
+<section class="ts-hero" id="tsHero">
+
+    <div class="ts-hero-decor" id="tsHeroDecor">
+        <div class="ts-hero-blob ts-hero-blob--a" id="tsBlobA"></div>
+        <div class="ts-hero-blob ts-hero-blob--b" id="tsBlobB"></div>
+        <div class="ts-hero-blob ts-hero-blob--c" id="tsBlobC"></div>
+        <!-- Las burbujas (.ts-hero-particle) se generan por JS -->
+    </div>
 
     <div class="ts-kicker">
 
@@ -511,6 +596,7 @@
 
         <span class="word">
             SUSHI
+            <span class="ts-word-glow" id="tsWordGlow"></span>
         </span>
 
     </h1>
@@ -649,208 +735,248 @@
 </section>
 
 <!-- ═══════════════════════════════════════
-     ANIMACIONES
+     ANIMACIONES — anime.js v4.0.2 (ESM)
      ═══════════════════════════════════════ -->
 
-<script>
+<script type="module">
+    import { animate, stagger, createTimeline, createSpring, utils } from 'https://cdn.jsdelivr.net/npm/animejs@4.0.2/+esm';
 
-    (function () {
+    const prefersReducedMotion =
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        var prefersReducedMotion =
-            window.matchMedia(
-                '(prefers-reduced-motion: reduce)'
-            ).matches;
+    if (prefersReducedMotion) {
+        document.body.classList.add('ts-static');
+    } else {
 
-        if (
-            prefersReducedMotion ||
-            typeof anime === 'undefined'
-        ) {
-            document.body.classList.add(
-                'ts-static'
-            );
+        try {
 
-            return;
-        }
+            const hero = document.getElementById('tsHero');
+            const heroDecor = document.getElementById('tsHeroDecor');
 
-        /* Kicker */
-
-        anime({
-            targets: '.ts-kicker',
-            opacity: [0, 1],
-            translateY: [12, 0],
-            duration: 600,
-            easing: 'easeOutQuad'
-        });
-
-        /* Título */
-
-        anime({
-            targets: '#tsHeadline .word',
-            opacity: [0, 1],
-            translateY: [30, 0],
-
-            delay:
-                anime.stagger(
-                    150,
-                    {
-                        start: 250
-                    }
-                ),
-
-            duration: 800,
-
-            easing: 'easeOutExpo'
-        });
-
-        /* Línea */
-
-        var path =
-            document.getElementById(
-                'tsPath'
-            );
-
-        if (path) {
-
-            var pathLength =
-                path.getTotalLength();
-
-            path.style.strokeDasharray =
-                pathLength;
-
-            path.style.strokeDashoffset =
-                pathLength;
-
-            anime({
-                targets: '#tsPath',
-
-                strokeDashoffset:
-                    [
-                        pathLength,
-                        0
-                    ],
-
-                duration: 1100,
-
-                delay: 700,
-
-                easing:
-                    'easeInOutSine'
-            });
-        }
-
-        /* Subtítulo */
-
-        anime({
-            targets: '#tsSub',
-            opacity: [0, 1],
-            translateY: [10, 0],
-            delay: 1500,
-            duration: 600,
-            easing: 'easeOutQuad'
-        });
-
-        /* Botones */
-
-        anime({
-            targets:
-                '#tsCtas .ts-cta',
-
-            opacity: [0, 1],
-
-            scale: [0.92, 1],
-
-            delay:
-                anime.stagger(
-                    120,
-                    {
-                        start: 1750
-                    }
-                ),
-
-            duration: 500,
-
-            easing: 'easeOutBack'
-        });
-
-        /* Cards */
-
-        var cards =
-            document.querySelectorAll(
-                '#tsCards .ts-card'
-            );
-
-        if (
-            'IntersectionObserver' in window &&
-            cards.length
-        ) {
-
-            var animated = false;
-
-            var observer =
-                new IntersectionObserver(
-                    function (entries) {
-
-                        entries.forEach(
-                            function (entry) {
-
-                                if (
-                                    entry.isIntersecting &&
-                                    !animated
-                                ) {
-
-                                    animated = true;
-
-                                    anime({
-                                        targets:
-                                            cards,
-
-                                        opacity:
-                                            [0, 1],
-
-                                        translateY:
-                                            [24, 0],
-
-                                        delay:
-                                            anime.stagger(
-                                                100
-                                            ),
-
-                                        duration:
-                                            600,
-
-                                        easing:
-                                            'easeOutQuad'
-                                    });
-
-                                    observer.disconnect();
-                                }
-                            });
-                    },
-                    {
-                        threshold: 0.2
-                    }
-                );
-
-            var cardsContainer =
-                document.getElementById(
-                    'tsCards'
-                );
-
-            if (cardsContainer) {
-                observer.observe(
-                    cardsContainer
-                );
+            /* ── Ruta decorativa: se prepara el trazo antes de animar ── */
+            const path = document.getElementById('tsPath');
+            let pathLength = 0;
+            if (path) {
+                pathLength = path.getTotalLength();
+                path.style.strokeDasharray = pathLength;
+                path.style.strokeDashoffset = pathLength;
             }
-        }
-        else {
 
-            cards.forEach(
-                function (card) {
-                    card.style.opacity = '1';
+            /* ── Timeline de entrada: todo lo que ocurre UNA vez, en orden ── */
+            const entrada = createTimeline()
+                .add('.ts-kicker', {
+                    opacity: [0, 1],
+                    translateY: [12, 0],
+                    duration: 600,
+                    ease: 'outQuad'
+                })
+                .add('#tsHeadline .word', {
+                    opacity: [0, 1],
+                    translateY: [30, 0],
+                    duration: 800,
+                    delay: stagger(150),
+                    ease: 'outExpo'
+                }, '-=300')
+                .add('#tsPath', {
+                    strokeDashoffset: [pathLength, 0],
+                    duration: 1100,
+                    ease: 'inOutSine'
+                }, '-=350')
+                .add('#tsSub', {
+                    opacity: [0, 1],
+                    translateY: [10, 0],
+                    duration: 600,
+                    ease: 'outQuad'
+                }, '-=650')
+                .add('#tsCtas .ts-cta', {
+                    opacity: [0, 1],
+                    scale: [0.9, 1],
+                    duration: 550,
+                    delay: stagger(120),
+                    ease: createSpring({ stiffness: 220, damping: 14 })
+                }, '-=250')
+                .add('#tsWordGlow', {
+                    opacity: [0, 1],
+                    duration: 500,
+                    ease: 'outQuad',
+                    onComplete: iniciarPulsoGlow
+                }, '-=400')
+                .add(heroDecor, {
+                    // solo dispara el fade-in de blobs y arranca sus loops al final
+                    duration: 1,
+                    onBegin: iniciarDecoracionAmbiental
+                }, '-=900');
+
+            /* ── Halo dorado detrás de "SUSHI": pulso continuo (loop, fuera del timeline) ── */
+            function iniciarPulsoGlow() {
+                animate('#tsWordGlow', {
+                    scale: [1, 1.18, 1],
+                    opacity: [0.6, 1, 0.6],
+                    duration: 3200,
+                    loop: true,
+                    ease: 'inOutSine'
+                });
+            }
+
+            /* ── Blobs ambientales + burbujas: SIEMPRE fuera del timeline ── */
+            function iniciarDecoracionAmbiental() {
+
+                // Fade-in inicial de los blobs (una sola vez)
+                animate('#tsBlobA', { opacity: [0, 0.22], duration: 1200, ease: 'outQuad' });
+                animate('#tsBlobB', { opacity: [0, 0.22], duration: 1200, delay: 150, ease: 'outQuad' });
+                animate('#tsBlobC', { opacity: [0, 0.14], duration: 1200, delay: 300, ease: 'outQuad' });
+
+                // Deriva ambiental infinita de cada blob (independiente, en loop)
+                animate('#tsBlobA', {
+                    translateX: [0, 40, -10, 0],
+                    translateY: [0, -30, 15, 0],
+                    duration: 14000,
+                    loop: true,
+                    ease: 'inOutSine'
+                });
+                animate('#tsBlobB', {
+                    translateX: [0, -35, 10, 0],
+                    translateY: [0, 25, -20, 0],
+                    duration: 16000,
+                    loop: true,
+                    ease: 'inOutSine'
+                });
+                animate('#tsBlobC', {
+                    translateX: [0, 25, -25, 0],
+                    translateY: [0, -20, 20, 0],
+                    duration: 12000,
+                    loop: true,
+                    ease: 'inOutSine'
+                });
+
+                crearBurbujas();
+            }
+
+            /* ── Burbujas que suben desde el fondo del hero, como corriente marina ── */
+            function crearBurbujas() {
+                const total = window.innerWidth < 576 ? 8 : 14;
+
+                for (let i = 0; i < total; i++) {
+                    const burbuja = document.createElement('div');
+                    burbuja.className = 'ts-hero-particle';
+
+                    const tamano = utils.random(3, 9);
+                    burbuja.style.width = tamano + 'px';
+                    burbuja.style.height = tamano + 'px';
+                    burbuja.style.left = utils.random(2, 98) + '%';
+
+                    heroDecor.appendChild(burbuja);
+
+                    animate(burbuja, {
+                        translateY: [0, -utils.random(280, 520)],
+                        translateX: [0, utils.random(-30, 30)],
+                        opacity: [0, 0.5, 0],
+                        duration: () => utils.random(5000, 9000),
+                        delay: utils.random(0, 4000),
+                        loop: true,
+                        ease: 'inOutSine'
+                    });
                 }
-            );
+            }
+
+            /* ── Parallax sutil: los blobs siguen al cursor dentro del hero ── */
+            let parallaxPendiente = false;
+
+            hero.addEventListener('mousemove', function (evento) {
+                if (parallaxPendiente) return;
+                parallaxPendiente = true;
+
+                requestAnimationFrame(() => {
+                    const rect = hero.getBoundingClientRect();
+                    const relX = ((evento.clientX - rect.left) / rect.width - 0.5) * 2;
+                    const relY = ((evento.clientY - rect.top) / rect.height - 0.5) * 2;
+
+                    animate('#tsBlobA', { translateX: relX * 18, translateY: relY * 12, duration: 900, ease: 'outQuad' });
+                    animate('#tsBlobB', { translateX: relX * -14, translateY: relY * -10, duration: 900, ease: 'outQuad' });
+                    animate('#tsBlobC', { translateX: relX * 10, translateY: relY * 8, duration: 900, ease: 'outQuad' });
+
+                    parallaxPendiente = false;
+                });
+            });
+
+            /* ── Botones: pulso táctil al presionar (además del hover normal en CSS) ── */
+            document.querySelectorAll('.ts-cta').forEach((boton) => {
+                boton.addEventListener('pointerdown', () => {
+                    animate(boton, { scale: [1, 0.94], duration: 150, ease: 'outQuad' });
+                });
+                boton.addEventListener('pointerup', () => {
+                    animate(boton, { scale: [0.94, 1], duration: 350, ease: createSpring({ stiffness: 300, damping: 12 }) });
+                });
+                boton.addEventListener('pointerleave', () => {
+                    animate(boton, { scale: 1, duration: 300, ease: 'outQuad' });
+                });
+            });
+
+            /* ── Tarjetas: entran cuando llegan a la vista, luego un pequeño "lift" en hover ── */
+            const cards = Array.from(document.querySelectorAll('#tsCards .ts-card'));
+
+            if ('IntersectionObserver' in window && cards.length) {
+
+                let yaAnimadas = false;
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting && !yaAnimadas) {
+                            yaAnimadas = true;
+
+                            animate(cards, {
+                                opacity: [0, 1],
+                                translateY: [26, 0],
+                                duration: 650,
+                                delay: stagger(110),
+                                ease: 'outExpo'
+                            });
+
+                            observer.disconnect();
+                        }
+                    });
+                }, { threshold: 0.2 });
+
+                observer.observe(document.getElementById('tsCards'));
+
+            } else {
+                cards.forEach((card) => { card.style.opacity = '1'; });
+            }
+
+            cards.forEach((card) => {
+                card.addEventListener('mouseenter', () => {
+                    animate(card, {
+                        translateY: -7,
+                        scale: 1.015,
+                        duration: 380,
+                        ease: createSpring({ stiffness: 240, damping: 18 })
+                    });
+                });
+                card.addEventListener('mouseleave', () => {
+                    animate(card, {
+                        translateY: 0,
+                        scale: 1,
+                        duration: 380,
+                        ease: createSpring({ stiffness: 240, damping: 18 })
+                    });
+                });
+            });
+
+        } catch (e) {
+            console.error('Error en la animación de la página de inicio:', e);
+            document.body.classList.add('ts-static');
         }
+    }
 
-    })();
-
+    // Red de seguridad: si algo se queda a medio animar (CDN lento, error
+    // silencioso, etc.), nunca dejamos contenido invisible.
+    setTimeout(() => {
+        document.querySelectorAll(
+            '.ts-kicker, .ts-headline .word, .ts-sub, .ts-ctas .ts-cta, .ts-cards .ts-card'
+        ).forEach((el) => {
+            if (parseFloat(getComputedStyle(el).opacity) < 1) {
+                el.style.opacity = '1';
+            }
+        });
+    }, 3000);
 </script>

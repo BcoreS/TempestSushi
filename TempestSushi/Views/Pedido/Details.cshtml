@@ -18,6 +18,18 @@
       content="@tokens.RequestToken" />
 
 <style>
+    :root {
+        --tsd-azul-oscuro: #1a3a6e;
+        --tsd-azul-medio: #294869;
+        --tsd-azul-claro: #4fa8e8;
+        --tsd-azul-borde: #d0e8f8;
+        --tsd-azul-fondo: #f0f6fc;
+        --tsd-rojo: #c0392b;
+        --tsd-rojo-hover: #a5301f;
+        --tsd-verde: #1a7d3a;
+        --tsd-gris-vacio: #8ab2cc;
+    }
+
     .pedido-detail-page {
         width: 100%;
         max-width: 950px;
@@ -26,10 +38,11 @@
     }
 
     /* ═══════════════════════════════════════
-           FACTURA
-           ═══════════════════════════════════════ */
+               FACTURA
+               ═══════════════════════════════════════ */
 
     .ts-factura {
+        position: relative;
         width: 100%;
         max-width: 900px;
         margin: 0 auto;
@@ -37,20 +50,54 @@
         background: #ffffff;
         border-radius: 14px;
         box-shadow: 0 4px 18px rgba(26, 58, 110, 0.10);
+        opacity: 0;
     }
 
     /* ═══════════════════════════════════════
-           HEADER
-           ═══════════════════════════════════════ */
+               HEADER (con blobs ambientales, igual que el carrito)
+               ═══════════════════════════════════════ */
 
     .ts-factura-header {
+        position: relative;
+        overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
         padding: 1.5rem 2rem;
-        background: #1a3a6e;
+        background: linear-gradient(135deg, #1a3a6e 55%, #142f58);
         color: #ffffff;
+    }
+
+    .ts-header-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(38px);
+        pointer-events: none;
+    }
+
+    .ts-header-blob--1 {
+        width: 220px;
+        height: 220px;
+        background: var(--tsd-azul-claro);
+        opacity: .25;
+        top: -110px;
+        right: -60px;
+    }
+
+    .ts-header-blob--2 {
+        width: 160px;
+        height: 160px;
+        background: #ffffff;
+        opacity: .08;
+        bottom: -90px;
+        left: 20%;
+    }
+
+    .ts-factura-header-texto {
+        position: relative;
+        z-index: 1;
+        min-width: 0;
     }
 
     .ts-factura-titulo {
@@ -63,24 +110,51 @@
     }
 
     .ts-factura-numero {
-        flex-shrink: 0;
+        display: inline-block;
+        margin-top: 2px;
         font-family: 'Rajdhani', sans-serif;
         font-size: 0.95rem;
         opacity: 0.85;
         white-space: nowrap;
     }
 
+    /* Sello circular animado con anillo + check/X, como en el carrito */
+    .ts-header-sello {
+        position: relative;
+        z-index: 1;
+        width: 84px;
+        height: 84px;
+        flex-shrink: 0;
+        display: none;
+    }
+
+    @@media (min-width: 560px) {
+        .ts-header-sello {
+            display: block;
+        }
+    }
+
+    .ts-sello-dash {
+        stroke: rgba(255,255,255,0.35);
+        transform-origin: 42px 42px;
+    }
+
+    .ts-sello-draw {
+        stroke: var(--tsd-azul-claro);
+        transform-origin: 42px 42px;
+    }
+
     /* ═══════════════════════════════════════
-           BODY
-           ═══════════════════════════════════════ */
+               BODY
+               ═══════════════════════════════════════ */
 
     .ts-factura-body {
         padding: 2rem;
     }
 
     /* ═══════════════════════════════════════
-           DATOS GENERALES
-           ═══════════════════════════════════════ */
+               DATOS GENERALES
+               ═══════════════════════════════════════ */
 
     .ts-encabezado-grid {
         display: grid;
@@ -93,6 +167,7 @@
 
         .ts-encabezado-grid > div {
             min-width: 0;
+            opacity: 0;
         }
 
     .ts-campo-label {
@@ -124,10 +199,11 @@
     }
 
     /* ═══════════════════════════════════════
-           ESTADO
-           ═══════════════════════════════════════ */
+               ESTADO
+               ═══════════════════════════════════════ */
 
     .ts-estado-badge {
+        position: relative;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -141,7 +217,18 @@
         font-weight: 700;
         letter-spacing: 0.05em;
         overflow-wrap: anywhere;
+        overflow: hidden;
     }
+
+        .ts-estado-badge::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 70%);
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
+        }
 
     .ts-cambiar-estado {
         display: flex;
@@ -161,7 +248,14 @@
         color: #1a3a6e;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 600;
+        transition: box-shadow .2s ease, border-color .2s ease;
     }
+
+        .ts-select-estado:focus {
+            outline: none;
+            border-color: var(--tsd-azul-claro);
+            box-shadow: 0 0 0 3px rgba(79, 168, 232, .18);
+        }
 
     .ts-btn-estado {
         min-height: 39px;
@@ -177,23 +271,16 @@
         font-size: 0.82rem;
         font-weight: 700;
         cursor: pointer;
-        transition: background 0.2s ease, transform 0.2s ease;
     }
-
-        .ts-btn-estado:hover {
-            background: #142f58;
-            transform: translateY(-1px);
-        }
 
         .ts-btn-estado:disabled {
             opacity: 0.65;
             cursor: not-allowed;
-            transform: none;
         }
 
     /* ═══════════════════════════════════════
-           CLIMA
-           ═══════════════════════════════════════ */
+               CLIMA
+               ═══════════════════════════════════════ */
 
     .ts-clima-franja {
         display: flex;
@@ -204,11 +291,13 @@
         border: 1px solid #d0e8f8;
         border-radius: 10px;
         background: #f0f6fc;
+        opacity: 0;
     }
 
     .ts-clima-icono {
         flex-shrink: 0;
         font-size: 1.6rem;
+        display: inline-block;
     }
 
     .ts-clima-info {
@@ -220,8 +309,8 @@
         }
 
     /* ═══════════════════════════════════════
-           TABLA
-           ═══════════════════════════════════════ */
+               TABLA
+               ═══════════════════════════════════════ */
 
     .ts-tabla-wrapper {
         width: 100%;
@@ -252,12 +341,20 @@
             white-space: nowrap;
         }
 
+        .ts-tabla-detalle tbody tr {
+            opacity: 0;
+        }
+
         .ts-tabla-detalle tbody td {
             padding: 0.7rem 0.75rem;
             border-bottom: 1px solid #eef4fa;
             color: #294869;
             font-size: 0.92rem;
             vertical-align: middle;
+        }
+
+        .ts-tabla-detalle tbody tr:hover {
+            background: var(--tsd-azul-fondo);
         }
 
         .ts-tabla-detalle .ts-col-num {
@@ -276,13 +373,14 @@
     }
 
     /* ═══════════════════════════════════════
-           TOTALES
-           ═══════════════════════════════════════ */
+               TOTALES
+               ═══════════════════════════════════════ */
 
     .ts-totales {
         width: 100%;
         max-width: 320px;
         margin-left: auto;
+        opacity: 0;
     }
 
     .ts-totales-fila {
@@ -315,8 +413,8 @@
         }
 
     /* ═══════════════════════════════════════
-           VOLVER
-           ═══════════════════════════════════════ */
+               VOLVER
+               ═══════════════════════════════════════ */
 
     .ts-volver {
         min-height: 42px;
@@ -331,7 +429,7 @@
         font-family: 'Rajdhani', sans-serif;
         font-weight: 700;
         text-decoration: none;
-        transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        opacity: 0;
     }
 
         .ts-volver:hover {
@@ -341,8 +439,8 @@
         }
 
     /* ═══════════════════════════════════════
-           TOAST
-           ═══════════════════════════════════════ */
+               TOAST
+               ═══════════════════════════════════════ */
 
     .ts-toast-detalle {
         position: fixed;
@@ -359,16 +457,12 @@
         line-height: 1.4;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
         z-index: 2000;
-        transform: translateY(20px);
         opacity: 0;
         pointer-events: none;
-        transition: transform 0.25s ease, opacity 0.25s ease;
+        display: flex;
+        align-items: center;
+        gap: .6rem;
     }
-
-        .ts-toast-detalle.ts-show {
-            transform: translateY(0);
-            opacity: 1;
-        }
 
         .ts-toast-detalle.ts-exito {
             background: #1a7d3a;
@@ -378,9 +472,26 @@
             background: #c0392b;
         }
 
+    #tsdConfetti {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 2500;
+        overflow: hidden;
+    }
+
+    .tsd-confetti-pieza {
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        border-radius: 2px;
+        top: 45%;
+        left: 50%;
+    }
+
     /* ═══════════════════════════════════════
-           TABLET
-           ═══════════════════════════════════════ */
+               TABLET
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 768px) {
 
@@ -402,8 +513,8 @@
     }
 
     /* ═══════════════════════════════════════
-           MÓVIL
-           ═══════════════════════════════════════ */
+               MÓVIL
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 576px) {
 
@@ -420,6 +531,10 @@
             align-items: flex-start;
             gap: 0.3rem;
             padding: 1.1rem 1.2rem;
+        }
+
+        .ts-header-sello {
+            display: none;
         }
 
         .ts-factura-titulo {
@@ -494,8 +609,8 @@
     }
 
     /* ═══════════════════════════════════════
-           TELÉFONO PEQUEÑO
-           ═══════════════════════════════════════ */
+               TELÉFONO PEQUEÑO
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 390px) {
 
@@ -529,34 +644,57 @@
     }
 
     /* ═══════════════════════════════════════
-           MOVIMIENTO REDUCIDO
-           ═══════════════════════════════════════ */
+               MOVIMIENTO REDUCIDO
+               ═══════════════════════════════════════ */
 
     @@media (prefers-reduced-motion: reduce) {
 
-        .ts-btn-estado,
-        .ts-volver,
-        .ts-toast-detalle {
-            transition: none;
+        .ts-factura,
+        .ts-encabezado-grid > div,
+        .ts-clima-franja,
+        .ts-tabla-detalle tbody tr,
+        .ts-totales,
+        .ts-volver {
+            opacity: 1 !important;
         }
     }
 </style>
 
 <div class="pedido-detail-page">
 
-    <div class="ts-factura">
+    <div class="ts-factura" id="tsFactura">
 
         <!-- HEADER -->
 
         <div class="ts-factura-header">
 
-            <h2 class="ts-factura-titulo">
-                Detalle de Pedido
-            </h2>
+            <div class="ts-header-blob ts-header-blob--1"></div>
+            <div class="ts-header-blob ts-header-blob--2"></div>
 
-            <span class="ts-factura-numero">
-                Pedido N.º @Model.IdPedido
-            </span>
+            <div class="ts-factura-header-texto">
+
+                <h2 class="ts-factura-titulo">
+                    Detalle de Pedido
+                </h2>
+
+                <span class="ts-factura-numero">
+                    Pedido N.º @Model.IdPedido
+                </span>
+
+            </div>
+
+            <div class="ts-header-sello" aria-hidden="true">
+                <svg viewBox="0 0 84 84" width="84" height="84">
+                    <circle class="ts-sello-dash" cx="42" cy="42" r="36" fill="none" stroke-width="1.5" stroke-dasharray="4 5" />
+                    <circle class="ts-sello-draw" cx="42" cy="42" r="28" fill="none" stroke-width="3" stroke-linecap="round"
+                            pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" />
+                    <path class="ts-sello-check"
+                          d="M30 43 L38 51 L55 32"
+                          fill="none" stroke="#ffffff"
+                          stroke-width="5" stroke-linecap="round" stroke-linejoin="round"
+                          pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+                </svg>
+            </div>
 
         </div>
 
@@ -729,10 +867,11 @@
                         ViewBag.Clima != null
                         )
             {
-                <div class="ts-clima-franja">
+                <div class="ts-clima-franja" id="tsClimaFranja">
 
                     <span class="ts-clima-icono"
-                          aria-hidden="true">
+                          aria-hidden="true"
+                          id="tsClimaIcono">
 
                         🌤️
 
@@ -803,7 +942,7 @@
 
                     </thead>
 
-                    <tbody>
+                    <tbody id="tsTablaBody">
 
                         @foreach (var linea in Model.Lineas)
                         {
@@ -832,7 +971,7 @@
                                 @linea.Cantidad
                             </td>
 
-                            <td class="ts-col-num">
+                            <td class="ts-col-num ts-subtotal-linea">
 
                                 @linea.Subtotal.ToString(
                                                                 "C",
@@ -875,7 +1014,7 @@
                  TOTALES
                  ═══════════════════════════ -->
 
-            <div class="ts-totales">
+            <div class="ts-totales" id="tsTotales">
 
                 <div class="ts-totales-fila">
 
@@ -883,7 +1022,8 @@
                         Total sin impuestos
                     </span>
 
-                    <span>
+                    <span id="tsValorSinImpuestos"
+                          data-valor="@Model.TotalSinImpuestos.ToString(System.Globalization.CultureInfo.InvariantCulture)">
 
                         @Model.TotalSinImpuestos.ToString(
                         "C",
@@ -920,7 +1060,8 @@
                         Total con impuestos
                     </span>
 
-                    <span>
+                    <span id="tsValorConImpuestos"
+                          data-valor="@Model.TotalConImpuestos.ToString(System.Globalization.CultureInfo.InvariantCulture)">
 
                         @Model.TotalConImpuestos.ToString(
                                                 "C",
@@ -936,7 +1077,8 @@
             <!-- VOLVER -->
 
             <a asp-action="Index"
-               class="ts-volver">
+               class="ts-volver"
+               id="tsVolverLink">
 
                 &larr; Volver al historial
 
@@ -951,160 +1093,243 @@
 <div id="toastDetalle"
      class="ts-toast-detalle">
 </div>
+<div id="tsdConfetti"></div>
 
 @section Scripts {
 
-<script>
+<script type="module">
+    import { animate, stagger, createSpring, createTimeline, utils } from 'https://cdn.jsdelivr.net/npm/animejs@4.0.2/+esm';
 
-    (function () {
+    try {
 
-        const btnActualizar =
-            document.getElementById(
-                'btnActualizarEstado'
-            );
+    const culturaFormatoMoneda = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC', minimumFractionDigits: 2 });
 
-        if (!btnActualizar) {
-            return;
-        }
+    const ICONO_EXITO = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>';
+    const ICONO_ERROR = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l10 18H2z"/><path d="M12 9v5M12 17h.01"/></svg>';
 
-        const toast =
-            document.getElementById(
-                'toastDetalle'
-            );
+    function formatoMoneda(valor) {
+        return culturaFormatoMoneda.format(valor || 0);
+    }
 
-        const idPedido =
-            @Model.IdPedido;
+    function animarNumeroEnElemento(el, hasta) {
+        const desde = parseFloat(el.dataset.valor || 0);
+        const obj = { valor: desde };
+        animate(obj, {
+            valor: hasta,
+            duration: 700,
+            ease: 'outExpo',
+            onUpdate: () => { el.textContent = formatoMoneda(obj.valor); }
+        });
+        el.dataset.valor = hasta;
+    }
+
+    // ── Entrada orquestada de toda la factura, igual filosofía que el carrito ──
+    // IMPORTANTE: ninguna animación con loop:true va dentro del timeline —
+    // una animación infinita encadenada hace que el timeline nunca "termine"
+    // ese paso, y todo lo agregado después queda esperando para siempre.
+    createTimeline()
+        .add('#tsFactura', { opacity: [0, 1], translateY: [-14, 0], duration: 500, ease: 'outQuad' })
+        .add('.ts-header-blob--1', { opacity: [0, .25], scale: [0.6, 1], duration: 700, ease: 'outQuad' }, '-=250')
+        .add('.ts-header-blob--2', { opacity: [0, .08], scale: [0.6, 1], duration: 700, ease: 'outQuad' }, '<')
+        .add('.ts-sello-draw', { strokeDashoffset: [100, 0], duration: 900, ease: 'outExpo' }, '-=400')
+        .add('.ts-sello-check', { strokeDashoffset: [1, 0], duration: 450, ease: 'outQuad' }, '-=150')
+        .add('.ts-encabezado-grid > div', { opacity: [0, 1], translateY: [14, 0], duration: 450, delay: stagger(70), ease: 'outQuad' }, '-=200')
+        .add('#tsClimaFranja', { opacity: [0, 1], translateX: [-16, 0], duration: 450, ease: 'outQuad' }, '-=250')
+        .add('#tsTablaBody tr', { opacity: [0, 1], translateX: [-18, 0], duration: 400, delay: stagger(70), ease: 'outExpo' }, '-=150')
+        .add('#tsTotales', {
+            opacity: [0, 1],
+            translateY: [10, 0],
+            duration: 450,
+            ease: 'outQuad',
+            onBegin: iniciarConteoTotales
+        }, '-=150')
+        .add('#tsVolverLink', { opacity: [0, 1], translateY: [8, 0], duration: 400, ease: 'outQuad' }, '-=200');
+
+    // Animaciones infinitas (loop:true) SIEMPRE fuera del timeline, como llamadas
+    // independientes a animate() — igual que los blobs del carrito.
+    animate('.ts-header-blob--1', { translateY: [0, -14, 0], translateX: [0, 12, 0], duration: 7200, loop: true, ease: 'inOutSine', delay: 1200 });
+    animate('.ts-header-blob--2', { translateY: [0, 10, 0], translateX: [0, -10, 0], duration: 6400, loop: true, ease: 'inOutSine', delay: 1200 });
+    animate('.ts-sello-dash', { rotate: 360, duration: 20000, loop: true, ease: 'linear' });
+
+    // El ícono del clima "flota" suavemente
+    const climaIcono = document.getElementById('tsClimaIcono');
+    if (climaIcono) {
+        animate(climaIcono, { translateY: [0, -4, 0], duration: 2400, loop: true, ease: 'inOutSine', delay: 1400 });
+    }
+
+    // Micro-interacción al pasar el mouse por cada fila de la tabla (desktop)
+    document.querySelectorAll('#tsTablaBody tr').forEach(fila => {
+        fila.addEventListener('mouseenter', () => {
+            animate(fila, { translateX: 4, duration: 200, ease: 'outQuad' });
+        });
+        fila.addEventListener('mouseleave', () => {
+            animate(fila, { translateX: 0, duration: 200, ease: 'outQuad' });
+        });
+    });
+
+    // Los totales "cuentan" desde cero hasta el valor final, exactamente en el
+    // instante en que el bloque de totales empieza a hacerse visible (onBegin
+    // del paso del timeline) — así el conteo se ve mientras el bloque aparece,
+    // en vez de terminar antes de que el usuario lo vea.
+    let conteoTotalesYaIniciado = false;
+
+    function iniciarConteoTotales() {
+        if (conteoTotalesYaIniciado) return;
+        conteoTotalesYaIniciado = true;
+
+        const elSinImp = document.getElementById('tsValorSinImpuestos');
+        const elConImp = document.getElementById('tsValorConImpuestos');
+        const totalSinImp = parseFloat(elSinImp.dataset.valor);
+        const totalConImp = parseFloat(elConImp.dataset.valor);
+        elSinImp.dataset.valor = 0;
+        elConImp.dataset.valor = 0;
+        elSinImp.textContent = formatoMoneda(0);
+        elConImp.textContent = formatoMoneda(0);
+        animarNumeroEnElemento(elSinImp, totalSinImp);
+        animarNumeroEnElemento(elConImp, totalConImp);
+    }
+
+    // ── Cambio de estado (empleados) ────────────────────────────────
+    const btnActualizar = document.getElementById('btnActualizarEstado');
+
+    if (btnActualizar) {
+
+        const toast = document.getElementById('toastDetalle');
+        const confettiLayer = document.getElementById('tsdConfetti');
+        const badgeEstado = document.getElementById('estadoBadgeActual');
+
+        const idPedido = @Model.IdPedido;
 
         const csrfToken =
             document
-                .querySelector(
-                    'meta[name="csrf-token"]'
-                )
+                .querySelector('meta[name="csrf-token"]')
                 .content;
 
-        function mostrarToastDetalle(
-            mensaje,
-            tipo
-        ) {
+        function mostrarToastDetalle(mensaje, tipo) {
 
-            toast.textContent =
-                mensaje;
+            const icono = tipo === 'error' ? ICONO_ERROR : ICONO_EXITO;
+            toast.innerHTML = `${icono}<span>${mensaje}</span>`;
+            toast.className = 'ts-toast-detalle ' + (tipo === 'error' ? 'ts-error' : 'ts-exito');
 
-            toast.className =
-                'ts-toast-detalle ts-show ' +
-                (
-                    tipo === 'error'
-                        ? 'ts-error'
-                        : 'ts-exito'
-                );
+            clearTimeout(toast._timeoutId);
 
-            clearTimeout(
-                toast._timeoutId
-            );
+            animate(toast, {
+                opacity: [0, 1],
+                translateY: [24, 0],
+                scale: [0.95, 1],
+                duration: 450,
+                ease: createSpring({ stiffness: 210, damping: 15 })
+            });
 
-            toast._timeoutId =
-                setTimeout(
-                    () =>
-                        toast
-                            .classList
-                            .remove(
-                                'ts-show'
-                            ),
-                    4000
-                );
+            toast._timeoutId = setTimeout(() => {
+                animate(toast, { opacity: 0, translateY: 16, duration: 350, ease: 'inQuad' });
+            }, 3800);
         }
 
-        btnActualizar
-            .addEventListener(
-                'click',
-                async function () {
+        function lanzarConfetiEstado() {
+            const colores = ['#1a3a6e', '#4fa8e8', '#c0392b', '#1a7d3a', '#d0e8f8'];
+            const piezas = [];
+            const rectBadge = badgeEstado.getBoundingClientRect();
+            for (let i = 0; i < 26; i++) {
+                const pieza = document.createElement('div');
+                pieza.className = 'tsd-confetti-pieza';
+                pieza.style.background = colores[i % colores.length];
+                pieza.style.left = rectBadge.left + rectBadge.width / 2 + 'px';
+                pieza.style.top = rectBadge.top + 'px';
+                confettiLayer.appendChild(pieza);
+                piezas.push(pieza);
+            }
+            animate(piezas, {
+                x: () => utils.random(-140, 140),
+                y: () => utils.random(-40, 180),
+                rotate: () => utils.random(-360, 360),
+                opacity: [1, 0],
+                duration: () => utils.random(700, 1200),
+                delay: stagger(5),
+                ease: 'outExpo',
+                onComplete: (a) => a.targets.forEach(t => t.remove())
+            });
+        }
 
-                    const idEstado =
-                        document
-                            .getElementById(
-                                'selectEstado'
-                            )
-                            .value;
+        btnActualizar.addEventListener('click', async function () {
 
-                    btnActualizar.disabled =
-                        true;
+            const selectEstado = document.getElementById('selectEstado');
+            const idEstado = selectEstado.value;
+            const nombreNuevoEstado = selectEstado.selectedOptions[0].textContent.trim();
 
-                    try {
+            btnActualizar.disabled = true;
+            const pulso = animate(btnActualizar, { scale: [1, 0.96, 1], duration: 500, loop: true, ease: 'inOutSine' });
 
-                        const resp =
-                            await fetch(
-                                '@Url.Action("CambiarEstado", "Pedido")',
-                                {
-                                    method: 'POST',
+            try {
 
-                                    headers: {
-                                        'Content-Type':
-                                            'application/json',
-
-                                        'X-CSRF-TOKEN':
-                                            csrfToken
-                                    },
-
-                                    body:
-                                        JSON.stringify(
-                                            {
-                                                idPedido:
-                                                    idPedido,
-
-                                                idEstadoPedido:
-                                                    parseInt(
-                                                        idEstado,
-                                                        10
-                                                    )
-                                            }
-                                        )
-                                }
-                            );
-
-                        if (!resp.ok) {
-
-                            const error =
-                                await resp
-                                    .json()
-                                    .catch(
-                                        () => ({
-                                            mensaje:
-                                                'No se pudo actualizar el estado.'
-                                        })
-                                    );
-
-                            throw new Error(
-                                error.mensaje ||
-                                'No se pudo actualizar el estado.'
-                            );
-                        }
-
-                        mostrarToastDetalle(
-                            'Estado actualizado correctamente.',
-                            'exito'
-                        );
-
-                        setTimeout(
-                            () =>
-                                location.reload(),
-                            1000
-                        );
+                const resp = await fetch(
+                    '@Url.Action("CambiarEstado", "Pedido")',
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: JSON.stringify({
+                            idPedido: idPedido,
+                            idEstadoPedido: parseInt(idEstado, 10)
+                        })
                     }
-                    catch (e) {
+                );
 
-                        mostrarToastDetalle(
-                            e.message,
-                            'error'
-                        );
-
-                        btnActualizar.disabled =
-                            false;
-                    }
+                if (!resp.ok) {
+                    const error = await resp.json().catch(() => ({
+                        mensaje: 'No se pudo actualizar el estado.'
+                    }));
+                    throw new Error(error.mensaje || 'No se pudo actualizar el estado.');
                 }
-            );
 
-    })();
+                pulso.pause();
+                btnActualizar.style.transform = '';
 
+                // Actualiza el badge visualmente antes del recargo, con un pequeño "pop" + confeti
+                badgeEstado.textContent = nombreNuevoEstado;
+                animate(badgeEstado, {
+                    scale: [0.85, 1.15, 1],
+                    duration: 550,
+                    ease: createSpring({ stiffness: 240, damping: 12 })
+                });
+                lanzarConfetiEstado();
+
+                mostrarToastDetalle('Estado actualizado correctamente.', 'exito');
+
+                setTimeout(() => location.reload(), 1100);
+            }
+            catch (e) {
+                pulso.pause();
+                btnActualizar.style.transform = '';
+                animate(btnActualizar, {
+                    translateX: [0, -6, 6, -6, 6, 0],
+                    duration: 400,
+                    ease: 'inOutSine'
+                });
+                mostrarToastDetalle(e.message, 'error');
+                btnActualizar.disabled = false;
+            }
+        });
+    }
+
+    } catch (e) {
+        console.error('Error en la animación del detalle de pedido:', e);
+        document.querySelectorAll('#tsFactura, .ts-encabezado-grid > div, #tsClimaFranja, #tsTablaBody tr, #tsTotales, #tsVolverLink')
+            .forEach(el => { el.style.opacity = '1'; });
+    }
+
+    // Red de seguridad: si por cualquier razón (CDN lento/caído, versión distinta, etc.)
+    // las animaciones no corrieron a tiempo, nunca dejamos la página en blanco.
+    setTimeout(() => {
+        document.querySelectorAll('#tsFactura, .ts-encabezado-grid > div, #tsClimaFranja, #tsTablaBody tr, #tsTotales, #tsVolverLink')
+            .forEach(el => {
+                if (parseFloat(getComputedStyle(el).opacity) < 1) {
+                    el.style.opacity = '1';
+                }
+            });
+    }, 3000);
 </script>
 
 }
