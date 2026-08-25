@@ -36,7 +36,7 @@ namespace TempestSushi.Controllers
             return View(combo);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpGet]
         public async Task<IActionResult> Crear()
         {
@@ -44,7 +44,7 @@ namespace TempestSushi.Controllers
             return View(dto);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(ComboFormDto dto)
@@ -70,7 +70,7 @@ namespace TempestSushi.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpGet]
         public async Task<IActionResult> Editar(int id)
         {
@@ -82,7 +82,7 @@ namespace TempestSushi.Controllers
             return View(dto);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(

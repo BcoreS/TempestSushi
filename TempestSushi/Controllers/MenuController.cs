@@ -18,6 +18,11 @@ namespace TempestSushi.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if (User.IsInRole("Cliente"))
+            {
+                return RedirectToAction(nameof(Disponible));
+            }
+
             var menus = await _service.ObtenerListadoAsync();
             return View(menus);
         }
@@ -37,7 +42,7 @@ namespace TempestSushi.Web.Controllers
             return View(menu);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -45,7 +50,7 @@ namespace TempestSushi.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(MenuFormDto dto)
@@ -64,7 +69,7 @@ namespace TempestSushi.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -78,7 +83,7 @@ namespace TempestSushi.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(MenuFormDto dto)
@@ -104,7 +109,7 @@ namespace TempestSushi.Web.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

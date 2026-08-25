@@ -11,12 +11,18 @@ namespace TempestSushi.Application.Profiles
             CreateMap<Producto, MenuItemDto>()
                 .ForMember(
                     destination => destination.Tipo,
-                    options => options.MapFrom(source => "Producto"));
+                    options => options.MapFrom(source => "Producto"))
+                .ForMember(
+                    destination => destination.IdItem,
+                    options => options.MapFrom(source => source.IdProducto));
 
             CreateMap<Combo, MenuItemDto>()
                 .ForMember(
                     destination => destination.Tipo,
-                    options => options.MapFrom(source => "Combo"));
+                    options => options.MapFrom(source => "Combo"))
+                .ForMember(
+                    destination => destination.IdItem,
+                    options => options.MapFrom(source => source.IdCombo));
 
             CreateMap<MenuFormDto, Menu>()
                 .ForMember(

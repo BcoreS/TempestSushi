@@ -11,5 +11,7 @@ namespace TempestSushi.Application.DTOs
         public string Nombre { get; set; } = "";
         public decimal Precio { get; set; }
         public string Tipo { get; set; } = ""; // "Producto" o "Combo"
+
+        public int IdItem { get; set; }
     }
 }

@@ -29,8 +29,8 @@
     }
 
     /* ═══════════════════════════════════════
-           CONTENEDOR PRINCIPAL
-           ═══════════════════════════════════════ */
+               CONTENEDOR PRINCIPAL
+               ═══════════════════════════════════════ */
 
     .ts-factura-form {
         width: 100%;
@@ -43,8 +43,8 @@
     }
 
     /* ═══════════════════════════════════════
-           HEADER
-           ═══════════════════════════════════════ */
+               HEADER
+               ═══════════════════════════════════════ */
 
     .ts-factura-header {
         padding: 1.5rem 2rem;
@@ -66,8 +66,8 @@
     }
 
     /* ═══════════════════════════════════════
-           SECCIONES
-           ═══════════════════════════════════════ */
+               SECCIONES
+               ═══════════════════════════════════════ */
 
     .ts-seccion-label {
         margin-bottom: 0.75rem;
@@ -104,8 +104,8 @@
     }
 
     /* ═══════════════════════════════════════
-           ENCABEZADO DEL PEDIDO
-           ═══════════════════════════════════════ */
+               ENCABEZADO DEL PEDIDO
+               ═══════════════════════════════════════ */
 
     .ts-encabezado-grid {
         display: grid;
@@ -125,8 +125,8 @@
         }
 
     /* ═══════════════════════════════════════
-           TABLA DEL PEDIDO
-           ═══════════════════════════════════════ */
+               TABLA DEL PEDIDO
+               ═══════════════════════════════════════ */
 
     .ts-tabla-wrapper {
         width: 100%;
@@ -185,8 +185,8 @@
     }
 
     /* ═══════════════════════════════════════
-           BORRAR LÍNEA
-           ═══════════════════════════════════════ */
+               BORRAR LÍNEA
+               ═══════════════════════════════════════ */
 
     .ts-btn-borrar-linea {
         width: 32px;
@@ -207,8 +207,8 @@
         }
 
     /* ═══════════════════════════════════════
-           AGREGAR
-           ═══════════════════════════════════════ */
+               AGREGAR
+               ═══════════════════════════════════════ */
 
     .ts-btn-agregar {
         min-height: 42px;
@@ -230,8 +230,8 @@
         }
 
     /* ═══════════════════════════════════════
-           ERROR CANTIDAD
-           ═══════════════════════════════════════ */
+               ERROR CANTIDAD
+               ═══════════════════════════════════════ */
 
     .ts-error-cantidad {
         display: none;
@@ -243,8 +243,8 @@
     }
 
     /* ═══════════════════════════════════════
-           TOTALES
-           ═══════════════════════════════════════ */
+               TOTALES
+               ═══════════════════════════════════════ */
 
     .ts-totales {
         width: 100%;
@@ -279,8 +279,8 @@
         }
 
     /* ═══════════════════════════════════════
-           MÉTODO DE PAGO
-           ═══════════════════════════════════════ */
+               MÉTODO DE PAGO
+               ═══════════════════════════════════════ */
 
     .ts-metodo-pago {
         width: 100%;
@@ -301,8 +301,8 @@
         }
 
     /* ═══════════════════════════════════════
-           BOTÓN REGISTRAR
-           ═══════════════════════════════════════ */
+               BOTÓN REGISTRAR
+               ═══════════════════════════════════════ */
 
     .ts-registrar-wrapper {
         margin-top: 2rem;
@@ -341,8 +341,8 @@
         }
 
     /* ═══════════════════════════════════════
-           TOAST
-           ═══════════════════════════════════════ */
+               TOAST
+               ═══════════════════════════════════════ */
 
     .ts-toast {
         position: fixed;
@@ -379,8 +379,8 @@
         }
 
     /* ═══════════════════════════════════════
-           TABLET
-           ═══════════════════════════════════════ */
+               TABLET
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 768px) {
 
@@ -406,8 +406,8 @@
     }
 
     /* ═══════════════════════════════════════
-           MÓVIL
-           ═══════════════════════════════════════ */
+               MÓVIL
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 576px) {
 
@@ -481,8 +481,8 @@
     }
 
     /* ═══════════════════════════════════════
-           TELÉFONO PEQUEÑO
-           ═══════════════════════════════════════ */
+               TELÉFONO PEQUEÑO
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 390px) {
 
@@ -517,8 +517,8 @@
     }
 
     /* ═══════════════════════════════════════
-           MOVIMIENTO REDUCIDO
-           ═══════════════════════════════════════ */
+               MOVIMIENTO REDUCIDO
+               ═══════════════════════════════════════ */
 
     @@media (prefers-reduced-motion: reduce) {
 
@@ -1054,28 +1054,28 @@
 
     <script>
 
-        (function () {
+            (function () {
 
-            const culturaFormatoMoneda =
-                new Intl.NumberFormat(
-                    'es-CR',
-                    {
-                        style: 'currency',
-                        currency: 'CRC',
-                        minimumFractionDigits: 2
-                    }
-                );
+                const culturaFormatoMoneda =
+                    new Intl.NumberFormat(
+                        'es-CR',
+                        {
+                            style: 'currency',
+                            currency: 'CRC',
+                            minimumFractionDigits: 2
+                        }
+                    );
 
-            const calcularLineaUrl =
-                '@Url.Action("CalcularLinea", "Pedido")';
+                const calcularLineaUrl =
+                    '@Url.Action("CalcularLinea", "Pedido")';
 
-            const registrarPedidoUrl =
-                '@Url.Action("Create", "Pedido")';
+                const registrarPedidoUrl =
+                    '@Url.Action("Create", "Pedido")';
 
-            const costoEnvioFijo =
-                @costoEnvio.ToString(
-                    System.Globalization.CultureInfo.InvariantCulture
-                        );
+                const costoEnvioFijo =
+                    @costoEnvio.ToString(
+                        System.Globalization.CultureInfo.InvariantCulture
+                                                );
 
         const esCliente =
             @(esCliente ? "true" : "false");
@@ -1725,7 +1725,7 @@
 
             const badge =
                 document.getElementById(
-                    'ts-cart-badge'
+                    'ts-pedido-badge'
                 );
 
             if (badge) {
@@ -2114,7 +2114,7 @@
                             );
 
                         if (
-                            montoRecibido <
+                            montoRecibido
                             totalActual()
                         ) {
 
@@ -2244,6 +2244,10 @@
                         actualizarBadgeCantidad(
                             0
                         );
+
+                        if (typeof tsCarritoVaciar === 'function') {
+                            tsCarritoVaciar();
+                        }
 
                         setTimeout(
                             () => {

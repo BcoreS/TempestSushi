@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Combos";
+    var esCliente = User.IsInRole("Cliente");
 }
 
 <style>
@@ -13,8 +14,8 @@
     }
 
     /* ═══════════════════════════════════════
-           HEADER
-           ═══════════════════════════════════════ */
+               HEADER
+               ═══════════════════════════════════════ */
 
     .combo-header {
         display: flex;
@@ -56,8 +57,8 @@
     }
 
     /* ═══════════════════════════════════════
-           NOTIFICACIÓN
-           ═══════════════════════════════════════ */
+               NOTIFICACIÓN
+               ═══════════════════════════════════════ */
 
     .combo-alert {
         margin-bottom: 1.5rem;
@@ -65,8 +66,8 @@
     }
 
     /* ═══════════════════════════════════════
-           BOTÓN NUEVO
-           ═══════════════════════════════════════ */
+               BOTÓN NUEVO
+               ═══════════════════════════════════════ */
 
     .btn-nuevo {
         flex-shrink: 0;
@@ -94,16 +95,16 @@
         }
 
     /* ═══════════════════════════════════════
-           GRID
-           ═══════════════════════════════════════ */
+               GRID
+               ═══════════════════════════════════════ */
 
     .combo-grid {
         width: 100%;
     }
 
     /* ═══════════════════════════════════════
-           CARD
-           ═══════════════════════════════════════ */
+               CARD
+               ═══════════════════════════════════════ */
 
     .combo-card {
         height: 100%;
@@ -125,8 +126,8 @@
         }
 
     /* ═══════════════════════════════════════
-           ICONO
-           ═══════════════════════════════════════ */
+               ICONO
+               ═══════════════════════════════════════ */
 
     .combo-icon {
         width: 100%;
@@ -141,8 +142,8 @@
     }
 
     /* ═══════════════════════════════════════
-           BODY
-           ═══════════════════════════════════════ */
+               BODY
+               ═══════════════════════════════════════ */
 
     .combo-body {
         min-width: 0;
@@ -180,8 +181,8 @@
     }
 
     /* ═══════════════════════════════════════
-           BOTÓN DETALLE
-           ═══════════════════════════════════════ */
+               BOTÓN DETALLE
+               ═══════════════════════════════════════ */
 
     .btn-ver {
         width: 100%;
@@ -210,8 +211,34 @@
         }
 
     /* ═══════════════════════════════════════
-           ESTADO VACÍO
-           ═══════════════════════════════════════ */
+               AGREGAR AL CARRITO
+               ═══════════════════════════════════════ */
+
+    .btn-agregar-carrito {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background: rgba(79, 168, 232, 0.12);
+        border: 1.5px dashed #4fa8e8;
+        color: #1a3a6e;
+        border-radius: 8px;
+        padding: 8px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        letter-spacing: 1px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 8px;
+        transition: background .2s;
+    }
+
+        .btn-agregar-carrito:hover {
+            background: rgba(79, 168, 232, 0.25);
+        }
+
+    /* ═══════════════════════════════════════
+               ESTADO VACÍO
+               ═══════════════════════════════════════ */
 
     .combo-empty {
         padding: 3rem 1.5rem;
@@ -236,8 +263,8 @@
     }
 
     /* ═══════════════════════════════════════
-           TABLET
-           ═══════════════════════════════════════ */
+               TABLET
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 768px) {
 
@@ -260,8 +287,8 @@
     }
 
     /* ═══════════════════════════════════════
-           MÓVIL
-           ═══════════════════════════════════════ */
+               MÓVIL
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 576px) {
 
@@ -323,8 +350,8 @@
     }
 
     /* ═══════════════════════════════════════
-           TELÉFONOS PEQUEÑOS
-           ═══════════════════════════════════════ */
+               TELÉFONOS PEQUEÑOS
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 390px) {
 
@@ -345,8 +372,8 @@
     }
 
     /* ═══════════════════════════════════════
-           ACCESIBILIDAD
-           ═══════════════════════════════════════ */
+               ACCESIBILIDAD
+               ═══════════════════════════════════════ */
 
     @@media (prefers-reduced-motion: reduce) {
 
@@ -441,6 +468,13 @@
 
                             </a>
 
+                            @if (esCliente)
+                            {
+                                <button type="button" class="btn-agregar-carrito" data-tipo="Combo" data-id="@item.IdCombo">
+                                    + Agregar al carrito
+                                </button>
+                            }
+
                         </div>
 
                     </div>
@@ -515,5 +549,14 @@
 
             });
     }
+
+    document.querySelectorAll('.btn-agregar-carrito').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const tipo = btn.getAttribute('data-tipo');
+            const id = parseInt(btn.getAttribute('data-id'), 10);
+            tsCarritoAgregar(tipo, id, 1);
+            tsMostrarToastGlobal('Agregado al carrito.', 'exito');
+        });
+    });
 
 </script>

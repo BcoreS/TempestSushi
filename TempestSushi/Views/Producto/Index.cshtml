@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Productos";
+    var esCliente = User.IsInRole("Cliente");
 }
 
 <style>
@@ -13,8 +14,8 @@
     }
 
     /* ═══════════════════════════════════════
-           HEADER
-           ═══════════════════════════════════════ */
+               HEADER
+               ═══════════════════════════════════════ */
 
     .prod-header {
         display: flex;
@@ -56,8 +57,8 @@
     }
 
     /* ═══════════════════════════════════════
-           NUEVO PRODUCTO
-           ═══════════════════════════════════════ */
+               NUEVO PRODUCTO
+               ═══════════════════════════════════════ */
 
     .btn-nuevo-producto {
         flex-shrink: 0;
@@ -85,8 +86,8 @@
         }
 
     /* ═══════════════════════════════════════
-           ALERTA
-           ═══════════════════════════════════════ */
+               ALERTA
+               ═══════════════════════════════════════ */
 
     .prod-alert {
         margin-bottom: 1.5rem;
@@ -94,8 +95,8 @@
     }
 
     /* ═══════════════════════════════════════
-           CARDS
-           ═══════════════════════════════════════ */
+               CARDS
+               ═══════════════════════════════════════ */
 
     .prod-card {
         height: 100%;
@@ -116,8 +117,8 @@
         }
 
     /* ═══════════════════════════════════════
-           IMAGEN
-           ═══════════════════════════════════════ */
+               IMAGEN
+               ═══════════════════════════════════════ */
 
     .prod-img,
     .prod-img-placeholder {
@@ -142,8 +143,8 @@
     }
 
     /* ═══════════════════════════════════════
-           BODY
-           ═══════════════════════════════════════ */
+               BODY
+               ═══════════════════════════════════════ */
 
     .prod-body {
         min-width: 0;
@@ -181,8 +182,8 @@
     }
 
     /* ═══════════════════════════════════════
-           BOTÓN DETALLE
-           ═══════════════════════════════════════ */
+               BOTÓN DETALLE
+               ═══════════════════════════════════════ */
 
     .btn-ver {
         min-height: 42px;
@@ -209,8 +210,34 @@
         }
 
     /* ═══════════════════════════════════════
-           VACÍO
-           ═══════════════════════════════════════ */
+               AGREGAR AL CARRITO
+               ═══════════════════════════════════════ */
+
+    .btn-agregar-carrito {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background: rgba(79, 168, 232, 0.12);
+        border: 1.5px dashed #4fa8e8;
+        color: #1a3a6e;
+        border-radius: 8px;
+        padding: 8px;
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .95rem;
+        letter-spacing: 1px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 8px;
+        transition: background .2s;
+    }
+
+        .btn-agregar-carrito:hover {
+            background: rgba(79, 168, 232, 0.25);
+        }
+
+    /* ═══════════════════════════════════════
+               VACÍO
+               ═══════════════════════════════════════ */
 
     .prod-empty {
         padding: 3rem 1.25rem;
@@ -234,8 +261,8 @@
     }
 
     /* ═══════════════════════════════════════
-           TABLET
-           ═══════════════════════════════════════ */
+               TABLET
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 768px) {
 
@@ -254,8 +281,8 @@
     }
 
     /* ═══════════════════════════════════════
-           MÓVIL
-           ═══════════════════════════════════════ */
+               MÓVIL
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 576px) {
 
@@ -310,8 +337,8 @@
     }
 
     /* ═══════════════════════════════════════
-           TELÉFONO PEQUEÑO
-           ═══════════════════════════════════════ */
+               TELÉFONO PEQUEÑO
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 390px) {
 
@@ -336,8 +363,8 @@
     }
 
     /* ═══════════════════════════════════════
-           MOVIMIENTO REDUCIDO
-           ═══════════════════════════════════════ */
+               MOVIMIENTO REDUCIDO
+               ═══════════════════════════════════════ */
 
     @@media (prefers-reduced-motion: reduce) {
 
@@ -442,6 +469,13 @@
 
                             </a>
 
+                            @if (esCliente)
+                            {
+                                <button type="button" class="btn-agregar-carrito" data-tipo="Producto" data-id="@producto.IdProducto">
+                                    + Agregar al carrito
+                                </button>
+                            }
+
                         </div>
 
                     </div>
@@ -499,5 +533,14 @@
             easing: 'easeOutExpo'
         });
     }
+
+    document.querySelectorAll('.btn-agregar-carrito').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            const tipo = btn.getAttribute('data-tipo');
+            const id = parseInt(btn.getAttribute('data-id'), 10);
+            tsCarritoAgregar(tipo, id, 1);
+            tsMostrarToastGlobal('Agregado al carrito.', 'exito');
+        });
+    });
 
 </script>

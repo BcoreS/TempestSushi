@@ -1,0 +1,1197 @@
+@model TempestSushi.Application.DTOs.PedidoFormularioDto
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@{
+    ViewData["Title"] = "Mi Carrito";
+    var tokens = Antiforgery.GetAndStoreTokens(Context);
+    var costoEnvio = (decimal)ViewBag.CostoEnvio;
+}
+
+<meta name="csrf-token" content="@tokens.RequestToken" />
+
+<style>
+    :root {
+        --tsc-azul-oscuro: #1a3a6e;
+        --tsc-azul-medio: #294869;
+        --tsc-azul-claro: #4fa8e8;
+        --tsc-azul-borde: #d0e8f8;
+        --tsc-azul-fondo: #f0f6fc;
+        --tsc-rojo: #c0392b;
+        --tsc-rojo-hover: #a5301f;
+        --tsc-verde: #1a7d3a;
+        --tsc-gris-vacio: #8ab2cc;
+    }
+
+    .tsc-page {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        /* SIN overflow:hidden aquí — rompía el sticky del resumen */
+    }
+
+    /* ── Header con zona ambiental contenida (no afecta el resto del layout) ── */
+    .tsc-header {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 1.75rem;
+        padding: 1.5rem 1.5rem 1.25rem;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #fff 60%, var(--tsc-azul-fondo));
+        border: 1px solid var(--tsc-azul-borde);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        opacity: 0;
+    }
+
+    .tsc-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(36px);
+        pointer-events: none;
+    }
+
+    .tsc-blob--1 {
+        width: 200px;
+        height: 200px;
+        background: var(--tsc-azul-claro);
+        opacity: .16;
+        top: -90px;
+        left: -50px;
+    }
+
+    .tsc-blob--2 {
+        width: 160px;
+        height: 160px;
+        background: var(--tsc-azul-borde);
+        opacity: .7;
+        bottom: -80px;
+        left: 40%;
+    }
+
+    .tsc-header-texto {
+        position: relative;
+        z-index: 1;
+    }
+
+    .cart-title {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 2.1rem;
+        font-weight: 700;
+        margin: 0;
+        background: linear-gradient(90deg, var(--tsc-azul-oscuro), var(--tsc-azul-claro));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .tsc-header-sub {
+        color: var(--tsc-azul-medio);
+        font-size: .9rem;
+    }
+
+    .tsc-hero-decor {
+        position: relative;
+        z-index: 1;
+        width: 118px;
+        height: 118px;
+        flex-shrink: 0;
+        display: none;
+    }
+
+    @@media (min-width: 640px) {
+        .tsc-hero-decor {
+            display: block;
+        }
+    }
+
+    .tsc-ring-dash {
+        stroke: var(--tsc-azul-borde);
+        transform-origin: 59px 59px;
+    }
+
+    .tsc-ring-draw {
+        stroke: var(--tsc-azul-claro);
+        transform-origin: 59px 59px;
+    }
+
+    .tsc-orbit {
+        transform-origin: 59px 59px;
+    }
+
+    /* ── Layout tipo Amazon: items + resumen fijo ── */
+    .tsc-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap: 1.75rem;
+        align-items: start;
+    }
+
+    @@media (max-width: 900px) {
+        .tsc-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .tsc-items-panel {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 22px rgba(26, 58, 110, 0.10);
+        overflow: hidden;
+        opacity: 0;
+    }
+
+    .tsc-items-panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 2px solid var(--tsc-azul-borde);
+    }
+
+        .tsc-items-panel-head h2 {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--tsc-azul-oscuro);
+            margin: 0;
+        }
+
+    .tsc-items-count {
+        background: var(--tsc-azul-fondo);
+        color: var(--tsc-azul-oscuro);
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: .8rem;
+        padding: .3rem .75rem;
+        border-radius: 999px;
+        border: 1px solid var(--tsc-azul-borde);
+        display: inline-block;
+    }
+
+    .tsc-items-grid-head {
+        display: grid;
+        grid-template-columns: 56px 1fr 110px 140px 120px 40px;
+        gap: .5rem;
+        padding: .7rem 1.5rem;
+        background: var(--tsc-azul-fondo);
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: .72rem;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        color: var(--tsc-azul-oscuro);
+    }
+
+    @@media (max-width: 620px) {
+        .tsc-items-grid-head {
+            display: none;
+        }
+    }
+
+    .tsc-skeleton-item {
+        position: relative;
+        overflow: hidden;
+        height: 68px;
+        margin: 1rem 1.5rem;
+        border-radius: 12px;
+        background: var(--tsc-azul-fondo);
+    }
+
+    .tsc-skeleton-shine {
+        position: absolute;
+        top: 0;
+        left: -60%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(79,168,232,.35), transparent);
+    }
+
+    .tsc-item {
+        display: grid;
+        grid-template-columns: 56px 1fr 110px 140px 120px 40px;
+        gap: .5rem;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #eef4fa;
+        opacity: 0;
+        transition: box-shadow .2s ease;
+    }
+
+        .tsc-item:hover {
+            box-shadow: inset 0 0 0 1px var(--tsc-azul-borde);
+        }
+
+    @@media (max-width: 620px) {
+        .tsc-item {
+            grid-template-columns: 48px 1fr auto;
+            row-gap: .5rem;
+        }
+    }
+
+    .tsc-item-icono {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: linear-gradient(145deg, var(--tsc-azul-fondo), var(--tsc-azul-borde));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--tsc-azul-oscuro);
+    }
+
+    .tsc-item-info {
+        min-width: 0;
+    }
+
+    .cart-nombre {
+        font-weight: 700;
+        color: var(--tsc-azul-oscuro);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cart-tipo {
+        font-size: .72rem;
+        color: var(--tsc-azul-claro);
+        letter-spacing: 1px;
+    }
+
+    .tsc-item-precio {
+        color: var(--tsc-azul-medio);
+        font-weight: 600;
+    }
+
+    .tsc-item-cantidad {
+        display: flex;
+        align-items: center;
+        gap: .3rem;
+    }
+
+    .tsc-qty-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        border: 1px solid var(--tsc-azul-borde);
+        background: var(--tsc-azul-fondo);
+        color: var(--tsc-azul-oscuro);
+        font-weight: 700;
+        font-size: 1rem;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+        .tsc-qty-btn:hover {
+            background: var(--tsc-azul-claro);
+            color: #fff;
+        }
+
+    .cart-input-cantidad {
+        width: 44px;
+        text-align: center;
+        padding: .3rem .2rem;
+    }
+
+    .cart-subtotal-celda {
+        font-weight: 700;
+        color: var(--tsc-azul-oscuro);
+    }
+
+    .cart-btn-quitar {
+        border: none;
+        background: rgba(192, 57, 43, .08);
+        color: var(--tsc-rojo);
+        border-radius: 8px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+        .cart-btn-quitar:hover {
+            background: var(--tsc-rojo);
+            color: #fff;
+        }
+
+    .tsc-items-panel-foot {
+        display: flex;
+        justify-content: flex-end;
+        padding: 1.1rem 1.5rem;
+        background: var(--tsc-azul-fondo);
+    }
+
+    .cart-btn-vaciar {
+        background: transparent;
+        border: 1.5px solid var(--tsc-rojo);
+        color: var(--tsc-rojo);
+        border-radius: 8px;
+        padding: .55rem 1.1rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+        .cart-btn-vaciar:hover {
+            background: var(--tsc-rojo);
+            color: #fff;
+        }
+
+    .cart-vacio {
+        padding: 3.5rem 2rem;
+        text-align: center;
+        color: var(--tsc-gris-vacio);
+    }
+
+        .cart-vacio .tsc-vacio-icono {
+            display: block;
+            margin: 0 auto .75rem;
+        }
+
+        .cart-vacio a {
+            color: var(--tsc-azul-oscuro);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+    /* ── Resumen fijo (estilo "order summary" de Amazon) ── */
+    .tsc-summary-panel {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 22px rgba(26, 58, 110, 0.10);
+        overflow: hidden;
+        position: sticky;
+        top: 24px;
+        opacity: 0;
+    }
+
+    .tsc-summary-body {
+        padding: 1.5rem 1.6rem;
+    }
+
+    .tsc-paso {
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+        margin-bottom: .8rem;
+    }
+
+    .tsc-paso-numero {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--tsc-azul-oscuro);
+        color: #fff;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: .8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .tsc-paso-numero.tsc-paso-ok {
+            background: var(--tsc-verde);
+        }
+
+    .tsc-seccion-label {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: .9rem;
+        color: var(--tsc-azul-oscuro);
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        margin: 0;
+    }
+
+    .tsc-seccion-cuerpo {
+        margin-bottom: 1.4rem;
+        padding-bottom: 1.2rem;
+        border-bottom: 1px solid var(--tsc-azul-borde);
+    }
+
+    .tsc-checkout-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: .9rem;
+        margin-top: .9rem;
+    }
+
+    .cart-campo-label {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: .75rem;
+        font-weight: 700;
+        color: var(--tsc-azul-claro);
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        margin-bottom: 3px;
+    }
+
+    .form-control, .form-select {
+        transition: box-shadow .2s ease, border-color .2s ease;
+    }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--tsc-azul-claro);
+            box-shadow: 0 0 0 3px rgba(79, 168, 232, .18);
+        }
+
+    #grupoDireccion {
+        opacity: 0;
+    }
+
+    .cart-pago-tarjeta, .cart-pago-efectivo {
+        display: none;
+        grid-template-columns: repeat(2, 1fr);
+        gap: .8rem;
+        margin-top: .9rem;
+        opacity: 0;
+    }
+
+    .cart-campo-readonly {
+        background: var(--tsc-azul-fondo);
+        border: 1px solid var(--tsc-azul-borde);
+        border-radius: 8px;
+        padding: .55rem .8rem;
+        color: var(--tsc-azul-oscuro);
+        font-weight: 600;
+    }
+
+    .cart-totales-fila {
+        display: flex;
+        justify-content: space-between;
+        padding: .35rem 0;
+        color: var(--tsc-azul-medio);
+    }
+
+    .cart-total-final {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--tsc-azul-oscuro);
+        border-top: 2px solid var(--tsc-azul-oscuro);
+        margin-top: .5rem;
+        padding-top: .7rem;
+    }
+
+    .cart-btn-registrar {
+        width: 100%;
+        background: linear-gradient(135deg, var(--tsc-rojo), var(--tsc-rojo-hover));
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: .85rem 2rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: 1.05rem;
+        letter-spacing: .05em;
+        cursor: pointer;
+        display: block;
+        margin-top: 1.5rem;
+    }
+
+        .cart-btn-registrar:hover {
+            filter: brightness(1.05);
+        }
+
+        .cart-btn-registrar:disabled {
+            background: #c9c9c9;
+            cursor: not-allowed;
+        }
+
+    .cart-toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        min-width: 280px;
+        max-width: 360px;
+        padding: 1rem 1.25rem;
+        border-radius: 10px;
+        color: #fff;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+        z-index: 2000;
+        opacity: 0;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        gap: .6rem;
+    }
+
+        .cart-toast.cart-exito {
+            background: var(--tsc-verde);
+        }
+
+        .cart-toast.cart-error {
+            background: var(--tsc-rojo);
+        }
+
+    #tscConfetti {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 2500;
+        overflow: hidden;
+    }
+
+    .tsc-confetti-pieza {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        top: 50%;
+        left: 50%;
+    }
+</style>
+
+<div class="tsc-page">
+
+    <div class="tsc-header">
+        <div class="tsc-blob tsc-blob--1"></div>
+        <div class="tsc-blob tsc-blob--2"></div>
+
+        <div class="tsc-header-texto">
+            <h1 class="cart-title">Mi Carrito</h1>
+            <span class="tsc-header-sub">Revisá tus productos y completá tu pedido</span>
+        </div>
+
+        <div class="tsc-hero-decor" aria-hidden="true">
+            <svg viewBox="0 0 118 118" width="118" height="118">
+                <circle class="tsc-ring-dash" cx="59" cy="59" r="52" fill="none" stroke-width="1.5" stroke-dasharray="5 6" />
+                <circle class="tsc-ring-draw" cx="59" cy="59" r="40" fill="none" stroke-width="3" stroke-linecap="round"
+                        pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" />
+                <g class="tsc-orbit">
+                    <circle cx="59" cy="7" r="4.5" fill="var(--tsc-azul-oscuro)" />
+                </g>
+                <g class="tsc-orbit" style="animation-direction: reverse;">
+                    <circle cx="59" cy="111" r="3.5" fill="var(--tsc-rojo)" />
+                </g>
+            </svg>
+        </div>
+    </div>
+
+    <div class="tsc-layout">
+        <!-- ══ Columna izquierda: items ══ -->
+        <section class="tsc-items-panel">
+            <div class="tsc-items-panel-head">
+                <h2>Productos en tu carrito</h2>
+                <span class="tsc-items-count" id="itemsCount">0 items</span>
+            </div>
+            <div class="tsc-items-grid-head">
+                <span></span><span>Producto / Combo</span><span>Precio</span><span>Cantidad</span><span>Subtotal</span><span></span>
+            </div>
+            <div id="cartContenido">
+                <div class="tsc-skeleton-item"><div class="tsc-skeleton-shine"></div></div>
+                <div class="tsc-skeleton-item"><div class="tsc-skeleton-shine"></div></div>
+            </div>
+            <div class="tsc-items-panel-foot" id="accionesCarrito" style="display:none;">
+                <button type="button" class="cart-btn-vaciar" id="btnVaciar">Vaciar carrito</button>
+            </div>
+        </section>
+
+        <!-- ══ Columna derecha: resumen fijo ══ -->
+        <aside class="tsc-summary-panel" id="checkoutBox" style="display:none;">
+            <div class="tsc-summary-body">
+
+                <div class="tsc-paso">
+                    <span class="tsc-paso-numero" id="pasoEntregaNum">1</span>
+                    <p class="tsc-seccion-label">Entrega</p>
+                </div>
+                <div class="tsc-seccion-cuerpo">
+                    <div class="tsc-checkout-grid">
+                        <div>
+                            <div class="cart-campo-label">Método de entrega</div>
+                            <select id="selectMetodoEntrega" class="form-select">
+                                <option value="">Seleccione...</option>
+                                @foreach (var m in Model.MetodosEntrega)
+                                {
+                                    var esDomicilio = m.Nombre.Contains("domicilio", StringComparison.OrdinalIgnoreCase) ? "true" : "false";
+                                    <option value="@m.Id" data-domicilio="@esDomicilio">@m.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                        <div id="grupoDireccion" style="display:none;">
+                            <div class="cart-campo-label">Dirección de entrega</div>
+                            <input type="text" id="inputDireccion" class="form-control" placeholder="Detalles de la dirección" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tsc-paso">
+                    <span class="tsc-paso-numero" id="pasoPagoNum">2</span>
+                    <p class="tsc-seccion-label">Pago</p>
+                </div>
+                <div class="tsc-seccion-cuerpo">
+                    <div class="cart-campo-label">Método de pago</div>
+                    <select id="selectMetodoPago" class="form-select">
+                        <option value="">Seleccione...</option>
+                        @foreach (var m in Model.MetodosPago)
+                        {
+                            var esTarjeta = m.Nombre.Contains("tarjeta", StringComparison.OrdinalIgnoreCase) ? "true" : "false";
+                            <option value="@m.Id" data-tarjeta="@esTarjeta">@m.Nombre</option>
+                        }
+                    </select>
+
+                    <div class="cart-pago-tarjeta" id="grupoTarjeta">
+                        <div>
+                            <div class="cart-campo-label">Número de tarjeta</div>
+                            <input type="text" id="inputNumeroTarjeta" class="form-control" maxlength="19" placeholder="0000 0000 0000 0000" />
+                        </div>
+                        <div>
+                            <div class="cart-campo-label">Nombre del titular</div>
+                            <input type="text" id="inputNombreTitular" class="form-control" placeholder="Nombre en la tarjeta" />
+                        </div>
+                        <div>
+                            <div class="cart-campo-label">Vencimiento</div>
+                            <input type="text" id="inputVencimiento" class="form-control" maxlength="5" placeholder="MM/AA" />
+                        </div>
+                        <div>
+                            <div class="cart-campo-label">CVV</div>
+                            <input type="text" id="inputCvv" class="form-control" maxlength="4" placeholder="123" />
+                        </div>
+                    </div>
+
+                    <div class="cart-pago-efectivo" id="grupoEfectivo">
+                        <div>
+                            <div class="cart-campo-label">Monto recibido</div>
+                            <input type="number" id="inputMontoRecibido" class="form-control" min="0" step="1" placeholder="0" />
+                        </div>
+                        <div>
+                            <div class="cart-campo-label">Vuelto</div>
+                            <div class="cart-campo-readonly" id="vueltoCalculado">₡0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tsc-paso">
+                    <span class="tsc-paso-numero" id="pasoTotalNum">3</span>
+                    <p class="tsc-seccion-label">Total</p>
+                </div>
+                <div>
+                    <div class="cart-totales-fila"><span>Total sin impuestos</span><span id="totalSinImpuestos">₡0</span></div>
+                    <div class="cart-totales-fila"><span>Impuestos</span><span id="totalImpuestos">₡0</span></div>
+                    <div class="cart-totales-fila" id="filaEnvio" style="display:none;"><span>Costo de envío</span><span id="totalEnvio">₡0</span></div>
+                    <div class="cart-totales-fila cart-total-final"><span>Total a pagar</span><span id="totalFinal">₡0</span></div>
+                </div>
+
+                <button type="button" id="btnRegistrar" class="cart-btn-registrar">Registrar Pedido</button>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<div id="toast" class="cart-toast"></div>
+<div id="tscConfetti"></div>
+
+@section Scripts {
+    <script type="module">
+        import { animate, stagger, createSpring, createTimeline, utils } from 'https://cdn.jsdelivr.net/npm/animejs@4.0.2/+esm';
+
+        const culturaFormatoMoneda = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC', minimumFractionDigits: 2 });
+        const calcularLineaUrl = '@Url.Action("CalcularLinea", "Pedido")';
+        const registrarPedidoUrl = '@Url.Action("Create", "Pedido")';
+        const costoEnvioFijo = @costoEnvio.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+        const contenedor = document.getElementById('cartContenido');
+        const checkoutBox = document.getElementById('checkoutBox');
+        const accionesCarrito = document.getElementById('accionesCarrito');
+        const btnVaciar = document.getElementById('btnVaciar');
+        const itemsCountEl = document.getElementById('itemsCount');
+        const toast = document.getElementById('toast');
+        const confettiLayer = document.getElementById('tscConfetti');
+
+        // Iconos propios en SVG (evitan el render roto de emoji en Windows/Chrome)
+        const ICONO_PRODUCTO = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="15" rx="8" ry="4"/><circle cx="9" cy="13" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1.3" fill="currentColor" stroke="none"/></svg>';
+        const ICONO_COMBO = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 11h18M12 7v13"/></svg>';
+        const ICONO_CARRITO_VACIO = '<svg class="tsc-vacio-icono" viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M2 3h2l2.4 12.2a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L21 7H6"/></svg>';
+        const ICONO_EXITO = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>';
+        const ICONO_ERROR = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l10 18H2z"/><path d="M12 9v5M12 17h.01"/></svg>';
+
+        // Líneas ya calculadas contra el servidor (nombre/precio/subtotal/impuesto reales).
+        // Es lo único que se manda al registrar; nunca se arma desde un combobox aquí.
+        let lineasActuales = [];
+        let subtotalGeneral = 0, impuestoGeneral = 0;
+
+        function formatoMoneda(valor) {
+            return culturaFormatoMoneda.format(valor || 0);
+        }
+
+        function animarNumero(el, desde, hasta) {
+            const obj = { valor: desde };
+            animate(obj, {
+                valor: hasta,
+                duration: 500,
+                ease: 'outExpo',
+                onUpdate: () => { el.textContent = formatoMoneda(obj.valor); }
+            });
+        }
+
+        // ── Entrada orquestada con timeline ──────────────────────────
+        createTimeline()
+            .add('.tsc-header', { opacity: [0, 1], translateY: [-14, 0], duration: 500, ease: 'outQuad' })
+            .add('.tsc-items-panel', { opacity: [0, 1], translateX: [-24, 0], duration: 550, ease: 'outExpo' }, '-=250')
+            .add('.tsc-summary-panel', { opacity: [0, 1], translateX: [24, 0], duration: 550, ease: 'outExpo' }, '<')
+            .add('.tsc-skeleton-shine', { translateX: ['0%', '260%'], duration: 1100, loop: true, ease: 'inOutSine', delay: stagger(150) }, '<');
+
+        // ── Gráfico decorativo del header (contenido, sin romper el sticky) ──
+        animate('.tsc-blob--1', { translateY: [0, -14, 0], translateX: [0, 10, 0], duration: 6800, loop: true, ease: 'inOutSine' });
+        animate('.tsc-blob--2', { translateY: [0, 12, 0], translateX: [0, -8, 0], duration: 6000, loop: true, ease: 'inOutSine' });
+        animate('.tsc-ring-dash', { rotate: 360, duration: 22000, loop: true, ease: 'linear' });
+        animate('.tsc-ring-draw', { strokeDashoffset: [100, 0], duration: 1200, ease: 'outExpo', delay: 300 });
+        animate('.tsc-orbit', { rotate: 360, duration: 7000, loop: true, ease: 'linear' });
+
+        // ── Toast con spring ──────────────────────────────
+        function mostrarToast(mensaje, tipo) {
+            const icono = tipo === 'error' ? ICONO_ERROR : ICONO_EXITO;
+            toast.innerHTML = `${icono}<span>${mensaje}</span>`;
+            toast.className = 'cart-toast ' + (tipo === 'error' ? 'cart-error' : 'cart-exito');
+            clearTimeout(toast._timeoutId);
+
+            animate(toast, {
+                opacity: [0, 1],
+                translateY: [24, 0],
+                scale: [0.95, 1],
+                duration: 450,
+                ease: createSpring({ stiffness: 210, damping: 15 })
+            });
+
+            toast._timeoutId = setTimeout(() => {
+                animate(toast, { opacity: 0, translateY: 16, duration: 350, ease: 'inQuad' });
+            }, 3800);
+        }
+
+        // ── Confeti de éxito (solo colores de la paleta) ──────────────
+        function lanzarConfeti() {
+            const colores = ['#1a3a6e', '#4fa8e8', '#c0392b', '#1a7d3a', '#d0e8f8'];
+            const piezas = [];
+            for (let i = 0; i < 40; i++) {
+                const pieza = document.createElement('div');
+                pieza.className = 'tsc-confetti-pieza';
+                pieza.style.background = colores[i % colores.length];
+                confettiLayer.appendChild(pieza);
+                piezas.push(pieza);
+            }
+            animate(piezas, {
+                x: () => utils.random(-260, 260),
+                y: () => utils.random(-60, 320),
+                rotate: () => utils.random(-360, 360),
+                opacity: [1, 0],
+                duration: () => utils.random(900, 1500),
+                delay: stagger(6),
+                ease: 'outExpo',
+                onComplete: (a) => a.targets.forEach(t => t.remove())
+            });
+        }
+
+        async function calcularLinea(item) {
+            const resp = await fetch(calcularLineaUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tipo: item.tipo, idItem: item.idItem, cantidad: item.cantidad })
+            });
+            if (!resp.ok) return null;
+            return await resp.json();
+        }
+
+        function actualizarBadgeItems(cantidadItems) {
+            itemsCountEl.textContent = cantidadItems + (cantidadItems === 1 ? ' item' : ' items');
+            animate(itemsCountEl, { scale: [1.25, 1], duration: 350, ease: 'outBack' });
+        }
+
+        async function render() {
+            const items = tsCarritoObtener();
+
+            if (!items.length) {
+                contenedor.innerHTML = `
+                    <div class="cart-vacio">
+                        ${ICONO_CARRITO_VACIO}
+                        Tu carrito está vacío.<br />
+                        <a href="@Url.Action("Index", "Producto")">Explorar productos</a> ·
+                        <a href="@Url.Action("Index", "Combo")">Ver combos</a>
+                    </div>`;
+                animate('.tsc-vacio-icono', { translateY: [-10, 0], opacity: [0, 1], duration: 500, ease: 'outBack' });
+                ocultarCheckout();
+                accionesCarrito.style.display = 'none';
+                actualizarBadgeItems(0);
+                lineasActuales = [];
+                return;
+            }
+
+            contenedor.innerHTML = `
+                <div class="tsc-skeleton-item"><div class="tsc-skeleton-shine"></div></div>
+                <div class="tsc-skeleton-item"><div class="tsc-skeleton-shine"></div></div>`;
+            animate('.tsc-skeleton-shine', { translateX: ['0%', '260%'], duration: 1100, loop: true, ease: 'inOutSine', delay: stagger(150) });
+
+            const lineas = await Promise.all(items.map(async item => {
+                const linea = await calcularLinea(item);
+                return { item, linea };
+            }));
+
+            const lineasValidas = lineas.filter(l => l.linea !== null);
+
+            // Si algún item ya no existe en la BD, se quita silenciosamente del carrito
+            if (lineasValidas.length !== lineas.length) {
+                tsCarritoGuardar(lineasValidas.map(l => l.item));
+            }
+
+            if (!lineasValidas.length) {
+                contenedor.innerHTML = `<div class="cart-vacio">${ICONO_CARRITO_VACIO}Tu carrito está vacío.</div>`;
+                ocultarCheckout();
+                accionesCarrito.style.display = 'none';
+                actualizarBadgeItems(0);
+                lineasActuales = [];
+                return;
+            }
+
+            subtotalGeneral = 0;
+            impuestoGeneral = 0;
+            lineasActuales = lineasValidas.map(({ item, linea }) => ({
+                tipo: item.tipo,
+                idItem: item.idItem,
+                cantidad: linea.cantidad,
+                observaciones: null
+            }));
+
+            const filas = lineasValidas.map(({ item, linea }) => {
+                subtotalGeneral += linea.subtotal;
+                impuestoGeneral += linea.impuesto;
+                const icono = item.tipo === 'Combo' ? ICONO_COMBO : ICONO_PRODUCTO;
+                return `
+                    <div class="tsc-item" data-tipo="${item.tipo}" data-id="${item.idItem}">
+                        <div class="tsc-item-icono">${icono}</div>
+                        <div class="tsc-item-info">
+                            <div class="cart-nombre">${linea.nombre}</div>
+                            <div class="cart-tipo">${item.tipo}</div>
+                        </div>
+                        <div class="tsc-item-precio">${formatoMoneda(linea.precioUnitario)}</div>
+                        <div class="tsc-item-cantidad">
+                            <button type="button" class="tsc-qty-btn tsc-qty-menos">−</button>
+                            <input type="number" class="form-control cart-input-cantidad" min="1" step="1" value="${linea.cantidad}" />
+                            <button type="button" class="tsc-qty-btn tsc-qty-mas">+</button>
+                        </div>
+                        <div class="cart-subtotal-celda">${formatoMoneda(linea.subtotal)}</div>
+                        <button type="button" class="cart-btn-quitar" title="Quitar">&times;</button>
+                    </div>`;
+            }).join('');
+
+            contenedor.innerHTML = filas;
+            accionesCarrito.style.display = 'flex';
+            actualizarBadgeItems(lineasValidas.length);
+
+            animate('.tsc-item', {
+                opacity: [0, 1],
+                translateX: [-16, 0],
+                duration: 400,
+                delay: stagger(60),
+                ease: 'outQuad'
+            });
+
+            contenedor.querySelectorAll('.tsc-item').forEach(fila => {
+                const tipo = fila.dataset.tipo;
+                const idItem = parseInt(fila.dataset.id, 10);
+                const inputCantidad = fila.querySelector('.cart-input-cantidad');
+                const btnQuitar = fila.querySelector('.cart-btn-quitar');
+                const btnMenos = fila.querySelector('.tsc-qty-menos');
+                const btnMas = fila.querySelector('.tsc-qty-mas');
+                const celdaSubtotal = fila.querySelector('.cart-subtotal-celda');
+
+                fila.addEventListener('mouseenter', () => animate(fila, { translateY: -3, duration: 200, ease: 'outQuad' }));
+                fila.addEventListener('mouseleave', () => animate(fila, { translateY: 0, duration: 200, ease: 'outQuad' }));
+
+                function aplicarCantidad(cantidad) {
+                    if (!Number.isInteger(cantidad) || cantidad < 1) cantidad = 1;
+                    inputCantidad.value = cantidad;
+                    tsCarritoActualizarCantidad(tipo, idItem, cantidad);
+                    animate(celdaSubtotal, { color: ['#4fa8e8', '#1a3a6e'], scale: [1.1, 1], duration: 400, ease: 'outQuad' });
+                    render();
+                }
+
+                inputCantidad.addEventListener('change', function () {
+                    aplicarCantidad(parseInt(this.value, 10));
+                });
+
+                btnMenos.addEventListener('click', function () {
+                    animate(btnMenos, { scale: [1, 0.8, 1], duration: 220, ease: 'outQuad' });
+                    aplicarCantidad(parseInt(inputCantidad.value, 10) - 1);
+                });
+
+                btnMas.addEventListener('click', function () {
+                    animate(btnMas, { scale: [1, 0.8, 1], duration: 220, ease: 'outQuad' });
+                    aplicarCantidad(parseInt(inputCantidad.value, 10) + 1);
+                });
+
+                btnQuitar.addEventListener('click', function () {
+                    animate(fila, {
+                        opacity: [1, 0],
+                        translateX: [0, 60],
+                        scale: [1, 0.96],
+                        duration: 280,
+                        ease: 'inQuad',
+                        onComplete: () => {
+                            tsCarritoQuitar(tipo, idItem);
+                            render();
+                        }
+                    });
+                });
+            });
+
+            mostrarCheckout();
+            recalcularTotales();
+            actualizarPasos();
+        }
+
+        btnVaciar.addEventListener('click', function () {
+            const filas = contenedor.querySelectorAll('.tsc-item');
+            if (!filas.length) return;
+            animate(filas, {
+                opacity: [1, 0],
+                translateY: [0, -10],
+                duration: 220,
+                delay: stagger(40),
+                ease: 'inQuad',
+                onComplete: () => {
+                    tsCarritoVaciar();
+                    render();
+                }
+            });
+        });
+
+        function mostrarCheckout() {
+            if (checkoutBox.style.display === 'block') return;
+            checkoutBox.style.display = 'block';
+            animate(checkoutBox, { opacity: [0, 1], translateY: [16, 0], scale: [0.98, 1], duration: 500, ease: 'outExpo' });
+        }
+
+        function ocultarCheckout() {
+            checkoutBox.style.display = 'none';
+            checkoutBox.style.opacity = 0;
+        }
+
+        // ── Pasos del resumen ─────────────────────────────────────────
+        const pasoEntregaNum = document.getElementById('pasoEntregaNum');
+        const pasoPagoNum = document.getElementById('pasoPagoNum');
+
+        function marcarPaso(el, completo, numero) {
+            const yaCompleto = el.classList.contains('tsc-paso-ok');
+            if (completo === yaCompleto) return;
+            el.classList.toggle('tsc-paso-ok', completo);
+            el.textContent = completo ? '✓' : numero;
+            animate(el, { scale: [1.3, 1], duration: 350, ease: 'outBack' });
+        }
+
+        function actualizarPasos() {
+            const entregaOk = selectMetodoEntrega.value !== '' && (!esDomicilioSeleccionada() || inputDireccion.value.trim() !== '');
+            marcarPaso(pasoEntregaNum, entregaOk, '1');
+            marcarPaso(pasoPagoNum, selectMetodoPago.value !== '', '2');
+        }
+
+        function esDomicilioSeleccionada() {
+            const opt = selectMetodoEntrega.selectedOptions[0];
+            return !!(opt && opt.getAttribute('data-domicilio') === 'true');
+        }
+
+        // ── Entrega / dirección ─────────────────────────
+        const selectMetodoEntrega = document.getElementById('selectMetodoEntrega');
+        const grupoDireccion = document.getElementById('grupoDireccion');
+        const inputDireccion = document.getElementById('inputDireccion');
+
+        selectMetodoEntrega.addEventListener('change', function () {
+            if (esDomicilioSeleccionada()) {
+                grupoDireccion.style.display = 'block';
+                animate(grupoDireccion, { opacity: [0, 1], translateY: [-8, 0], duration: 350, ease: 'outQuad' });
+            } else {
+                animate(grupoDireccion, {
+                    opacity: [1, 0], translateY: [0, -8], duration: 250, ease: 'inQuad',
+                    onComplete: () => { grupoDireccion.style.display = 'none'; }
+                });
+            }
+            recalcularTotales();
+            actualizarPasos();
+        });
+        inputDireccion.addEventListener('input', function () {
+            recalcularTotales();
+            actualizarPasos();
+        });
+
+        function esEntregaDomicilio() {
+            return !!(esDomicilioSeleccionada() && inputDireccion.value.trim() !== '');
+        }
+
+        let totalActualNumerico = 0;
+
+        function recalcularTotales() {
+            const aplicaEnvio = esEntregaDomicilio();
+            const envio = aplicaEnvio ? costoEnvioFijo : 0;
+            const total = subtotalGeneral + impuestoGeneral + envio;
+            totalActualNumerico = total;
+
+            const elSub = document.getElementById('totalSinImpuestos');
+            animarNumero(elSub, parseFloat(elSub.dataset.valor || 0), subtotalGeneral);
+            elSub.dataset.valor = subtotalGeneral;
+
+            const elImp = document.getElementById('totalImpuestos');
+            animarNumero(elImp, parseFloat(elImp.dataset.valor || 0), impuestoGeneral);
+            elImp.dataset.valor = impuestoGeneral;
+
+            const filaEnvio = document.getElementById('filaEnvio');
+            if (aplicaEnvio && filaEnvio.style.display !== 'flex') {
+                filaEnvio.style.display = 'flex';
+                animate(filaEnvio, { opacity: [0, 1], duration: 300, ease: 'outQuad' });
+            } else if (!aplicaEnvio) {
+                filaEnvio.style.display = 'none';
+            }
+            document.getElementById('totalEnvio').textContent = formatoMoneda(envio);
+
+            const totalFinalEl = document.getElementById('totalFinal');
+            animarNumero(totalFinalEl, parseFloat(totalFinalEl.dataset.valor || 0), total);
+            totalFinalEl.dataset.valor = total;
+
+            actualizarVuelto();
+        }
+
+        // ── Pago ────────────────────────────────────────
+        const selectMetodoPago = document.getElementById('selectMetodoPago');
+        const grupoTarjeta = document.getElementById('grupoTarjeta');
+        const grupoEfectivo = document.getElementById('grupoEfectivo');
+        const inputMontoRecibido = document.getElementById('inputMontoRecibido');
+        const inputNumeroTarjeta = document.getElementById('inputNumeroTarjeta');
+        const inputVencimiento = document.getElementById('inputVencimiento');
+        const inputCvv = document.getElementById('inputCvv');
+
+        inputNumeroTarjeta.addEventListener('input', function () {
+            let digitos = this.value.replace(/\D/g, '').slice(0, 16);
+            this.value = digitos.replace(/(.{4})/g, '$1 ').trim();
+        });
+
+        inputVencimiento.addEventListener('input', function () {
+            let digitos = this.value.replace(/\D/g, '').slice(0, 4);
+            this.value = digitos.length > 2 ? digitos.slice(0, 2) + '/' + digitos.slice(2) : digitos;
+        });
+
+        inputCvv.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 4);
+        });
+
+        function mostrarGrupoPago(el) {
+            el.style.display = 'grid';
+            animate(el, { opacity: [0, 1], translateY: [-6, 0], duration: 350, ease: 'outQuad' });
+        }
+        function ocultarGrupoPago(el) {
+            if (el.style.display === 'none') return;
+            animate(el, {
+                opacity: [1, 0], translateY: [0, -6], duration: 220, ease: 'inQuad',
+                onComplete: () => { el.style.display = 'none'; }
+            });
+        }
+
+        selectMetodoPago.addEventListener('change', function () {
+            const opt = selectMetodoPago.selectedOptions[0];
+            const esTarjeta = opt && opt.getAttribute('data-tarjeta') === 'true';
+            const esEfectivo = opt && opt.value !== '' && !esTarjeta;
+
+            esTarjeta ? mostrarGrupoPago(grupoTarjeta) : ocultarGrupoPago(grupoTarjeta);
+            esEfectivo ? mostrarGrupoPago(grupoEfectivo) : ocultarGrupoPago(grupoEfectivo);
+            actualizarPasos();
+        });
+
+        function actualizarVuelto() {
+            const recibido = parseFloat(inputMontoRecibido.value || '0');
+            const vuelto = recibido - totalActualNumerico;
+            document.getElementById('vueltoCalculado').textContent = formatoMoneda(vuelto > 0 ? vuelto : 0);
+        }
+        inputMontoRecibido.addEventListener('input', actualizarVuelto);
+
+        // ── Registrar pedido (mismo endpoint que usa Encargado) ──────
+        document.getElementById('btnRegistrar').addEventListener('click', async function () {
+            const btn = this;
+
+            if (!lineasActuales.length) {
+                mostrarToast('Tu carrito está vacío.', 'error');
+                return;
+            }
+
+            const idMetodoEntrega = selectMetodoEntrega.value;
+            if (!idMetodoEntrega) {
+                mostrarToast('Debe seleccionar un método de entrega.', 'error');
+                return;
+            }
+
+            const opcionEntrega = selectMetodoEntrega.selectedOptions[0];
+            if (opcionEntrega.getAttribute('data-domicilio') === 'true' && inputDireccion.value.trim() === '') {
+                mostrarToast('Debe indicar la dirección de entrega.', 'error');
+                return;
+            }
+
+            const idMetodoPago = selectMetodoPago.value;
+            if (!idMetodoPago) {
+                mostrarToast('Debe seleccionar un método de pago.', 'error');
+                return;
+            }
+
+            const esTarjeta = selectMetodoPago.selectedOptions[0].getAttribute('data-tarjeta') === 'true';
+
+            const pago = { idMetodoPago: parseInt(idMetodoPago, 10) };
+            if (esTarjeta) {
+                pago.numeroTarjeta = inputNumeroTarjeta.value;
+                pago.nombreTitular = inputNombreTitular.value;
+                pago.fechaVencimiento = inputVencimiento.value;
+                pago.cvv = inputCvv.value;
+            } else {
+                const montoRecibido = parseFloat(inputMontoRecibido.value || '0');
+                if (montoRecibido < totalActualNumerico) {
+                    mostrarToast('El monto recibido no puede ser menor al total.', 'error');
+                    return;
+                }
+                pago.montoRecibido = montoRecibido;
+            }
+
+            const registro = {
+                idCliente: 0, // el servidor lo resuelve del usuario logueado, nunca se confía en esto
+                idMetodoEntrega: parseInt(idMetodoEntrega, 10),
+                direccionEntrega: esEntregaDomicilio() ? inputDireccion.value.trim() : null,
+                lineas: lineasActuales,
+                pago: pago
+            };
+
+            btn.disabled = true;
+            btn.textContent = 'Registrando...';
+            const pulso = animate(btn, { scale: [1, 0.97, 1], duration: 500, loop: true, ease: 'inOutSine' });
+
+            try {
+                const resp = await fetch(registrarPedidoUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
+                    body: JSON.stringify(registro)
+                });
+
+                if (!resp.ok) {
+                    const error = await resp.json().catch(() => ({ mensaje: 'No se pudo registrar el pedido.' }));
+                    throw new Error(error.mensaje || 'No se pudo registrar el pedido.');
+                }
+
+                const pedidoCreado = await resp.json();
+                pulso.pause();
+                mostrarToast('Pedido registrado correctamente.', 'exito');
+                lanzarConfeti();
+                tsCarritoVaciar();
+
+                setTimeout(() => {
+                    window.location.href = '@Url.Action("Details", "Pedido")/' + pedidoCreado.idPedido;
+                }, 1300);
+
+            } catch (e) {
+                pulso.pause();
+                btn.style.transform = '';
+                mostrarToast(e.message, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Registrar Pedido';
+            }
+        });
+
+        render();
+    </script>
+}

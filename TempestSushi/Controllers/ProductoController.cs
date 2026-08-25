@@ -41,7 +41,7 @@ namespace TempestSushi.Web.Controllers
             return View(producto);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpGet]
         public async Task<IActionResult> Crear()
         {
@@ -49,7 +49,7 @@ namespace TempestSushi.Web.Controllers
             return View(dto);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Crear(ProductoFormDto dto)
@@ -80,7 +80,7 @@ namespace TempestSushi.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpGet]
         public async Task<IActionResult> Editar(int id)
         {
@@ -92,7 +92,7 @@ namespace TempestSushi.Web.Controllers
             return View(dto);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Encargado,Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(int id, ProductoFormDto dto)
