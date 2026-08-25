@@ -11,23 +11,74 @@
 }
 
 <style>
+    :root {
+        --ts-azul-oscuro: #1a3a6e;
+        --ts-azul-medio: #294869;
+        --ts-azul-claro: #4fa8e8;
+        --ts-azul-borde: #d0e8f8;
+        --ts-azul-fondo: #f0f6fc;
+        --ts-rojo: #c0392b;
+        --ts-rojo-hover: #922b21;
+        --ts-verde: #1a7d3a;
+        --ts-amarillo: #d68910;
+        --ts-gris: #8ab2cc;
+    }
+
     .pedido-index-page {
         width: 100%;
         max-width: 1180px;
         margin: 0 auto;
         padding: 1rem 0 2rem;
+        /* sin overflow:hidden: rompería el sticky/hover de filas y tooltips */
     }
 
     /* ═══════════════════════════════════════
-           HEADER
-           ═══════════════════════════════════════ */
+               HEADER
+               ═══════════════════════════════════════ */
 
     .ts-page-header {
+        position: relative;
+        overflow: hidden;
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 1rem;
         margin-bottom: 1.25rem;
+        padding: 1.1rem 1.4rem;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #fff 60%, var(--ts-azul-fondo));
+        border: 1px solid var(--ts-azul-borde);
+        opacity: 0;
+    }
+
+    .ts-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(34px);
+        pointer-events: none;
+    }
+
+    .ts-blob--1 {
+        width: 180px;
+        height: 180px;
+        background: var(--ts-azul-claro);
+        opacity: .14;
+        top: -80px;
+        left: -40px;
+    }
+
+    .ts-blob--2 {
+        width: 140px;
+        height: 140px;
+        background: var(--ts-azul-borde);
+        opacity: .65;
+        bottom: -70px;
+        left: 45%;
+    }
+
+    .ts-page-header-texto {
+        position: relative;
+        z-index: 1;
     }
 
     .ts-page-title {
@@ -35,9 +86,40 @@
         font-family: 'Rajdhani', sans-serif;
         font-size: clamp(1.7rem, 4vw, 2rem);
         font-weight: 700;
-        color: #1a3a6e;
+        background: linear-gradient(90deg, var(--ts-azul-oscuro), var(--ts-azul-claro));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
         letter-spacing: 1px;
         line-height: 1.2;
+    }
+
+    .ts-page-sub {
+        display: block;
+        margin-top: 2px;
+        font-size: .85rem;
+        color: var(--ts-azul-medio);
+    }
+
+    .ts-header-right {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .ts-hero-decor {
+        width: 74px;
+        height: 74px;
+        flex-shrink: 0;
+        display: none;
+    }
+
+    @@media (min-width: 640px) {
+        .ts-hero-decor {
+            display: block;
+        }
     }
 
     .ts-btn-nuevo {
@@ -48,25 +130,24 @@
         padding: 0.5rem 1.4rem;
         border: none;
         border-radius: 999px;
-        background: #1a3a6e;
+        background: var(--ts-azul-oscuro);
         color: #ffffff !important;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 700;
         letter-spacing: 0.05em;
         text-decoration: none;
         white-space: nowrap;
-        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        transition: background 0.2s ease, box-shadow 0.2s ease;
     }
 
         .ts-btn-nuevo:hover {
             background: #142f58;
-            transform: translateY(-1px);
             box-shadow: 0 5px 14px rgba(26, 58, 110, 0.16);
         }
 
     /* ═══════════════════════════════════════
-           FILTROS
-           ═══════════════════════════════════════ */
+               FILTROS
+               ═══════════════════════════════════════ */
 
     .ts-filtros {
         display: flex;
@@ -75,10 +156,11 @@
         gap: 1rem;
         margin-bottom: 1.5rem;
         padding: 1rem 1.25rem;
-        border: 1px solid #d0e8f8;
+        border: 1px solid var(--ts-azul-borde);
         border-radius: 10px;
         background: #ffffff;
         box-shadow: 0 2px 10px rgba(26, 58, 110, 0.06);
+        opacity: 0;
     }
 
     .ts-filtro-grupo {
@@ -92,7 +174,7 @@
         font-family: 'Rajdhani', sans-serif;
         font-size: 0.85rem;
         font-weight: 600;
-        color: #1a3a6e;
+        color: var(--ts-azul-oscuro);
     }
 
     .ts-filtros .form-control,
@@ -101,7 +183,14 @@
         min-width: 0;
         border: 1px solid #c7dcf0;
         border-radius: 8px;
+        transition: box-shadow .2s ease, border-color .2s ease;
     }
+
+        .ts-filtros .form-control:focus,
+        .ts-filtros .form-select:focus {
+            border-color: var(--ts-azul-claro);
+            box-shadow: 0 0 0 3px rgba(79, 168, 232, .18);
+        }
 
     .ts-btn-filtrar {
         min-height: 40px;
@@ -111,25 +200,23 @@
         padding: 0.5rem 1.4rem;
         border: none;
         border-radius: 999px;
-        background: #1a3a6e;
+        background: var(--ts-azul-oscuro);
         color: #ffffff;
         font-family: 'Rajdhani', sans-serif;
         font-weight: 700;
         letter-spacing: 0.05em;
-        transition: background 0.2s ease, transform 0.2s ease;
     }
 
         .ts-btn-filtrar:hover {
             background: #142f58;
             color: #ffffff;
-            transform: translateY(-1px);
         }
 
     .ts-btn-limpiar {
         min-height: 40px;
         display: inline-flex;
         align-items: center;
-        color: #c0392b;
+        color: var(--ts-rojo);
         font-family: 'Rajdhani', sans-serif;
         font-weight: 600;
         text-decoration: none;
@@ -137,14 +224,14 @@
     }
 
         .ts-btn-limpiar:hover {
-            color: #922b21;
+            color: var(--ts-rojo-hover);
             text-decoration: underline;
             text-underline-offset: 3px;
         }
 
     /* ═══════════════════════════════════════
-           TABLA
-           ═══════════════════════════════════════ */
+               TABLA
+               ═══════════════════════════════════════ */
 
     .ts-tabla-wrapper {
         width: 100%;
@@ -154,6 +241,7 @@
         box-shadow: 0 2px 12px rgba(26, 58, 110, 0.08);
         -webkit-overflow-scrolling: touch;
         scrollbar-width: thin;
+        opacity: 0;
     }
 
     .ts-tabla-pedidos {
@@ -166,7 +254,7 @@
     }
 
         .ts-tabla-pedidos thead {
-            background: #1a3a6e;
+            background: var(--ts-azul-oscuro);
         }
 
             .ts-tabla-pedidos thead th {
@@ -189,26 +277,31 @@
             border-bottom: none;
         }
 
-        .ts-tabla-pedidos tbody tr:hover {
-            background: #f7fbff;
-        }
+    .ts-fila-pedido {
+        opacity: 0;
+    }
 
     .ts-tabla-fecha,
     .ts-tabla-total {
         white-space: nowrap;
     }
 
+    .ts-tabla-total {
+        font-weight: 700;
+        color: var(--ts-azul-oscuro);
+    }
+
     /* ═══════════════════════════════════════
-           ESTADO
-           ═══════════════════════════════════════ */
+               ESTADO
+               ═══════════════════════════════════════ */
 
     .ts-estado-badge {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
+        gap: 5px;
         padding: 3px 12px;
         border-radius: 999px;
-        background: #4fa8e8;
+        background: var(--ts-azul-claro);
         color: #ffffff;
         font-family: 'Rajdhani', sans-serif;
         font-size: 0.78rem;
@@ -217,50 +310,85 @@
         white-space: nowrap;
     }
 
+        .ts-estado-badge .ts-estado-punto {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #fff;
+            flex-shrink: 0;
+        }
+
+    .ts-badge-pendiente {
+        background: var(--ts-amarillo);
+    }
+
+    .ts-badge-exito {
+        background: var(--ts-verde);
+    }
+
+    .ts-badge-cancelado {
+        background: var(--ts-rojo);
+    }
+
     /* ═══════════════════════════════════════
-           DETALLE
-           ═══════════════════════════════════════ */
+               DETALLE
+               ═══════════════════════════════════════ */
 
     .ts-link-detalle {
         min-height: 36px;
         display: inline-flex;
         align-items: center;
-        justify-content: center;
+        gap: 5px;
         padding: 0.3rem 0.9rem;
         border: 1px solid rgba(192, 57, 43, 0.35);
         border-radius: 999px;
-        color: #c0392b;
+        color: var(--ts-rojo);
         font-family: 'Rajdhani', sans-serif;
         font-weight: 700;
         text-decoration: none;
         white-space: nowrap;
-        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        transition: background 0.2s ease, color 0.2s ease;
     }
 
         .ts-link-detalle:hover {
-            background: #c0392b;
+            background: var(--ts-rojo);
             color: #ffffff;
-            transform: translateY(-1px);
+        }
+
+        .ts-link-detalle .ts-flecha {
+            display: inline-flex;
+            transition: transform .2s ease;
+        }
+
+        .ts-link-detalle:hover .ts-flecha {
+            transform: translateX(2px);
         }
 
     /* ═══════════════════════════════════════
-           VACÍO
-           ═══════════════════════════════════════ */
+               VACÍO
+               ═══════════════════════════════════════ */
 
     .ts-empty {
         padding: 3rem 1rem;
-        border: 1.5px dashed #d0e8f8;
+        border: 1.5px dashed var(--ts-azul-borde);
         border-radius: 12px;
         background: #ffffff;
-        color: #8ab2cc;
+        color: var(--ts-gris);
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.1rem;
         text-align: center;
+        opacity: 0;
+    }
+
+    .ts-empty-icono {
+        display: block;
+        margin: 0 auto .75rem;
+        opacity: 0;
     }
 
     /* ═══════════════════════════════════════
-           TABLET
-           ═══════════════════════════════════════ */
+               TABLET
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 768px) {
 
@@ -279,8 +407,8 @@
     }
 
     /* ═══════════════════════════════════════
-           MÓVIL
-           ═══════════════════════════════════════ */
+               MÓVIL
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 576px) {
 
@@ -292,6 +420,10 @@
             flex-direction: column;
             align-items: stretch;
             gap: 0.85rem;
+        }
+
+        .ts-header-right {
+            justify-content: space-between;
         }
 
         .ts-page-title {
@@ -328,8 +460,8 @@
     }
 
     /* ═══════════════════════════════════════
-           TELÉFONO PEQUEÑO
-           ═══════════════════════════════════════ */
+               TELÉFONO PEQUEÑO
+               ═══════════════════════════════════════ */
 
     @@media (max-width: 390px) {
 
@@ -343,15 +475,16 @@
     }
 
     /* ═══════════════════════════════════════
-           MOVIMIENTO REDUCIDO
-           ═══════════════════════════════════════ */
+               MOVIMIENTO REDUCIDO
+               ═══════════════════════════════════════ */
 
     @@media (prefers-reduced-motion: reduce) {
 
         .ts-btn-nuevo,
         .ts-btn-filtrar,
         .ts-btn-limpiar,
-        .ts-link-detalle {
+        .ts-link-detalle,
+        .ts-link-detalle .ts-flecha {
             transition: none;
         }
     }
@@ -363,29 +496,59 @@
 
     <div class="ts-page-header">
 
-        <h2 class="ts-page-title">
-            Historial de Pedidos
-        </h2>
+        <div class="ts-blob ts-blob--1"></div>
+        <div class="ts-blob ts-blob--2"></div>
 
-        @if (esEncargadoOAdmin)
-        {
-            <a asp-action="Create"
-               class="ts-btn-nuevo">
+        <div class="ts-page-header-texto">
+            <h2 class="ts-page-title">
+                Historial de Pedidos
+            </h2>
+            <span class="ts-page-sub">Consultá el estado y el detalle de cada pedido</span>
+        </div>
 
-                + Nuevo Pedido
+        <div class="ts-header-right">
 
-            </a>
-        }
-        else
-        {
-            <a asp-controller="Carrito"
-               asp-action="Index"
-               class="ts-btn-nuevo">
+            <div class="ts-hero-decor" aria-hidden="true">
+                <svg viewBox="0 0 118 118" width="74" height="74">
+                    <!-- recibo -->
+                    <path class="ts-receipt-body"
+                          d="M30 12 H88 V96 L80 90 L72 96 L64 90 L56 96 L48 90 L40 96 L32 90 L30 96 Z"
+                          fill="#fff" stroke="var(--ts-azul-oscuro)" stroke-width="2.5" stroke-linejoin="round"
+                          pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+                    <line class="ts-receipt-line" x1="40" y1="28" x2="78" y2="28" stroke="var(--ts-azul-claro)" stroke-width="3" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+                    <line class="ts-receipt-line" x1="40" y1="40" x2="78" y2="40" stroke="var(--ts-azul-claro)" stroke-width="3" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+                    <line class="ts-receipt-line" x1="40" y1="52" x2="64" y2="52" stroke="var(--ts-azul-claro)" stroke-width="3" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+                    <line class="ts-receipt-line" x1="40" y1="64" x2="78" y2="64" stroke="var(--ts-azul-borde)" stroke-width="3" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
 
-                Ir al carrito
+                    <!-- reloj -->
+                    <circle class="ts-clock-bg" cx="90" cy="82" r="21" fill="var(--ts-rojo)" style="transform-origin:90px 82px;" />
+                    <circle cx="90" cy="82" r="21" fill="none" stroke="#fff" stroke-width="2" />
+                    <line class="ts-clock-hand-min" x1="90" y1="82" x2="90" y2="69" stroke="#fff" stroke-width="2.2" stroke-linecap="round" style="transform-origin:90px 82px;" />
+                    <line class="ts-clock-hand-hour" x1="90" y1="82" x2="99" y2="82" stroke="#fff" stroke-width="2.2" stroke-linecap="round" style="transform-origin:90px 82px;" />
+                </svg>
+            </div>
 
-            </a>
-        }
+            @if (esEncargadoOAdmin)
+            {
+                <a asp-action="Create"
+                   class="ts-btn-nuevo">
+
+                    + Nuevo Pedido
+
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Carrito"
+                   asp-action="Index"
+                   class="ts-btn-nuevo">
+
+                    Ir al carrito
+
+                </a>
+            }
+
+        </div>
 
     </div>
 
@@ -474,6 +637,12 @@
     {
         <div class="ts-empty">
 
+            <svg class="ts-empty-icono" viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="4" y="8" width="16" height="12" rx="2" />
+                <path d="M4 8l3-4h10l3 4" />
+                <path d="M9 12h6" />
+            </svg>
+
             No hay pedidos registrados todavía.
 
         </div>
@@ -527,7 +696,7 @@
                                     )
                                     )
                     {
-                        <tr>
+                        <tr class="ts-fila-pedido">
 
                             <td class="ts-tabla-fecha">
 
@@ -552,12 +721,14 @@
                             <td>
 
                                 <span class="ts-estado-badge">
+                                    <span class="ts-estado-punto"></span>
                                     @pedido.EstadoNombre
                                 </span>
 
                             </td>
 
-                            <td class="ts-tabla-total">
+                            <td class="ts-tabla-total"
+                                data-valor="@pedido.Total.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)">
 
                                 @pedido.Total.ToString(
                                 "C",
@@ -574,6 +745,10 @@
 
                             Ver detalle
 
+                            <svg class="ts-flecha" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M9 6l6 6-6 6" />
+                            </svg>
+
                         </a>
 
                     </td>
@@ -589,3 +764,131 @@
     }
 
 </div>
+
+@section Scripts {
+    <script type="module">
+        import { animate, stagger, createSpring, createTimeline, utils } from 'https://cdn.jsdelivr.net/npm/animejs@4.0.2/+esm';
+
+        try {
+
+            const culturaFormatoMoneda = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC', minimumFractionDigits: 2 });
+            const formatoMoneda = (valor) => culturaFormatoMoneda.format(valor || 0);
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            const contenedorEstaticos = document.querySelectorAll(
+                '.ts-page-header, .ts-filtros, .ts-tabla-wrapper, .ts-empty, .ts-fila-pedido, .ts-empty-icono'
+            );
+
+            if (prefersReducedMotion) {
+                // Movimiento reducido: mostramos todo directo, sin animar.
+                contenedorEstaticos.forEach(el => { el.style.opacity = '1'; });
+                document.querySelectorAll('.ts-tabla-total[data-valor]').forEach(el => {
+                    el.textContent = formatoMoneda(parseFloat(el.dataset.valor || '0'));
+                });
+            } else {
+
+                // ── Entrada orquestada con timeline ──────────────────────
+                createTimeline()
+                    .add('.ts-page-header', { opacity: [0, 1], translateY: [-14, 0], duration: 500, ease: 'outQuad' })
+                    .add('.ts-filtros', { opacity: [0, 1], translateY: [-10, 0], duration: 420, ease: 'outQuad' }, '-=250')
+                    .add('.ts-tabla-wrapper', { opacity: [0, 1], translateY: [16, 0], duration: 500, ease: 'outExpo' }, '-=200')
+                    .add('.ts-empty', { opacity: [0, 1], translateY: [16, 0], duration: 500, ease: 'outExpo' }, '<')
+                    .add('.ts-fila-pedido', { opacity: [0, 1], translateX: [-18, 0], duration: 400, ease: 'outQuad', delay: stagger(55) }, '-=250')
+                    .add('.ts-empty-icono', { opacity: [0, 1], translateY: [-10, 0], duration: 450, ease: 'outBack' }, '-=200');
+
+                // ── Decoración del header ─────────────────────────────
+                animate('.ts-blob--1', { translateY: [0, -12, 0], translateX: [0, 8, 0], duration: 6800, loop: true, ease: 'inOutSine' });
+                animate('.ts-blob--2', { translateY: [0, 10, 0], translateX: [0, -6, 0], duration: 6000, loop: true, ease: 'inOutSine' });
+
+                animate('.ts-receipt-body', { strokeDashoffset: [1, 0], duration: 700, ease: 'outQuad', delay: 150 });
+                animate('.ts-receipt-line', { strokeDashoffset: [1, 0], duration: 400, ease: 'outQuad', delay: stagger(110, { start: 550 }) });
+                animate('.ts-clock-bg', { scale: [0, 1], duration: 450, ease: createSpring({ stiffness: 220, damping: 14 }), delay: 900 });
+                animate('.ts-clock-hand-min', { rotate: 360, duration: 9000, loop: true, ease: 'linear' });
+                animate('.ts-clock-hand-hour', { rotate: 360, duration: 32000, loop: true, ease: 'linear' });
+
+                // ── Totales: contador desde 0 hasta el valor real ────────
+                document.querySelectorAll('.ts-tabla-total[data-valor]').forEach((el, i) => {
+                    const destino = parseFloat(el.dataset.valor || '0');
+                    const obj = { v: 0 };
+                    el.textContent = formatoMoneda(0);
+                    animate(obj, {
+                        v: destino,
+                        duration: 700,
+                        delay: 350 + i * 55,
+                        ease: 'outExpo',
+                        onUpdate: () => { el.textContent = formatoMoneda(obj.v); }
+                    });
+                });
+
+                // ── Estado: color + pulso solo para estados "en curso" ──
+                function clasificarEstado(texto) {
+                    const t = texto.toLowerCase();
+                    if (/cancel|rechaz|anulad/.test(t)) return { clase: 'ts-badge-cancelado', activo: false };
+                    if (/entreg|complet|finaliz|listo/.test(t)) return { clase: 'ts-badge-exito', activo: false };
+                    if (/pend|espera|proceso|prepara|camino/.test(t)) return { clase: 'ts-badge-pendiente', activo: true };
+                    return { clase: null, activo: false };
+                }
+
+                document.querySelectorAll('.ts-estado-badge').forEach(badge => {
+                    const texto = badge.textContent.trim();
+                    const { clase, activo } = clasificarEstado(texto);
+                    if (clase) badge.classList.add(clase);
+                    if (activo) {
+                        animate(badge.querySelector('.ts-estado-punto'), {
+                            scale: [1, 1.6, 1],
+                            opacity: [1, 0.4, 1],
+                            duration: 1200,
+                            loop: true,
+                            ease: 'inOutSine'
+                        });
+                    }
+                });
+
+                // ── Filas: elevar levemente al pasar el mouse ────────────
+                document.querySelectorAll('.ts-fila-pedido').forEach(fila => {
+                    fila.addEventListener('mouseenter', () => {
+                        animate(fila, { translateY: -2, backgroundColor: '#f7fbff', duration: 200, ease: 'outQuad' });
+                    });
+                    fila.addEventListener('mouseleave', () => {
+                        animate(fila, { translateY: 0, backgroundColor: '#ffffff', duration: 200, ease: 'outQuad' });
+                    });
+                });
+
+                // ── "Ver detalle": leve resorte al pasar el mouse ────────
+                document.querySelectorAll('.ts-link-detalle').forEach(link => {
+                    link.addEventListener('mouseenter', () => {
+                        animate(link, { scale: 1.05, duration: 220, ease: createSpring({ stiffness: 280, damping: 15 }) });
+                    });
+                    link.addEventListener('mouseleave', () => {
+                        animate(link, { scale: 1, duration: 200, ease: 'outQuad' });
+                    });
+                });
+
+                // ── Botones principales: hover + feedback al presionar ───
+                document.querySelectorAll('.ts-btn-nuevo, .ts-btn-filtrar').forEach(btn => {
+                    btn.addEventListener('mouseenter', () => animate(btn, { translateY: -1, scale: 1.02, duration: 180, ease: 'outQuad' }));
+                    btn.addEventListener('mouseleave', () => animate(btn, { translateY: 0, scale: 1, duration: 180, ease: 'outQuad' }));
+                    btn.addEventListener('mousedown', () => animate(btn, { scale: 0.96, duration: 100, ease: 'outQuad' }));
+                    btn.addEventListener('mouseup', () => animate(btn, { scale: 1.02, duration: 200, ease: createSpring({ stiffness: 300, damping: 14 }) }));
+                });
+
+                // ── Envío del formulario de filtros: feedback de carga ───
+                const formFiltros = document.querySelector('form.ts-filtros');
+                if (formFiltros) {
+                    formFiltros.addEventListener('submit', () => {
+                        const btn = formFiltros.querySelector('.ts-btn-filtrar');
+                        if (btn) {
+                            btn.textContent = 'Filtrando...';
+                            animate(btn, { scale: [1, 0.97, 1], duration: 500, loop: true, ease: 'inOutSine' });
+                        }
+                    });
+                }
+            }
+
+        } catch (e) {
+            console.error('Error en la animación del historial de pedidos:', e);
+            document.querySelectorAll('.ts-page-header, .ts-filtros, .ts-tabla-wrapper, .ts-empty, .ts-fila-pedido, .ts-empty-icono')
+                .forEach(el => { el.style.opacity = '1'; });
+        }
+    </script>
+}

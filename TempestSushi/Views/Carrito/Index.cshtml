@@ -572,6 +572,22 @@
                 <circle class="tsc-ring-dash" cx="59" cy="59" r="52" fill="none" stroke-width="1.5" stroke-dasharray="5 6" />
                 <circle class="tsc-ring-draw" cx="59" cy="59" r="40" fill="none" stroke-width="3" stroke-linecap="round"
                         pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" />
+
+                <!-- Check y X: se dibujan con anime.js (stroke-dashoffset) según el resultado del pedido -->
+                <path class="tsc-check-path"
+                      d="M42 60 L54 72 L78 46"
+                      fill="none" stroke="var(--tsc-verde)"
+                      stroke-width="6" stroke-linecap="round" stroke-linejoin="round"
+                      pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+
+                <line class="tsc-x-line-1" x1="44" y1="44" x2="74" y2="74"
+                      stroke="var(--tsc-rojo)" stroke-width="6" stroke-linecap="round"
+                      pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+
+                <line class="tsc-x-line-2" x1="74" y1="44" x2="44" y2="74"
+                      stroke="var(--tsc-rojo)" stroke-width="6" stroke-linecap="round"
+                      pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+
                 <g class="tsc-orbit">
                     <circle cx="59" cy="7" r="4.5" fill="var(--tsc-azul-oscuro)" />
                 </g>
@@ -699,6 +715,8 @@
     <script type="module">
         import { animate, stagger, createSpring, createTimeline, utils } from 'https://cdn.jsdelivr.net/npm/animejs@4.0.2/+esm';
 
+        try {
+
         const culturaFormatoMoneda = new Intl.NumberFormat('es-CR', { style: 'currency', currency: 'CRC', minimumFractionDigits: 2 });
         const calcularLineaUrl = '@Url.Action("CalcularLinea", "Pedido")';
         const registrarPedidoUrl = '@Url.Action("Create", "Pedido")';
@@ -763,6 +781,64 @@
         animate('.tsc-ring-dash', { rotate: 360, duration: 22000, loop: true, ease: 'linear' });
         animate('.tsc-ring-draw', { strokeDashoffset: [100, 0], duration: 1200, ease: 'outExpo', delay: 300 });
         animate('.tsc-orbit', { rotate: 360, duration: 7000, loop: true, ease: 'linear' });
+
+        // ── Check / X dentro del círculo: arrancan invisibles ─────────
+        // Misma técnica de stroke-dasharray/stroke-dashoffset que ya usa el anillo,
+        // sin depender de funciones nuevas del CDN.
+        function ocultarResultadoCirculo() {
+            document.querySelector('.tsc-check-path').style.strokeDashoffset = 1;
+            document.querySelector('.tsc-x-line-1').style.strokeDashoffset = 1;
+            document.querySelector('.tsc-x-line-2').style.strokeDashoffset = 1;
+            const anillo = document.querySelector('.tsc-ring-draw');
+            if (anillo) anillo.style.stroke = '';
+        }
+        ocultarResultadoCirculo();
+
+        function mostrarCheckEnCirculo() {
+            ocultarResultadoCirculo();
+            animate('.tsc-check-path', {
+                strokeDashoffset: [1, 0],
+                duration: 550,
+                ease: 'outQuad'
+            });
+            animate('.tsc-ring-draw', {
+                stroke: ['var(--tsc-azul-claro)', 'var(--tsc-verde)'],
+                duration: 400,
+                ease: 'outQuad'
+            });
+            animate('.tsc-hero-decor', {
+                scale: [1, 1.18, 1],
+                duration: 550,
+                ease: createSpring({ stiffness: 220, damping: 12 })
+            });
+        }
+
+        function mostrarErrorEnCirculo() {
+            ocultarResultadoCirculo();
+            animate('.tsc-x-line-1', {
+                strokeDashoffset: [1, 0],
+                duration: 280,
+                ease: 'outQuad'
+            });
+            animate('.tsc-x-line-2', {
+                strokeDashoffset: [1, 0],
+                duration: 280,
+                delay: 140,
+                ease: 'outQuad'
+            });
+            animate('.tsc-ring-draw', {
+                stroke: ['var(--tsc-azul-claro)', 'var(--tsc-rojo)'],
+                duration: 300,
+                ease: 'outQuad'
+            });
+            animate('.tsc-hero-decor', {
+                translateX: [0, -6, 6, -6, 6, 0],
+                duration: 400,
+                ease: 'inOutSine'
+            });
+
+            setTimeout(ocultarResultadoCirculo, 2200);
+        }
 
         // ── Toast con spring ──────────────────────────────
         function mostrarToast(mensaje, tipo) {
@@ -1140,24 +1216,28 @@
 
             if (!lineasActuales.length) {
                 mostrarToast('Tu carrito está vacío.', 'error');
+                mostrarErrorEnCirculo();
                 return;
             }
 
             const idMetodoEntrega = selectMetodoEntrega.value;
             if (!idMetodoEntrega) {
                 mostrarToast('Debe seleccionar un método de entrega.', 'error');
+                mostrarErrorEnCirculo();
                 return;
             }
 
             const opcionEntrega = selectMetodoEntrega.selectedOptions[0];
             if (opcionEntrega.getAttribute('data-domicilio') === 'true' && inputDireccion.value.trim() === '') {
                 mostrarToast('Debe indicar la dirección de entrega.', 'error');
+                mostrarErrorEnCirculo();
                 return;
             }
 
             const idMetodoPago = selectMetodoPago.value;
             if (!idMetodoPago) {
                 mostrarToast('Debe seleccionar un método de pago.', 'error');
+                mostrarErrorEnCirculo();
                 return;
             }
 
@@ -1173,6 +1253,7 @@
                 const montoRecibido = parseFloat(inputMontoRecibido.value || '0');
                 if (montoRecibido < totalActualNumerico) {
                     mostrarToast('El monto recibido no puede ser menor al total.', 'error');
+                    mostrarErrorEnCirculo();
                     return;
                 }
                 pago.montoRecibido = montoRecibido;
@@ -1205,6 +1286,7 @@
                 const pedidoCreado = await resp.json();
                 pulso.pause();
                 mostrarToast('Pedido registrado correctamente.', 'exito');
+                mostrarCheckEnCirculo();
                 lanzarConfeti();
                 tsCarritoVaciar();
 
@@ -1216,11 +1298,18 @@
                 pulso.pause();
                 btn.style.transform = '';
                 mostrarToast(e.message, 'error');
+                mostrarErrorEnCirculo();
                 btn.disabled = false;
                 btn.textContent = 'Registrar Pedido';
             }
         });
 
         render();
+
+        } catch (e) {
+            console.error('Error en la animación del carrito:', e);
+            document.querySelectorAll('.tsc-header, .tsc-items-panel, .tsc-summary-panel')
+                .forEach(el => { el.style.opacity = '1'; });
+        }
     </script>
 }
