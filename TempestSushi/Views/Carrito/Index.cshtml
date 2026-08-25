@@ -171,7 +171,7 @@
 
     .tsc-items-grid-head {
         display: grid;
-        grid-template-columns: 56px 1fr 110px 140px 120px 40px;
+        grid-template-columns: 56px 1fr 110px 140px 150px 120px 40px;
         gap: .5rem;
         padding: .7rem 1.5rem;
         background: var(--tsc-azul-fondo);
@@ -209,7 +209,7 @@
 
     .tsc-item {
         display: grid;
-        grid-template-columns: 56px 1fr 110px 140px 120px 40px;
+        grid-template-columns: 56px 1fr 110px 140px 150px 120px 40px;
         gap: .5rem;
         align-items: center;
         padding: 1rem 1.5rem;
@@ -268,6 +268,15 @@
         align-items: center;
         gap: .3rem;
     }
+
+    .tsc-item-obs {
+        min-width: 0;
+    }
+
+        .tsc-item-obs .cart-input-obs {
+            width: 100%;
+            min-width: 0;
+        }
 
     .tsc-qty-btn {
         width: 28px;
@@ -581,7 +590,7 @@
                 <span class="tsc-items-count" id="itemsCount">0 items</span>
             </div>
             <div class="tsc-items-grid-head">
-                <span></span><span>Producto / Combo</span><span>Precio</span><span>Cantidad</span><span>Subtotal</span><span></span>
+                <span></span><span>Producto / Combo</span><span>Precio</span><span>Cantidad</span><span>Observaciones</span><span>Subtotal</span><span></span>
             </div>
             <div id="cartContenido">
                 <div class="tsc-skeleton-item"><div class="tsc-skeleton-shine"></div></div>
@@ -710,6 +719,17 @@
         const ICONO_CARRITO_VACIO = '<svg class="tsc-vacio-icono" viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="20" r="1.4" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r="1.4" fill="currentColor" stroke="none"/><path d="M2 3h2l2.4 12.2a2 2 0 0 0 2 1.6h8.7a2 2 0 0 0 2-1.6L21 7H6"/></svg>';
         const ICONO_EXITO = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>';
         const ICONO_ERROR = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l10 18H2z"/><path d="M12 9v5M12 17h.01"/></svg>';
+
+        // Escapa texto para insertarlo de forma segura como atributo/HTML
+        function escapeHtml(texto) {
+            if (!texto) return '';
+            return texto
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
 
         // Líneas ya calculadas contra el servidor (nombre/precio/subtotal/impuesto reales).
         // Es lo único que se manda al registrar; nunca se arma desde un combobox aquí.
@@ -853,7 +873,7 @@
                 tipo: item.tipo,
                 idItem: item.idItem,
                 cantidad: linea.cantidad,
-                observaciones: null
+                observaciones: item.observaciones || null
             }));
 
             const filas = lineasValidas.map(({ item, linea }) => {
@@ -872,6 +892,9 @@
                             <button type="button" class="tsc-qty-btn tsc-qty-menos">−</button>
                             <input type="number" class="form-control cart-input-cantidad" min="1" step="1" value="${linea.cantidad}" />
                             <button type="button" class="tsc-qty-btn tsc-qty-mas">+</button>
+                        </div>
+                        <div class="tsc-item-obs">
+                            <input type="text" class="form-control cart-input-obs" placeholder="Observaciones" value="${escapeHtml(item.observaciones)}" />
                         </div>
                         <div class="cart-subtotal-celda">${formatoMoneda(linea.subtotal)}</div>
                         <button type="button" class="cart-btn-quitar" title="Quitar">&times;</button>
@@ -894,6 +917,7 @@
                 const tipo = fila.dataset.tipo;
                 const idItem = parseInt(fila.dataset.id, 10);
                 const inputCantidad = fila.querySelector('.cart-input-cantidad');
+                const inputObs = fila.querySelector('.cart-input-obs');
                 const btnQuitar = fila.querySelector('.cart-btn-quitar');
                 const btnMenos = fila.querySelector('.tsc-qty-menos');
                 const btnMas = fila.querySelector('.tsc-qty-mas');
@@ -912,6 +936,11 @@
 
                 inputCantidad.addEventListener('change', function () {
                     aplicarCantidad(parseInt(this.value, 10));
+                });
+
+                inputObs.addEventListener('change', function () {
+                    tsCarritoActualizarObservaciones(tipo, idItem, this.value.trim());
+                    render();
                 });
 
                 btnMenos.addEventListener('click', function () {

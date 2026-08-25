@@ -4,8 +4,8 @@
 // /Pedido/CalcularLinea) para cumplir con "toda la información debe
 // provenir de la BD" — nunca se pinta un precio guardado en el navegador.
 
-const TS_CARRITO_KEY = 'ts_carrito_items';
 
+const TS_CARRITO_KEY = 'ts_carrito_items';
 function tsCarritoObtener() {
     try {
         const raw = localStorage.getItem(TS_CARRITO_KEY);
@@ -15,13 +15,11 @@ function tsCarritoObtener() {
         return [];
     }
 }
-
 function tsCarritoGuardar(items) {
     localStorage.setItem(TS_CARRITO_KEY, JSON.stringify(items));
     tsCarritoActualizarBadge();
     window.dispatchEvent(new CustomEvent('ts:carrito-actualizado', { detail: { items } }));
 }
-
 // Agrega una unidad (o "cantidad") de un producto/combo. Si ya existe, suma cantidad.
 function tsCarritoAgregar(tipo, idItem, cantidad) {
     cantidad = cantidad || 1;
@@ -30,11 +28,10 @@ function tsCarritoAgregar(tipo, idItem, cantidad) {
     if (existente) {
         existente.cantidad += cantidad;
     } else {
-        items.push({ tipo: tipo, idItem: idItem, cantidad: cantidad });
+        items.push({ tipo: tipo, idItem: idItem, cantidad: cantidad, observaciones: null });
     }
     tsCarritoGuardar(items);
 }
-
 function tsCarritoActualizarCantidad(tipo, idItem, cantidad) {
     let items = tsCarritoObtener();
     if (cantidad <= 0) {
@@ -45,19 +42,23 @@ function tsCarritoActualizarCantidad(tipo, idItem, cantidad) {
     }
     tsCarritoGuardar(items);
 }
-
+function tsCarritoActualizarObservaciones(tipo, idItem, observaciones) {
+    const items = tsCarritoObtener();
+    const existente = items.find(i => i.tipo === tipo && i.idItem === idItem);
+    if (existente) {
+        existente.observaciones = observaciones || null;
+        tsCarritoGuardar(items);
+    }
+}
 function tsCarritoQuitar(tipo, idItem) {
     tsCarritoActualizarCantidad(tipo, idItem, 0);
 }
-
 function tsCarritoVaciar() {
     tsCarritoGuardar([]);
 }
-
 function tsCarritoContarItems() {
     return tsCarritoObtener().reduce((acc, i) => acc + i.cantidad, 0);
 }
-
 function tsCarritoActualizarBadge() {
     const badge = document.getElementById('ts-carrito-badge');
     if (!badge) return;
@@ -65,7 +66,6 @@ function tsCarritoActualizarBadge() {
     badge.textContent = cantidad;
     badge.style.display = cantidad > 0 ? 'inline-flex' : 'none';
 }
-
 // Toast simple reutilizable si la página no define el suyo propio
 function tsMostrarToastGlobal(mensaje, tipo) {
     let toast = document.getElementById('ts-toast-global');
@@ -83,5 +83,4 @@ function tsMostrarToastGlobal(mensaje, tipo) {
     clearTimeout(toast._timeoutId);
     toast._timeoutId = setTimeout(() => { toast.style.opacity = '0'; }, 2500);
 }
-
 document.addEventListener('DOMContentLoaded', tsCarritoActualizarBadge);
