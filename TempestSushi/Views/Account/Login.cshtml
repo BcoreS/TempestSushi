@@ -11,111 +11,415 @@
     :root {
         --login-ink: #0a1128;
         --login-abyss: #0d1b3e;
+        --login-deep: #142454;
+        --login-panel: #0f1c3f;
         --login-foam: #e8edf5;
         --login-vermillion: #c41e3a;
         --login-gold: #d4af37;
+        --login-teal: #2c6e7f;
     }
 
     /* ═══════════════════════════════════════
-               CONTENEDOR GENERAL
-               ═══════════════════════════════════════ */
+                   CONTENEDOR GENERAL — dos paneles a pantalla completa
+                   ═══════════════════════════════════════ */
 
     .ts-login-page {
         position: relative;
         width: 100vw;
         margin-left: calc(50% - 50vw);
         margin-right: calc(50% - 50vw);
-        min-height: 680px;
+        min-height: 100vh;
+        min-height: 100dvh;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: clamp(2.5rem, 6vh, 4.5rem) 1.5rem;
-        overflow: hidden;
-        background: radial-gradient( ellipse at 50% -10%, rgba(196, 30, 58, 0.20), transparent 52% ), radial-gradient( circle at 85% 75%, rgba(79, 168, 232, 0.08), transparent 34% ), linear-gradient( 180deg, var(--login-ink) 0%, var(--login-abyss) 64%, #142454 100% );
+        flex-direction: column;
+        background: var(--login-panel);
     }
 
-        .ts-login-page::before {
+    @@media (min-width: 992px) {
+        .ts-login-page {
+            flex-direction: row;
+        }
+    }
+
+    /* ── PANEL IZQUIERDO: identidad de marca, a pantalla completa ── */
+
+    .ts-visual {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 3rem 2rem 2.5rem;
+        background: radial-gradient( ellipse at 30% 15%, rgba(196, 30, 58, 0.24), transparent 55% ), radial-gradient( circle at 85% 20%, rgba(44, 110, 127, 0.20), transparent 45% ), linear-gradient( 160deg, var(--login-ink) 0%, var(--login-abyss) 60%, var(--login-deep) 100% );
+    }
+
+        .ts-visual::before {
             content: '';
             position: absolute;
             inset: 0;
             pointer-events: none;
-            background: linear-gradient( 115deg, transparent 0%, rgba(255, 255, 255, 0.018) 50%, transparent 100% );
+            background: linear-gradient( 115deg, transparent 0%, rgba(255, 255, 255, 0.02) 50%, transparent 100% );
         }
 
-    .ts-login-wrapper {
-        position: relative;
-        z-index: 1;
-        width: min(100%, 440px);
-        margin: 0 auto;
+    /* Marca de agua kanji — textura de fondo, no compite con el título */
+    .ts-kanji-watermark {
+        position: absolute;
+        right: -3%;
+        top: 4%;
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: clamp(10rem, 24vw, 17rem);
+        font-weight: 700;
+        color: rgba(232, 237, 245, 0.035);
+        line-height: 1;
+        pointer-events: none;
+        z-index: 0;
+        user-select: none;
     }
 
-    /* ═══════════════════════════════════════
-               BRAND
-               ═══════════════════════════════════════ */
+    /* Relámpago ambiental — destello ocasional y sutil, refuerza "tormenta" */
+    .ts-relampago {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 72% 8%, rgba(232, 237, 245, 0.16), transparent 42%);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
 
-    .ts-login-brand {
-        text-align: center;
-        margin-bottom: 1.8rem;
+    @@media (min-width: 992px) {
+        .ts-visual {
+            flex: 1.15 1 0;
+            padding: 4rem 4vw;
+            min-height: 100vh;
+        }
+    }
+
+    @@media (max-width: 991px) {
+        .ts-visual {
+            padding: 2.75rem 1.5rem 2.25rem;
+            min-height: clamp(240px, 40vh, 380px);
+        }
+    }
+
+    .ts-rain-layer {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .ts-rain-drop {
+        position: absolute;
+        top: -40px;
+        width: 1px;
+        height: 26px;
+        background: linear-gradient(180deg, transparent, rgba(232, 237, 245, 0.28));
+        border-radius: 999px;
+    }
+
+    /* Horizonte de olas de fondo — silueta grande, no un adorno diminuto */
+    .ts-horizonte {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -3%;
+        width: 100%;
+        height: 60%;
+        z-index: 0;
+        opacity: .9;
+    }
+
+    .ts-ola-capa {
+        opacity: .5;
+    }
+
+    .ts-ola-capa--1 {
+        fill: rgba(44, 110, 127, 0.30);
+    }
+
+    .ts-ola-capa--2 {
+        fill: rgba(20, 36, 84, 0.55);
+    }
+
+    .ts-ola-capa--3 {
+        fill: rgba(10, 17, 40, 0.85);
+    }
+
+    .ts-visual-contenido {
+        position: relative;
+        z-index: 1;
+        max-width: 560px;
+    }
+
+    @@media (min-width: 992px) {
+        .ts-visual-contenido {
+            margin: 0 auto 0 0;
+        }
+    }
+
+    @@media (max-width: 991px) {
+        .ts-visual-contenido {
+            margin: 0 auto;
+            text-align: center;
+        }
     }
 
     .ts-login-kicker {
-        margin-bottom: 0.6rem;
+        margin-bottom: 0.75rem;
         font-family: 'Zen Kaku Gothic New', sans-serif;
         color: var(--login-vermillion);
-        font-size: 0.74rem;
+        font-size: 0.8rem;
         font-weight: 700;
-        letter-spacing: 0.18em;
+        letter-spacing: 0.22em;
         text-transform: uppercase;
+        opacity: 0;
     }
 
     .ts-login-title {
         margin: 0;
         font-family: 'Bodoni Moda', serif;
-        font-size: clamp(2.6rem, 5vw, 3.8rem);
+        font-size: clamp(2.6rem, 5.4vw, 4.8rem);
         font-weight: 700;
-        line-height: 0.98;
+        line-height: 1;
         letter-spacing: -0.02em;
         color: var(--login-foam);
     }
 
-        .ts-login-title span {
-            color: var(--login-gold);
-            font-style: italic;
+    .ts-palabra {
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+        .ts-palabra + .ts-palabra {
+            margin-left: 0.28em;
         }
 
-    .ts-accent-line {
-        width: 64px;
-        height: 2px;
-        margin: 1rem auto 0;
-        border-radius: 999px;
-        background: linear-gradient( 90deg, transparent, var(--login-vermillion), transparent );
+    .ts-palabra--acento {
+        color: var(--login-gold);
+        font-style: italic;
+    }
+
+    .ts-letra {
+        display: inline-block;
+        opacity: 0;
+    }
+
+    .ts-storm-signature {
+        width: 220px;
+        max-width: 40vw;
+        height: 48px;
+        margin: 1.4rem 0 0;
+        display: block;
+        overflow: visible;
+    }
+
+    @@media (max-width: 991px) {
+        .ts-storm-signature {
+            margin: 1.1rem auto 0;
+        }
+    }
+
+    .ts-wave-path {
+        fill: none;
+        stroke: var(--login-teal);
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        opacity: .9;
+    }
+
+    .ts-wave-path--accent {
+        stroke: var(--login-gold);
+        stroke-width: 1.1;
+        opacity: .6;
+    }
+
+    .ts-sol {
+        fill: var(--login-vermillion);
+        filter: drop-shadow(0 0 6px rgba(196, 30, 58, 0.55));
+        transform-origin: center;
+        opacity: 0;
+    }
+
+    .ts-sol-halo {
+        fill: none;
+        stroke: var(--login-vermillion);
+        stroke-width: 1;
+        opacity: 0;
+        transform-origin: center;
     }
 
     .ts-login-subtitle {
-        margin: 0.8rem 0 0;
+        margin: 1.4rem 0 0;
         font-family: 'Zen Kaku Gothic New', sans-serif;
-        font-size: 0.92rem;
-        color: rgba(232, 237, 245, 0.64);
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: rgba(232, 237, 245, 0.68);
+        max-width: 34ch;
+        opacity: 0;
+    }
+
+    @@media (max-width: 991px) {
+        .ts-login-subtitle {
+            margin: 1rem auto 0;
+            font-size: 0.92rem;
+        }
+    }
+
+    .ts-features {
+        list-style: none;
+        margin: 1.9rem 0 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+
+        .ts-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+            font-size: 0.88rem;
+            color: rgba(232, 237, 245, 0.60);
+            opacity: 0;
+        }
+
+            .ts-features li::before {
+                content: '';
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: var(--login-gold);
+                flex-shrink: 0;
+            }
+
+    @@media (max-width: 991px) {
+        .ts-features {
+            align-items: center;
+        }
+
+            .ts-features li {
+                justify-content: center;
+            }
+    }
+
+    /* ── PANEL DERECHO: formulario ── */
+
+    .ts-form-panel {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1.5rem;
+        background: var(--login-panel);
+    }
+
+    @@media (min-width: 992px) {
+        .ts-form-panel {
+            flex: 1 1 0;
+            padding: 4rem 3vw;
+        }
+
+            .ts-form-panel::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 10%;
+                bottom: 10%;
+                width: 1px;
+                background: linear-gradient( 180deg, transparent, rgba(255, 255, 255, 0.09), transparent );
+            }
+    }
+
+    .ts-form-panel-inner {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .ts-form-heading {
+        margin-bottom: 1.6rem;
+        opacity: 0;
+    }
+
+    .ts-form-eyebrow {
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--login-teal);
+        margin-bottom: 0.55rem;
+    }
+
+    .ts-form-heading h2 {
+        margin: 0 0 0.35rem;
+        font-family: 'Bodoni Moda', serif;
+        font-weight: 700;
+        font-size: 1.7rem;
+        color: var(--login-foam);
+    }
+
+    .ts-form-heading p {
+        margin: 0;
+        font-family: 'Zen Kaku Gothic New', sans-serif;
+        font-size: 0.88rem;
+        color: rgba(232, 237, 245, 0.55);
+    }
+
+    .ts-form-rule {
+        width: 38px;
+        height: 2px;
+        margin-top: 1.3rem;
+        background: linear-gradient(90deg, var(--login-gold), transparent);
     }
 
     /* ═══════════════════════════════════════
-               CARD
-               ═══════════════════════════════════════ */
+                   CARD
+                   ═══════════════════════════════════════ */
 
     .ts-login-card {
+        position: relative;
         width: 100%;
         padding: 2rem;
-        border: 1px solid rgba(255, 255, 255, 0.10);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 22px;
-        background: rgba(255, 255, 255, 0.055);
+        background: rgba(255, 255, 255, 0.06);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
-        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        opacity: 0;
+        overflow: hidden;
     }
 
+        .ts-login-card::before {
+            content: '';
+            position: absolute;
+            top: var(--glow-y, 30%);
+            left: var(--glow-x, 50%);
+            width: 340px;
+            height: 340px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(196, 30, 58, 0.16), transparent 65%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
+
+        .ts-login-card.ts-glow-activo::before {
+            opacity: 1;
+        }
+
+        .ts-login-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
     /* ═══════════════════════════════════════
-               FORMULARIO
-               ═══════════════════════════════════════ */
+                   FORMULARIO
+                   ═══════════════════════════════════════ */
 
     .ts-form-group {
         margin-bottom: 1.25rem;
@@ -134,10 +438,10 @@
         width: 100%;
         min-height: 48px;
         padding: 0.8rem 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.13);
+        border: 1px solid rgba(255, 255, 255, 0.14);
         border-radius: 12px;
         outline: none;
-        background: rgba(255, 255, 255, 0.065);
+        background: rgba(255, 255, 255, 0.075);
         color: var(--login-foam);
         font-family: 'Zen Kaku Gothic New', sans-serif;
         font-size: 0.95rem;
@@ -149,13 +453,52 @@
         }
 
         .ts-input:hover {
-            border-color: rgba(255, 255, 255, 0.20);
+            border-color: rgba(255, 255, 255, 0.22);
         }
 
         .ts-input:focus {
             border-color: var(--login-gold);
-            background: rgba(255, 255, 255, 0.085);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.11);
+            background: rgba(255, 255, 255, 0.095);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.13);
+        }
+
+    .ts-password-wrap {
+        position: relative;
+    }
+
+        .ts-password-wrap .ts-input {
+            padding-right: 2.85rem;
+        }
+
+    .ts-toggle-eye {
+        position: absolute;
+        top: 50%;
+        right: 0.6rem;
+        transform: translateY(-50%);
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 8px;
+        background: transparent;
+        color: rgba(232, 237, 245, 0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+        .ts-toggle-eye svg {
+            transform-origin: center;
+        }
+
+        .ts-toggle-eye:hover {
+            color: var(--login-gold);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .ts-toggle-eye:focus-visible {
+            outline: 2px solid rgba(212, 175, 55, 0.65);
+            outline-offset: 2px;
         }
 
     .ts-validation {
@@ -168,8 +511,8 @@
     }
 
     /* ═══════════════════════════════════════
-               ALERTAS
-               ═══════════════════════════════════════ */
+                   ALERTAS
+                   ═══════════════════════════════════════ */
 
     .ts-summary,
     .ts-success {
@@ -183,8 +526,8 @@
 
     .ts-summary {
         color: #ff9aaa;
-        background: rgba(196, 30, 58, 0.10);
-        border: 1px solid rgba(196, 30, 58, 0.25);
+        background: rgba(196, 30, 58, 0.12);
+        border: 1px solid rgba(196, 30, 58, 0.28);
     }
 
         .ts-summary:empty {
@@ -193,13 +536,13 @@
 
     .ts-success {
         color: #b8f3c7;
-        background: rgba(39, 174, 96, 0.12);
-        border: 1px solid rgba(39, 174, 96, 0.30);
+        background: rgba(39, 174, 96, 0.14);
+        border: 1px solid rgba(39, 174, 96, 0.32);
     }
 
     /* ═══════════════════════════════════════
-               RECORDARME
-               ═══════════════════════════════════════ */
+                   RECORDARME
+                   ═══════════════════════════════════════ */
 
     .ts-check-row {
         display: flex;
@@ -226,8 +569,8 @@
     }
 
     /* ═══════════════════════════════════════
-               BOTÓN LOGIN
-               ═══════════════════════════════════════ */
+                   BOTÓN LOGIN
+                   ═══════════════════════════════════════ */
 
     .ts-login-button {
         width: 100%;
@@ -242,14 +585,13 @@
         font-weight: 700;
         letter-spacing: 0.04em;
         cursor: pointer;
-        box-shadow: 0 10px 28px rgba(196, 30, 58, 0.33);
-        transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+        box-shadow: 0 10px 28px rgba(196, 30, 58, 0.35);
+        transition: background 0.22s ease;
     }
 
         .ts-login-button:hover {
-            transform: translateY(-2px);
             background: #d52443;
-            box-shadow: 0 14px 34px rgba(196, 30, 58, 0.42);
+            box-shadow: 0 14px 34px rgba(196, 30, 58, 0.44);
         }
 
         .ts-login-button:focus-visible {
@@ -257,13 +599,14 @@
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.22), 0 12px 30px rgba(196, 30, 58, 0.36);
         }
 
-        .ts-login-button:active {
-            transform: translateY(0);
+        .ts-login-button:disabled {
+            opacity: .75;
+            cursor: not-allowed;
         }
 
     /* ═══════════════════════════════════════
-               REGISTRO
-               ═══════════════════════════════════════ */
+                   REGISTRO / FOOTER
+                   ═══════════════════════════════════════ */
 
     .ts-login-register {
         margin-top: 1.2rem;
@@ -293,80 +636,36 @@
                 border-radius: 3px;
             }
 
-    /* ═══════════════════════════════════════
-               TEXTO INFERIOR
-               ═══════════════════════════════════════ */
+    .ts-mini-signature-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: 2.2rem;
+    }
+
+    .ts-mini-signature {
+        width: 92px;
+        height: 19px;
+        opacity: 0;
+    }
 
     .ts-login-footer {
-        margin-top: 1.25rem;
+        margin-top: 0.6rem;
         text-align: center;
         font-family: 'Zen Kaku Gothic New', sans-serif;
-        color: rgba(232, 237, 245, 0.38);
-        font-size: 0.75rem;
+        color: rgba(232, 237, 245, 0.34);
+        font-size: 0.73rem;
         line-height: 1.45;
+        opacity: 0;
     }
 
     /* ═══════════════════════════════════════
-               TABLET
-               ═══════════════════════════════════════ */
-
-    @@media (max-width: 768px) {
-
-        .ts-login-page {
-            min-height: 620px;
-            padding: 3rem 1.25rem;
-        }
-
-        .ts-login-wrapper {
-            max-width: 420px;
-        }
-
-        .ts-login-brand {
-            margin-bottom: 1.6rem;
-        }
-
-        .ts-login-title {
-            font-size: clamp( 2.45rem, 10vw, 3.25rem );
-        }
-    }
-
-    /* ═══════════════════════════════════════
-               MÓVIL
-               ═══════════════════════════════════════ */
+                   MÓVIL — ajustes finos
+                   ═══════════════════════════════════════ */
 
     @@media (max-width: 576px) {
 
-        .ts-login-page {
-            min-height: 580px;
-            padding: 2.2rem 1rem;
-        }
-
-        .ts-login-wrapper {
-            max-width: 400px;
-        }
-
-        .ts-login-brand {
-            margin-bottom: 1.35rem;
-        }
-
-        .ts-login-kicker {
-            margin-bottom: 0.5rem;
-            font-size: 0.68rem;
-            letter-spacing: 0.15em;
-        }
-
         .ts-login-title {
-            font-size: clamp( 2.2rem, 11vw, 2.9rem );
-        }
-
-        .ts-login-subtitle {
-            margin-top: 0.65rem;
-            font-size: 0.86rem;
-        }
-
-        .ts-accent-line {
-            margin-top: 0.8rem;
-            width: 54px;
+            font-size: clamp(2.1rem, 11vw, 2.7rem);
         }
 
         .ts-login-card {
@@ -381,90 +680,11 @@
         .ts-check-row {
             margin-bottom: 1.25rem;
         }
-
-        .ts-login-register {
-            margin-top: 1.05rem;
-            font-size: 0.82rem;
-        }
-
-        .ts-login-footer {
-            margin-top: 1rem;
-            font-size: 0.7rem;
-        }
     }
 
     /* ═══════════════════════════════════════
-               TELÉFONO PEQUEÑO
-               ═══════════════════════════════════════ */
-
-    @@media (max-width: 390px) {
-
-        .ts-login-page {
-            padding: 1.8rem 0.8rem;
-        }
-
-        .ts-login-card {
-            padding: 1.35rem 1rem;
-        }
-
-        .ts-login-title {
-            font-size: 2.15rem;
-        }
-
-        .ts-login-kicker {
-            font-size: 0.64rem;
-        }
-
-        .ts-input {
-            padding: 0.76rem 0.85rem;
-            font-size: 0.9rem;
-        }
-
-        .ts-login-button {
-            font-size: 0.88rem;
-        }
-    }
-
-    /* ═══════════════════════════════════════
-               PANTALLAS DE POCA ALTURA
-               ═══════════════════════════════════════ */
-
-    @@media (max-height: 720px) and (min-width: 577px) {
-
-        .ts-login-page {
-            align-items: flex-start;
-            min-height: 0;
-            padding: 2rem 1.5rem 2.5rem;
-        }
-
-        .ts-login-brand {
-            margin-bottom: 1.25rem;
-        }
-
-        .ts-login-title {
-            font-size: 2.8rem;
-        }
-
-        .ts-login-subtitle {
-            margin-top: 0.55rem;
-        }
-
-        .ts-login-card {
-            padding: 1.6rem;
-        }
-
-        .ts-form-group {
-            margin-bottom: 1rem;
-        }
-
-        .ts-check-row {
-            margin-bottom: 1.15rem;
-        }
-    }
-
-    /* ═══════════════════════════════════════
-               MOVIMIENTO REDUCIDO
-               ═══════════════════════════════════════ */
+                   MOVIMIENTO REDUCIDO
+                   ═══════════════════════════════════════ */
 
     @@media (prefers-reduced-motion: reduce) {
 
@@ -473,189 +693,353 @@
         .ts-login-register a {
             transition: none;
         }
+
+        .ts-rain-layer {
+            display: none;
+        }
     }
 
 </style>
 
-<section class="ts-login-page">
+<div class="ts-login-page">
 
-    <div class="ts-login-wrapper">
+    <!-- ══ PANEL IZQUIERDO — identidad ══ -->
+    <section class="ts-visual">
 
-        <!-- BRAND -->
+        <div class="ts-rain-layer" id="tsRainLayer" aria-hidden="true"></div>
 
-        <div class="ts-login-brand">
+        <svg class="ts-horizonte" viewBox="0 0 800 260" preserveAspectRatio="none" aria-hidden="true">
+            <path class="ts-ola-capa ts-ola-capa--1" d="M0,60 C120,15 220,95 340,55 C460,15 560,90 680,50 C740,30 780,40 800,50 L800,260 L0,260 Z" />
+            <path class="ts-ola-capa ts-ola-capa--2" d="M0,110 C140,65 240,135 360,100 C480,65 580,125 700,95 C750,78 780,88 800,95 L800,260 L0,260 Z" />
+            <path class="ts-ola-capa ts-ola-capa--3" d="M0,160 C160,130 260,180 380,155 C500,128 600,175 720,150 C760,138 785,145 800,150 L800,260 L0,260 Z" />
+        </svg>
 
-            <div class="ts-login-kicker">
+        <div class="ts-kanji-watermark" aria-hidden="true">嵐</div>
+        <div class="ts-relampago" id="tsRelampago" aria-hidden="true"></div>
+
+        <div class="ts-visual-contenido">
+
+            <div class="ts-login-kicker" id="tsKicker">
                 Acceso al sistema
             </div>
 
-            <h1 class="ts-login-title">
-                TEMPEST <span>SUSHI</span>
+            <h1 class="ts-login-title" id="tsTitle">
+                <span class="ts-palabra" data-palabra="TEMPEST"></span><span class="ts-palabra ts-palabra--acento" data-palabra="SUSHI"></span>
             </h1>
 
-            <div class="ts-accent-line">
-            </div>
+            <svg class="ts-storm-signature" id="tsSignature" viewBox="0 0 230 48" aria-hidden="true">
+                <path class="ts-wave-path" pathLength="100" d="M2,30 C24,12 44,38 66,26 C88,13 106,36 128,24 C140,17 148,18 154,17" />
+                <path class="ts-wave-path ts-wave-path--accent" pathLength="100" d="M2,38 C26,24 48,44 72,32 C96,20 112,42 134,30 C144,25 150,26 154,24" />
+                <circle class="ts-sol-halo" cx="204" cy="14" r="13" />
+                <circle class="ts-sol" cx="204" cy="14" r="6" />
+            </svg>
 
-            <p class="ts-login-subtitle">
-                Inicia sesión para continuar.
+            <p class="ts-login-subtitle" id="tsSubtitle">
+                Cocina de tormenta, precisión de mar. Ingresá para gestionar tus pedidos.
             </p>
 
+            <ul class="ts-features" id="tsFeatures">
+                <li>Pedidos y combos en un solo lugar</li>
+                <li>Seguimiento del pedido en tiempo real</li>
+                <li>Pago seguro al finalizar la compra</li>
+            </ul>
+
         </div>
 
-        <!-- CARD -->
+    </section>
 
-        <div class="ts-login-card">
+    <!-- ══ PANEL DERECHO — formulario ══ -->
+    <section class="ts-form-panel">
+        <div class="ts-form-panel-inner">
 
-            @if (TempData["RegistroExitoso"] != null)
-            {
-                <div class="ts-success"
-                     role="status">
+            <div class="ts-form-heading" id="tsFormHeading">
+                <div class="ts-form-eyebrow">Portal de clientes</div>
+                <h2>Bienvenido de nuevo</h2>
+                <p>Ingresá tus credenciales para continuar.</p>
+                <div class="ts-form-rule"></div>
+            </div>
 
-                    @TempData["RegistroExitoso"]
+            <div class="ts-login-card" id="tsCard">
 
+                @if (TempData["RegistroExitoso"] != null)
+                {
+                    <div class="ts-success" role="status">
+                        @TempData["RegistroExitoso"]
+                    </div>
+                }
+
+                <form asp-controller="Account" asp-action="Login" method="post" id="tsLoginForm">
+
+                    <div asp-validation-summary="ModelOnly" class="ts-summary" id="tsSummary" role="alert"></div>
+
+                    <!-- CORREO -->
+                    <div class="ts-form-group">
+                        <label asp-for="Correo" class="ts-label"></label>
+                        <input asp-for="Correo" class="ts-input" autocomplete="email" inputmode="email" placeholder="correo@ejemplo.com" />
+                        <span asp-validation-for="Correo" class="ts-validation"></span>
+                    </div>
+
+                    <!-- PASSWORD -->
+                    <div class="ts-form-group">
+                        <label asp-for="Password" class="ts-label"></label>
+                        <div class="ts-password-wrap">
+                            <input asp-for="Password" class="ts-input" id="tsPasswordInput" autocomplete="current-password" placeholder="Ingrese su contraseña" />
+                            <button type="button" class="ts-toggle-eye" id="tsToggleEye" aria-label="Mostrar contraseña" aria-pressed="false">
+                                <svg id="tsEyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Password" class="ts-validation"></span>
+                    </div>
+
+                    <!-- RECORDARME -->
+                    <div class="ts-check-row">
+                        <input asp-for="Recordarme" class="form-check-input" />
+                        <label asp-for="Recordarme" class="ts-check-label"></label>
+                    </div>
+
+                    <!-- LOGIN -->
+                    <button type="submit" class="ts-login-button" id="tsLoginButton">
+                        Iniciar sesión
+                    </button>
+
+                </form>
+
+                <div class="ts-login-register">
+                    ¿Aún no tienes una cuenta?
+                    <a asp-controller="Account" asp-action="Register">Crear cuenta</a>
                 </div>
-            }
-
-            <form asp-controller="Account"
-                  asp-action="Login"
-                  method="post">
-
-                <div asp-validation-summary="ModelOnly"
-                     class="ts-summary"
-                     role="alert">
-                </div>
-
-                <!-- CORREO -->
-
-                <div class="ts-form-group">
-
-                    <label asp-for="Correo"
-                           class="ts-label">
-                    </label>
-
-                    <input asp-for="Correo"
-                           class="ts-input"
-                           autocomplete="email"
-                           inputmode="email"
-                           placeholder="correo@ejemplo.com" />
-
-                    <span asp-validation-for="Correo"
-                          class="ts-validation">
-                    </span>
-
-                </div>
-
-                <!-- PASSWORD -->
-
-                <div class="ts-form-group">
-
-                    <label asp-for="Password"
-                           class="ts-label">
-                    </label>
-
-                    <input asp-for="Password"
-                           class="ts-input"
-                           autocomplete="current-password"
-                           placeholder="Ingrese su contraseña" />
-
-                    <span asp-validation-for="Password"
-                          class="ts-validation">
-                    </span>
-
-                </div>
-
-                <!-- RECORDARME -->
-
-                <div class="ts-check-row">
-
-                    <input asp-for="Recordarme"
-                           class="form-check-input" />
-
-                    <label asp-for="Recordarme"
-                           class="ts-check-label">
-                    </label>
-
-                </div>
-
-                <!-- LOGIN -->
-
-                <button type="submit"
-                        class="ts-login-button">
-
-                    Iniciar sesión
-
-                </button>
-
-            </form>
-
-            <!-- REGISTRO -->
-
-            <div class="ts-login-register">
-
-                ¿Aún no tienes una cuenta?
-
-                <a asp-controller="Account"
-                   asp-action="Register">
-
-                    Crear cuenta
-
-                </a>
 
             </div>
 
+            <div class="ts-mini-signature-wrap">
+                <svg class="ts-mini-signature" id="tsMiniSignature" viewBox="0 0 104 22" aria-hidden="true">
+                    <path class="ts-wave-path" pathLength="100" d="M1,13 C11,5 19,18 30,11 C41,5 49,17 60,10 C65,7 68,8 71,8" />
+                    <circle class="ts-sol-halo" cx="93" cy="7" r="7" />
+                    <circle class="ts-sol" cx="93" cy="7" r="3" />
+                </svg>
+            </div>
+
+            <div class="ts-login-footer" id="tsFooter">
+                TempestSushi · Cocina de tormenta, precisión de mar
+            </div>
+
         </div>
+    </section>
 
-        <!-- FOOTER DEL LOGIN -->
-
-        <div class="ts-login-footer">
-
-            TempestSushi · Cocina de tormenta,
-            precisión de mar
-
-        </div>
-
-    </div>
-
-</section>
+</div>
 
 @section Scripts {
 
     <partial name="_ValidationScriptsPartial" />
 
-    <script>
+    <script type="module">
+        import { animate, stagger, createSpring, createTimeline, utils, createAnimatable } from 'https://cdn.jsdelivr.net/npm/animejs@4.0.2/+esm';
 
-        if (typeof anime !== 'undefined'
-            && !window.matchMedia(
-                '(prefers-reduced-motion: reduce)'
-            ).matches) {
+        try {
 
-            anime({
-                targets: '.ts-login-brand',
-                opacity: [0, 1],
-                translateY: [-12, 0],
-                duration: 600,
-                easing: 'easeOutQuad'
+            const prefiereMenosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            const card = document.getElementById('tsCard');
+            const summary = document.getElementById('tsSummary');
+            const loginButton = document.getElementById('tsLoginButton');
+            const form = document.getElementById('tsLoginForm');
+            const formHeading = document.getElementById('tsFormHeading');
+
+            // ── Arma cada palabra del título en letras, sin romper el salto de línea ──
+            document.querySelectorAll('.ts-palabra').forEach(palabra => {
+                const texto = palabra.dataset.palabra || '';
+                palabra.innerHTML = '';
+                [...texto].forEach(caracter => {
+                    const span = document.createElement('span');
+                    span.className = 'ts-letra';
+                    span.textContent = caracter;
+                    palabra.appendChild(span);
+                });
             });
 
-            anime({
-                targets: '.ts-login-card',
-                opacity: [0, 1],
-                translateY: [18, 0],
-                scale: [0.985, 1],
-                delay: 130,
-                duration: 650,
-                easing: 'easeOutExpo'
+            if (prefiereMenosMovimiento) {
+                utils.set(['#tsKicker', '#tsSubtitle', '#tsFooter', '#tsFormHeading', card], { opacity: 1 });
+                utils.set('.ts-letra', { opacity: 1 });
+                utils.set('.ts-features li', { opacity: 1 });
+                utils.set('.ts-wave-path', { strokeDashoffset: 0 });
+                utils.set('.ts-sol, .ts-sol-halo', { opacity: 1 });
+                utils.set('#tsMiniSignature', { opacity: 1 });
+            } else {
+
+                // ── Lluvia ambiental en el panel de marca ───────────────
+                const capaLluvia = document.getElementById('tsRainLayer');
+                const gotas = [];
+                for (let i = 0; i < 26; i++) {
+                    const gota = document.createElement('div');
+                    gota.className = 'ts-rain-drop';
+                    gota.style.left = utils.random(0, 100) + '%';
+                    capaLluvia.appendChild(gota);
+                    gotas.push(gota);
+                }
+                animate(gotas, {
+                    // Fallback a 600 por si el panel aún no midió su alto real
+                    // (evita que todas las gotas terminen animando la misma distancia)
+                    translateY: () => utils.random(200, (capaLluvia.clientHeight || 600) + 80),
+                    opacity: [
+                        { to: .5, duration: 200 },
+                        { to: 0, duration: 400 }
+                    ],
+                    duration: () => utils.random(1800, 3200),
+                    delay: stagger(120, { start: 300 }),
+                    loop: true,
+                    ease: 'inSine'
+                });
+
+                // ── Horizonte de olas: parallax lento y continuo ─────────
+                animate('.ts-ola-capa--1', { translateX: [-24, 24], duration: 9000, loop: true, alternate: true, ease: 'inOutSine' });
+                animate('.ts-ola-capa--2', { translateX: [18, -18], duration: 7200, loop: true, alternate: true, ease: 'inOutSine' });
+                animate('.ts-ola-capa--3', { translateX: [-12, 12], duration: 6000, loop: true, alternate: true, ease: 'inOutSine' });
+
+                // ── Relámpago ambiental: destello ocasional, nunca repetitivo/molesto ──
+                const relampago = document.getElementById('tsRelampago');
+                function programarRelampago() {
+                    const espera = utils.random(6000, 13000);
+                    setTimeout(() => {
+                        animate(relampago, {
+                            opacity: [0, .8, 0, .5, 0],
+                            duration: 650,
+                            ease: 'outQuad',
+                            onComplete: programarRelampago
+                        });
+                    }, espera);
+                }
+                programarRelampago();
+
+                // ── Secuencia de entrada orquestada ──────────────────────
+                const tlEntrada = createTimeline({
+                    onComplete: () => {
+                        // Una vez terminó la entrada, el halo del sol queda
+                        // respirando suavemente en loop para que no se vea
+                        // "pegado" a la línea, sino flotando con brillo propio.
+                        animate('.ts-sol-halo', {
+                            opacity: [0, .4, 0],
+                            scale: [1, 1.3, 1],
+                            duration: 3000,
+                            loop: true,
+                            ease: 'inOutSine'
+                        });
+                    }
+                });
+
+                tlEntrada
+                    .add('#tsKicker', { opacity: [0, 1], translateY: [-8, 0], duration: 450, ease: 'outQuad' })
+                    .add('.ts-letra', {
+                        opacity: [0, 1],
+                        translateY: [18, 0],
+                        duration: 420,
+                        delay: stagger(22),
+                        ease: 'outQuad'
+                    }, '-=150')
+                    .add('.ts-wave-path', { strokeDashoffset: [100, 0], duration: 900, ease: 'outQuad' }, '-=200')
+                    .add('.ts-sol-halo', { opacity: [0, .6, 0], scale: [0.6, 1.6], duration: 900, ease: 'outQuad' }, '-=500')
+                    .add('.ts-sol', {
+                        opacity: [0, 1],
+                        scale: [0.4, 1],
+                        duration: 500,
+                        ease: createSpring({ stiffness: 260, damping: 14 })
+                    }, '-=700')
+                    .add('#tsSubtitle', { opacity: [0, 1], translateY: [10, 0], duration: 400, ease: 'outQuad' }, '-=300')
+                    .add('.ts-features li', {
+                        opacity: [0, 1],
+                        translateX: [-10, 0],
+                        duration: 380,
+                        delay: stagger(90),
+                        ease: 'outQuad'
+                    }, '-=150')
+                    .add(formHeading, { opacity: [0, 1], translateY: [12, 0], duration: 450, ease: 'outQuad' }, '-=650')
+                    .add(card, { opacity: [0, 1], translateY: [18, 0], scale: [0.985, 1], duration: 650, ease: 'outExpo' }, '-=250')
+                    .add('#tsMiniSignature', { opacity: [0, 1], duration: 400, ease: 'outQuad' }, '-=200')
+                    .add('#tsFooter', { opacity: [0, 1], duration: 450, ease: 'linear' }, '-=250');
+
+                // ── Respiración continua del sol (independiente del halo) ──
+                animate('.ts-sol', { scale: [1, 1.14, 1], duration: 2600, loop: true, delay: 2200, ease: 'inOutSine' });
+
+                // ── Resplandor del card que sigue el cursor ───────────────
+                const glow = createAnimatable(card, { '--glow-x': 500, '--glow-y': 500, unit: '%' });
+                card.addEventListener('pointerenter', () => card.classList.add('ts-glow-activo'));
+                card.addEventListener('pointerleave', () => card.classList.remove('ts-glow-activo'));
+                card.addEventListener('pointermove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const px = utils.clamp(((e.clientX - rect.left) / rect.width) * 100, 0, 100);
+                    const py = utils.clamp(((e.clientY - rect.top) / rect.height) * 100, 0, 100);
+                    glow['--glow-x'](px);
+                    glow['--glow-y'](py);
+                });
+
+                // ── Foco en inputs: leve resorte ──────────────────────────
+                document.querySelectorAll('.ts-input').forEach(input => {
+                    input.addEventListener('focus', () => {
+                        animate(input, { scale: [0.99, 1], duration: 260, ease: createSpring({ stiffness: 300, damping: 18 }) });
+                    });
+                });
+            }
+
+            // ── Mostrar / ocultar contraseña ────────────────────────────
+            const toggleEye = document.getElementById('tsToggleEye');
+            const eyeIcon = document.getElementById('tsEyeIcon');
+            const passwordInput = document.getElementById('tsPasswordInput');
+            const rutaOjo = 'M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z';
+            const rutaOjoTachado = 'M3 3l18 18M10.6 10.6a3 3 0 0 0 4.24 4.24M6.6 6.7C3.9 8.3 2 11 2 11s3.5 6.5 10 6.5c1.7 0 3.2-.4 4.4-1M9.9 5.6C10.6 5.5 11.3 5.5 12 5.5c6.5 0 10 6.5 10 6.5s-.7 1.3-2 2.7';
+
+            toggleEye.addEventListener('click', () => {
+                const mostrando = passwordInput.type === 'text';
+                passwordInput.type = mostrando ? 'password' : 'text';
+                toggleEye.setAttribute('aria-label', mostrando ? 'Mostrar contraseña' : 'Ocultar contraseña');
+                toggleEye.setAttribute('aria-pressed', String(!mostrando));
+
+                const path = eyeIcon.querySelector('path');
+                path.setAttribute('d', mostrando ? rutaOjo : rutaOjoTachado);
+                const circulo = eyeIcon.querySelector('circle');
+                if (circulo) circulo.style.display = mostrando ? '' : 'none';
+
+                if (prefiereMenosMovimiento) return;
+                // Se anima el ÍCONO interno, no el botón: el botón usa
+                // transform: translateY(-50%) en CSS para centrarse
+                // verticalmente, y si anime.js anima "scale" directamente
+                // sobre él, sobrescribe ese transform inline y el botón
+                // se corre hacia abajo. Animando el svg interno evitamos
+                // tocar el transform de posicionamiento del botón.
+                animate(eyeIcon, { scale: [0.75, 1], duration: 320, ease: createSpring({ stiffness: 320, damping: 12 }) });
             });
 
-            anime({
-                targets: '.ts-login-footer',
-                opacity: [0, 1],
-                delay: 400,
-                duration: 450,
-                easing: 'linear'
+            // ── Errores de validación devueltos por el servidor ─────────
+            if (summary && summary.textContent.trim() !== '' && !prefiereMenosMovimiento) {
+                animate(summary, {
+                    translateX: [
+                        { to: -6, duration: 70 }, { to: 6, duration: 70 },
+                        { to: -4, duration: 70 }, { to: 4, duration: 70 }, { to: 0, duration: 70 }
+                    ],
+                    ease: 'inOutSine',
+                    delay: 700
+                });
+                animate('.ts-sol', { scale: [1, 1.3, 1], duration: 500, delay: 700, ease: 'outQuad' });
+            }
+
+            // ── Feedback del botón al enviar ─────────────────────────────
+            form.addEventListener('submit', () => {
+                if (!prefiereMenosMovimiento) {
+                    animate(loginButton, { scale: [1, 0.96, 1], duration: 260, ease: 'outQuad' });
+                }
+                setTimeout(() => {
+                    loginButton.disabled = true;
+                    loginButton.textContent = 'Ingresando...';
+                }, 0);
             });
+
+        } catch (e) {
+            console.error('Error en la animación del login:', e);
+            document.querySelectorAll('.ts-visual-contenido, .ts-login-card, .ts-login-footer, .ts-form-heading, .ts-letra, .ts-features li, #tsMiniSignature')
+                .forEach(el => { el.style.opacity = '1'; });
+            document.querySelectorAll('.ts-wave-path').forEach(el => { el.style.strokeDashoffset = '0'; });
         }
-
     </script>
 
 }
